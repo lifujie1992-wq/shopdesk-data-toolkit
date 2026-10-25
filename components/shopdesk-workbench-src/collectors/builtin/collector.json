@@ -1,0 +1,162 @@
+{
+ "id": "builtin",
+ "version": "1.0.4",
+ "title": "工作台内置采集",
+ "entry": "worker.py",
+ "files": [
+  "worker.py",
+  "douyin.py",
+  "experience.py",
+  "refunds.py",
+  "quality.py",
+  "backfill.py"
+ ],
+ "capabilities": [
+  {
+   "id": "experience",
+   "action": "experience",
+   "title": "店铺体验分",
+   "description": "总体验分、商品、物流、服务分；成长阶段分项显示 —。",
+   "platforms": [
+    "抖店"
+   ],
+   "cookieURL": "https://fxg.jinritemai.com/governance/shop/experiencescore/",
+   "columns": [
+    {
+     "key": "total",
+     "label": "总分"
+    },
+    {
+     "key": "goods",
+     "label": "商品"
+    },
+    {
+     "key": "logistics",
+     "label": "物流"
+    },
+    {
+     "key": "service",
+     "label": "服务"
+    },
+    {
+     "key": "stage",
+     "label": "阶段"
+    },
+    {
+     "key": "updated_at",
+     "label": "平台更新时间",
+     "format": "date"
+    }
+   ]
+  },
+  {
+   "id": "shipped_refunds",
+   "action": "shipped_refunds",
+   "title": "已发货仅退款",
+   "description": "近 30 天（含今天），按申请时间、全部状态统计售后单；不是退款成功数。",
+   "platforms": [
+    "抖店"
+   ],
+   "cookieURL": "https://fxg.jinritemai.com/after_sale/pc/list",
+   "columns": [
+    {
+     "key": "count",
+     "label": "售后单数"
+    },
+    {
+     "key": "status_filter",
+     "label": "售后状态"
+    },
+    {
+     "key": "captured_at",
+     "label": "采集时间",
+     "format": "date"
+    }
+   ]
+  },
+  {
+   "id": "quality_returns",
+   "action": "quality_returns",
+   "title": "无凭证品退筛查",
+   "description": "近30天「申请原因=商品品质原因」的全部品退（平台口径 reason=product_quality）。逐单核对售后说明：说明为主观/非品质原因的判为可申诉，其余标为不可申诉并给出原因。仅筛查，不提交举报。",
+   "platforms": [
+    "抖店"
+   ],
+   "cookieURL": "https://fxg.jinritemai.com/after_sale/pc/list",
+   "columns": [
+    {
+     "key": "quality_count",
+     "label": "品质售后数"
+    },
+    {
+     "key": "candidate_count",
+     "label": "疑似符合数"
+    },
+    {
+     "key": "candidate_orders",
+     "label": "候选订单号"
+    },
+    {
+     "key": "captured_at",
+     "label": "采集时间",
+     "format": "date"
+    }
+   ],
+   "version": "1.1.0"
+  },
+  {
+   "id": "negative_reviews",
+   "action": "negative_reviews",
+   "title": "无凭证中差评筛查",
+   "description": "近30天1~3星中差评中，评价内容为空或仅为纯情绪词、且无图片/视频的评价（疑似可申诉）。仅筛查，不提交申诉。",
+   "platforms": [
+    "抖店"
+   ],
+   "cookieURL": "https://fxg.jinritemai.com/product/tcomment/commentList",
+   "columns": [
+    {
+     "key": "negative_count",
+     "label": "中差评数"
+    },
+    {
+     "key": "candidate_count",
+     "label": "疑似符合数"
+    },
+    {
+     "key": "candidate_orders",
+     "label": "候选订单号"
+    },
+    {
+     "key": "captured_at",
+     "label": "采集时间",
+     "format": "date"
+    }
+   ]
+  },
+  {
+   "id": "review_details",
+   "action": "review_details",
+   "title": "评价明细（近30天全量）",
+   "description": "抖店评价管理全量评价明细：评价ID、星级（含商品/物流/服务分项）、订单号、商品ID/SKU、正文、追评、图片视频、商家回复、平台归因标签。供 BI 按商品/店铺/供应商/发货时效切差评率。",
+   "platforms": [
+    "抖店"
+   ],
+   "cookieURL": "https://fxg.jinritemai.com/product/tcomment/commentList",
+   "columns": [
+    {
+     "key": "total_details",
+     "label": "明细条数"
+    },
+    {
+     "key": "merged_total",
+     "label": "累计库内"
+    },
+    {
+     "key": "captured_at",
+     "label": "采集时间",
+     "format": "date"
+    }
+   ]
+  }
+ ]
+}

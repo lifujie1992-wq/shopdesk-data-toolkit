@@ -1,0 +1,240 @@
+{
+  "verified_at": "2026-10-18",
+  "source": "飞鸽 /backstage/data/indicator_meta_info 的 staffData",
+  "fields": [
+    {
+      "key": "afterRefundSaleAmount",
+      "label": "退款后销售额",
+      "display_type": "currency",
+      "description": "支付的消费者，72小时内完成退款后的订单总金额（询单支付金额-退款金额）"
+    },
+    {
+      "key": "avgNapDuration",
+      "label": "平均小休时长",
+      "display_type": "date",
+      "description": "统计日期内，客服的平均小休时长（客服小休总时长/在线客服数）"
+    },
+    {
+      "key": "avgOnlineDuration",
+      "label": "平均在线时长",
+      "display_type": "date",
+      "description": "统计日期内，客服的平均在线时长（客服在线总时长/在线客服数）"
+    },
+    {
+      "key": "avgRespDuration",
+      "label": "全天平响时长",
+      "display_type": "date",
+      "description": "全天时间人工客服接待会话中，消费者与客服对话轮次的回复时长之和/全天时间人工咨询对话轮次总数"
+    },
+    {
+      "key": "consultTransferPlatformRate",
+      "label": "工作时间人工咨询转平台率",
+      "display_type": "percent",
+      "description": "咨询转平台率=咨询商家72小时内转平台订单数 / 咨询商家订单数，限制工作时间会话、用户说话非异常会话、有焦点订单会话且剔除模型判定为无效不满意会话，且分子限制咨询商家和转平台同订单、72小时内转平台、转平台与商家咨询同标签会话或商家服务问题标签会话"
+    },
+    {
+      "key": "firstRespDuration",
+      "label": "全天首响时长",
+      "display_type": "date",
+      "description": "查询日期全天时间内人工客服接待会话中，消费者进入人工客服接待后，客服首次回复的平均间隔时长。"
+    },
+    {
+      "key": "inChatNum",
+      "label": "正在接待人数",
+      "display_type": "count",
+      "description": "客服当前正在接待人数（不区分会话发起场景）"
+    },
+    {
+      "key": "inquiryCnt",
+      "label": "询单人数",
+      "display_type": "count",
+      "description": "查询日期内主动咨询的消费者中，满足以下条件视为询单人数\na：咨询后72小时内支付（定金或全款）的消费者\nb：咨询前，消费者在本店铺没有可以售后的订单。"
+    },
+    {
+      "key": "inquiryOrderRate",
+      "label": "询单转化率",
+      "display_type": "percent",
+      "description": "统计日期内询单消费者中，成功支付的消费者占比（支付人数/询单人数）"
+    },
+    {
+      "key": "inquiryPayAmount",
+      "label": "客服询单支付额",
+      "display_type": "currency",
+      "description": "查询日期内询单的消费者，72小时内下单支付的订单总金额。"
+    },
+    {
+      "key": "loginStaffCnt",
+      "label": "登录客服数",
+      "display_type": "count",
+      "description": "统计日期内有登录飞鸽的客服子账号数量"
+    },
+    {
+      "key": "maxServiceNum",
+      "label": "最大接待人数",
+      "display_type": "count",
+      "description": ""
+    },
+    {
+      "key": "onlineStaffCnt",
+      "label": "在线客服数",
+      "display_type": "count",
+      "description": "统计日期内飞鸽在线的客服子账号数量"
+    },
+    {
+      "key": "orderCnt",
+      "label": "下单人数",
+      "display_type": "count",
+      "description": "查询日期内询单消费者中，咨询后在72小时内下单的消费者数"
+    },
+    {
+      "key": "outConvCnt",
+      "label": "转出会话量",
+      "display_type": "count",
+      "description": "查询日期内，客服接待的会话中，转出给其他客服的会话量"
+    },
+    {
+      "key": "payCnt",
+      "label": "支付人数",
+      "display_type": "count",
+      "description": "查询日期内询单消费者中，咨询后在72小时内支付（定金或全款）的消费者数"
+    },
+    {
+      "key": "refundAmount",
+      "label": "退款金额",
+      "display_type": "currency",
+      "description": "查询日期内支付的消费者，72小时内完成退款的订单总金额。"
+    },
+    {
+      "key": "refundCnt",
+      "label": "退款人数",
+      "display_type": "count",
+      "description": "查询日期内支付消费者中，在72小时内完成退款的消费者数"
+    },
+    {
+      "key": "satisfyRate",
+      "label": "全天满意率",
+      "display_type": "percent",
+      "description": ""
+    },
+    {
+      "key": "servConvCnt",
+      "label": "接待会话量",
+      "display_type": "count",
+      "description": "查询日期内消费者主动发消息产生咨询并由人工客服接待的会话量（包括纯人工接待或智能客服转人工接待）"
+    },
+    {
+      "key": "servProblemConvCnt",
+      "label": "服务问题会话数",
+      "display_type": "count",
+      "description": ""
+    },
+    {
+      "key": "servStaffCnt",
+      "label": "接待客服数",
+      "display_type": "count",
+      "description": "统计日期内有接待会话的客服子账号数量（包括主动/被动的咨询接待）\n当天有过会话的客服，包括（消费者主动发起/客服发起咨询，不限制会话发起方）"
+    },
+    {
+      "key": "servUserCnt",
+      "label": "已接待人数",
+      "display_type": "count",
+      "description": "查询日期内消费者主动发消息产生咨询，并由人工客服接待的会话人数。包括智能客服转人工接待+纯人工客服接待的会话人数。如果一个消费者多次来访，店铺接待人数+1"
+    },
+    {
+      "key": "staffNapTotalDuration",
+      "label": "小休总时长",
+      "display_type": "date",
+      "description": ""
+    },
+    {
+      "key": "staffOnlineDays",
+      "label": "在线天数",
+      "display_type": "count",
+      "description": ""
+    },
+    {
+      "key": "staffOnlineTotalDuration",
+      "label": "在线总时长",
+      "display_type": "date",
+      "description": ""
+    },
+    {
+      "key": "targetHitCnt",
+      "label": "达标客服数",
+      "display_type": "count",
+      "description": ""
+    },
+    {
+      "key": "threeMinRespRate",
+      "label": "全天3分钟回复率",
+      "display_type": "percent",
+      "description": "查询日期全天时间内人工客服接待会话中，客服在3分钟内回复每条消费者消息的会话比例。"
+    },
+    {
+      "key": "toReplyConvCnt",
+      "label": "待回复会话量",
+      "display_type": "count",
+      "description": "消费者发送消息后，接待客服未回复消息的会话（不区分会话发起场景）"
+    },
+    {
+      "key": "unSatisfyRate",
+      "label": "全天不满意率",
+      "display_type": "percent",
+      "description": "全天时间下消费者评价人工客服的不满意会话量/消费者评价人工客服的会话量"
+    },
+    {
+      "key": "validBadCommentCnt",
+      "label": "有效差评数",
+      "display_type": "count",
+      "description": "查询日期内，消费者给客服差评的会话中，剔除无效会话后的有效差评数"
+    },
+    {
+      "key": "validCommentCnt",
+      "label": "有效评价数",
+      "display_type": "count",
+      "description": "查询日期内，消费者评价客服的会话中，剔除无效会话后的有效评价数"
+    },
+    {
+      "key": "validGoodCommentCnt",
+      "label": "有效好评数",
+      "display_type": "count",
+      "description": "查询日期内，消费者给客服好评的会话中，剔除无效会话后的有效好评数"
+    },
+    {
+      "key": "workSaturation",
+      "label": "工作饱和度",
+      "display_type": "percent",
+      "description": ""
+    },
+    {
+      "key": "workTimeAvgRespDuration",
+      "label": "工作时间平响时长",
+      "display_type": "date",
+      "description": "查询日期内工作时间人工客服接待会话中，消费者与客服对话轮次的回复时长之和/工作时间人工咨询对话轮次总数"
+    },
+    {
+      "key": "workTimeFirstRespDuration",
+      "label": "工作时间首响时长",
+      "display_type": "date",
+      "description": "查询日期工作时间内人工客服接待会话中，消费者进入人工客服接待后，客服首次回复的平均间隔时长"
+    },
+    {
+      "key": "workTimeSatisfyRate",
+      "label": "工作时间满意率",
+      "display_type": "percent",
+      "description": ""
+    },
+    {
+      "key": "workTimeThreeMinRespRate",
+      "label": "工作时间3分钟回复率",
+      "display_type": "percent",
+      "description": "查询日期工作时间内人工客服接待会话中，客服在3分钟内回复每条消费者消息的会话比例。"
+    },
+    {
+      "key": "workTimeUnSatisfyRate",
+      "label": "工作时间不满意率",
+      "display_type": "percent",
+      "description": "工作时间消费者评价人工客服的不满意会话量/消费者评价人工客服的会话量"
+    }
+  ]
+}

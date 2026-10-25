@@ -1,0 +1,744 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Mac 账单报表单条上传接口",
+    "version": "1.4.0",
+    "description": "单次 multipart 上传一个 .xlsx.gz；保留 Mac 双请求头、账号归属与幂等；无需店铺目录或单独授权；无批量接口和企微同步。正式入口 https://erp.xiangduoer.com，本次仅提交代码，运维部署并完成验证后用于联调。"
+  },
+  "servers": [
+    {
+      "url": "https://erp.xiangduoer.com",
+      "description": "正式站点根地址；运维部署并完成线上验证后生效，不包含 /api 或尾斜杠。"
+    }
+  ],
+  "security": [
+    {
+      "InvoiceAccountId": [],
+      "InvoiceWorkerToken": []
+    }
+  ],
+  "paths": {
+    "/api/douyin-recon/v1/reports": {
+      "post": {
+        "operationId": "uploadDouyinReconReport",
+        "summary": "同步核对日期、月份与 gzip 报表附件",
+        "description": "每次 multipart 请求恰好包含 metadata JSON 和一个 file gzip 附件。metadata 可为普通字段或 JSON 文件部分，附件 filename 必须与 upload.filename 一致。成功前完整验证 gzip 和 Excel 并持久保存。local_run_id 全局唯一，归首次创建账号；跨账号返回 404，同账号相同内容返回 200，不同内容返回 409。店铺信息由 Mac 提供，不需要配置目录或上传授权。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metadata": {
+                    "$ref": "#/components/schemas/UploadMetadata"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "file"
+                ],
+                "additionalProperties": false
+              },
+              "encoding": {
+                "metadata": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/gzip"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "首次归档，duplicate=false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "相同内容已归档，duplicate=true",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_REQUEST：请求结构错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED：任一鉴权头缺失、账号未注册、Token 无效或与账号不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "RUN_CONTENT_CONFLICT：同一运行的业务字段或原 Excel 内容改变",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "FILE_TOO_LARGE：超过配置限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "INVALID_METADATA、FILE_HASH_MISMATCH、INVALID_GZIP 或 INVALID_EXCEL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED：按 Retry-After 重试",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "建议等待时间"
+              }
+            }
+          },
+          "500": {
+            "description": "STORAGE_UNAVAILABLE：持久保存失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "STORAGE_UNAVAILABLE：临时不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "UNSUPPORTED_FILE_TYPE：拒绝直接上传原始 xlsx 或其他附件，必须传 xlsx.gz",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RUN_NOT_FOUND：运行不存在或不可访问；已有运行不属于当前账号时返回，不暴露原记录及回执",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "INVALID_REQUEST：请求方法或路径不支持",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/douyin-recon/v1/reports/{report_id}": {
+      "get": {
+        "operationId": "getDouyinReconReport",
+        "summary": "按 report_id 查询本人报表",
+        "description": "持相同账号当前有效 Mac Token 查询；不支持按 local_run_id 查询。响应丢失而尚无 report_id 时，直接重试原 POST。查询 duplicate=false 不表达历史重传情况。",
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "已归档回执与规范化 metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportQueryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED：账号或凭据无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RUN_NOT_FOUND：不存在或归属其他账号",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "STORAGE_UNAVAILABLE：已归档文件不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recon/files/{file_key}": {
+      "get": {
+        "operationId": "downloadDouyinReconExcel",
+        "summary": "凭完整链接公开下载原 Excel",
+        "description": "无需 Cookie 或 Token；链接不设自动到期。",
+        "security": [],
+        "parameters": [
+          {
+            "name": "file_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            },
+            "description": "服务端返回的随机文件标识；从 download_url 获取，不从 report_id 推算。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "原 Excel 字节",
+            "headers": {
+              "Content-Length": {
+                "description": "原 Excel 实际字节数",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "Content-Disposition": {
+                "description": "attachment，含 UTF-8 原文件名",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "FILE_NOT_FOUND：文件标识无效或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "STORAGE_UNAVAILABLE：归档文件不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "headDouyinReconExcel",
+        "summary": "检查公开文件响应头",
+        "security": [],
+        "parameters": [
+          {
+            "name": "file_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            },
+            "description": "服务端返回的随机文件标识；从 download_url 获取，不从 report_id 推算。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "与 GET 相同的文件响应头，无响应体",
+            "headers": {
+              "Content-Length": {
+                "description": "原 Excel 实际字节数",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "Content-Disposition": {
+                "description": "attachment，含 UTF-8 原文件名",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "文件标识无效或不存在，无响应体"
+          },
+          "503": {
+            "description": "归档文件不可用，无响应体"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "InvoiceAccountId": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Invoice-Account-Id",
+        "description": "管理员注册的账号 ID。必须与 InvoiceWorkerToken 同时提供，且 Token 属于该账号。账号为同步记录的所有者。"
+      },
+      "InvoiceWorkerToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Invoice-Worker-Token",
+        "description": "该账号当前有效的 Mac Agent Token，沿用 Mac Worker 独立凭据。必须与 InvoiceAccountId 同时提供；不使用浏览器 Cookie 或 Authorization Bearer。"
+      }
+    },
+    "schemas": {
+      "ReportFile": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^(?:\\d{4}-(?:0[1-9]|1[0-2])【抖音】Y-.+|\\d{6}【抖音】.+)\\.xlsx$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "filename",
+          "size_bytes",
+          "sha256"
+        ],
+        "additionalProperties": false,
+        "description": "原 Excel 元数据；文件名月份须与 reconciliation_month 一致，文件名不得含路径或控制字符。默认上限 200 MiB，以实际配置为准。"
+      },
+      "UploadFile": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^(?:\\d{4}-(?:0[1-9]|1[0-2])【抖音】Y-.+|\\d{6}【抖音】.+)\\.xlsx\\.gz$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "compression": {
+            "type": "string",
+            "enum": [
+              "gzip"
+            ]
+          }
+        },
+        "required": [
+          "filename",
+          "size_bytes",
+          "sha256",
+          "compression"
+        ],
+        "additionalProperties": false,
+        "description": "实际 gzip 附件元数据；filename 等于 report.filename 加 .gz，compression 为 gzip。默认上限 100 MiB，以实际配置为准。"
+      },
+      "UploadMetadata": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "douyin",
+              "taobao",
+              "xiaohongshu"
+            ],
+            "default": "douyin",
+            "description": "所属平台：抖音、淘宝、小红书。新客户端必须主动填写；兼容旧客户端省略时按 douyin 处理。店铺归属键为 (platform, shop_id)。"
+          },
+          "shop_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "来源平台提供的稳定店铺 ID，以字符串传输；与 platform 组合唯一识别店铺，不使用店名或本机登录 UUID 作为唯一键。"
+          },
+          "shop_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "本次上传首次入队前从来源平台获取的最新店名快照；允许改名，不添加来源前缀；同一 local_run_id 的重试保持原快照。"
+          },
+          "local_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "reconciliation_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-10-18"
+          },
+          "reconciliation_month": {
+            "type": "string",
+            "pattern": "^(?!0000)\\d{4}-(0[1-9]|1[0-2])$",
+            "example": "2026-08"
+          },
+          "reconciliation_status": {
+            "type": "string",
+            "enum": [
+              "matched",
+              "different",
+              "pending"
+            ],
+            "default": "pending",
+            "description": "省略按 pending；请求中不接受 null。"
+          },
+          "report": {
+            "$ref": "#/components/schemas/ReportFile"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/UploadFile"
+          }
+        },
+        "required": [
+          "shop_id",
+          "local_run_id",
+          "reconciliation_date",
+          "reconciliation_month",
+          "report",
+          "upload"
+        ],
+        "additionalProperties": false,
+        "description": "核对日期、核对月份、店铺和文件元数据。local_run_id 为该业务域唯一运行标识，归已验证请求头中的首次创建账号所有；重复同步先验证账号归属。"
+      },
+      "SyncResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "OK"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReceiptData"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "details"
+        ]
+      },
+      "ReceiptData": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "type": "string"
+          },
+          "local_run_id": {
+            "type": "string"
+          },
+          "stored": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "duplicate": {
+            "type": "boolean"
+          },
+          "excel_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "download_url": {
+            "type": "string",
+            "description": "可能是绝对 HTTP(S) 地址或 /recon/files/... 站点绝对路径；相对路径按 RECON_API_BASE 的站点根地址解析。"
+          }
+        },
+        "required": [
+          "report_id",
+          "local_run_id",
+          "stored",
+          "duplicate",
+          "excel_sha256",
+          "download_url"
+        ]
+      },
+      "StoredMetadata": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "douyin",
+              "taobao",
+              "xiaohongshu"
+            ],
+            "default": "douyin",
+            "description": "所属平台：抖音、淘宝、小红书。新客户端必须主动填写；兼容旧客户端省略时按 douyin 处理。店铺归属键为 (platform, shop_id)。"
+          },
+          "shop_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "来源平台提供的稳定店铺 ID，以字符串传输；与 platform 组合唯一识别店铺，不使用店名或本机登录 UUID 作为唯一键。"
+          },
+          "shop_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "本次上传首次入队前从来源平台获取的最新店名快照；允许改名，不添加来源前缀；同一 local_run_id 的重试保持原快照。",
+            "nullable": true
+          },
+          "local_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "reconciliation_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-10-18"
+          },
+          "reconciliation_month": {
+            "type": "string",
+            "pattern": "^(?!0000)\\d{4}-(0[1-9]|1[0-2])$",
+            "example": "2026-08"
+          },
+          "reconciliation_status": {
+            "type": "string",
+            "enum": [
+              "matched",
+              "different",
+              "pending"
+            ],
+            "default": "pending",
+            "description": "省略按 pending；请求中不接受 null。"
+          },
+          "report": {
+            "$ref": "#/components/schemas/ReportFile"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/UploadFile"
+          }
+        },
+        "required": [
+          "shop_id",
+          "shop_name",
+          "local_run_id",
+          "reconciliation_date",
+          "reconciliation_month",
+          "reconciliation_status",
+          "report",
+          "upload"
+        ],
+        "additionalProperties": false,
+        "description": "已归档的规范化 metadata；省略的名称补 null、状态补 pending。不能将含 null 的此对象直接当成新上传请求，应复用 Mac 原上传 metadata。"
+      },
+      "ReportQueryResponse": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "OK"
+            ]
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "report_id": {
+                "type": "string"
+              },
+              "local_run_id": {
+                "type": "string"
+              },
+              "stored": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ]
+              },
+              "duplicate": {
+                "type": "boolean"
+              },
+              "excel_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "download_url": {
+                "type": "string",
+                "description": "可能是绝对 HTTP(S) 地址或 /recon/files/... 站点绝对路径；相对路径按 RECON_API_BASE 的站点根地址解析。"
+              },
+              "metadata": {
+                "$ref": "#/components/schemas/StoredMetadata"
+              },
+              "shop_name": {
+                "type": "string",
+                "nullable": true
+              },
+              "received_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "report_id",
+              "local_run_id",
+              "stored",
+              "duplicate",
+              "excel_sha256",
+              "download_url",
+              "metadata",
+              "shop_name",
+              "received_at"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

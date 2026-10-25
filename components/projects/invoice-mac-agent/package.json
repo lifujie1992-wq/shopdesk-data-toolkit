@@ -1,0 +1,13 @@
+{
+  "name": "invoice-mac-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "抖店消费者开票 Mac 回传代理（对接云端 Worker API + 店铺工作台）",
+  "scripts": {
+    "start": "node agent.mjs",
+    "capture": "node capture-cli.mjs --once",
+    "capture:cleanup": "node capture-cleanup-cli.mjs --once",
+    "test": "node --test"
+  }
+}

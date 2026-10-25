@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "douyin-commission-rates"
+version = "0.1.0"
+description = "Mac 精选联盟商品链接佣金率采集与历史数据发布"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+duckdb = ["duckdb>=1.4,<2"]
+
+[project.scripts]
+commission = "commission_rates.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/commission_rates"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

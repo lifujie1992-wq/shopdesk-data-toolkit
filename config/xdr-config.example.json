@@ -1,0 +1,12 @@
+{
+  "server": {
+    "host": "YOUR_ALIYUN_HOST",
+    "port": 22,
+    "user": "xdrsync",
+    "identity_file": "~/.ssh/xdr_mac",
+    "ctl": "/usr/local/bin/xdr-syncctl",
+    "incoming": "/var/lib/xdr-sync/incoming"
+  },
+  "poll_seconds": 20,
+  "agent_id": "YOUR_NEW_MAC_ID"
+}

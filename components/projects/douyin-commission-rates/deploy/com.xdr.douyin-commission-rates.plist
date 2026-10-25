@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PYTHONUNBUFFERED</key>
+		<string>1</string>
+	</dict>
+	<key>Label</key>
+	<string>com.xdr.douyin-commission-rates</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/zhaoxiaozhong/projects/douyin-commission-rates/.venv/bin/python</string>
+		<string>-m</string>
+		<string>commission_rates.cli</string>
+		<string>--db</string>
+		<string>/Users/zhaoxiaozhong/projects/douyin-commission-rates/data/jst-commission-rates.sqlite</string>
+		<string>daily</string>
+		<string>--config</string>
+		<string>/Users/zhaoxiaozhong/projects/douyin-commission-rates/config/daily.json</string>
+	</array>
+	<key>RunAtLoad</key>
+	<false/>
+	<key>StandardErrorPath</key>
+	<string>/Users/zhaoxiaozhong/projects/douyin-commission-rates/logs/daily.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/zhaoxiaozhong/projects/douyin-commission-rates/logs/daily.out.log</string>
+	<key>StartCalendarInterval</key>
+	<dict>
+		<key>Hour</key>
+		<integer>5</integer>
+		<key>Minute</key>
+		<integer>10</integer>
+	</dict>
+	<key>WorkingDirectory</key>
+	<string>/Users/zhaoxiaozhong/projects/douyin-commission-rates</string>
+</dict>
+</plist>

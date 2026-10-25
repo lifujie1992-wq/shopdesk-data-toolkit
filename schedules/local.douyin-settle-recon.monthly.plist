@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.douyin-settle-recon.monthly</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>__HOME__/projects/douyin-settle-recon/.venv/bin/python</string>
+		<string>-u</string>
+		<string>-m</string>
+		<string>douyin_settle_recon.cli</string>
+		<string>monthly</string>
+		<string>--scheduled</string>
+		<string>--state-dir</string>
+		<string>__HOME__/projects/douyin-settle-recon/data/monthly</string>
+		<string>--output</string>
+		<string>__HOME__/projects/douyin-settle-recon/data/runs</string>
+		<string>--template</string>
+		<string>__HOME__/projects/douyin-settle-recon/doc/【抖音】月度账单处理模版.xlsx</string>
+		<string>--queue-dir</string>
+		<string>__HOME__/projects/douyin-settle-recon/data/upload-queue</string>
+	</array>
+	<key>RunAtLoad</key>
+	<false/>
+	<key>StandardErrorPath</key>
+	<string>__HOME__/projects/douyin-settle-recon/data/monthly/logs/launchd.err.log</string>
+	<key>StandardOutPath</key>
+	<string>__HOME__/projects/douyin-settle-recon/data/monthly/logs/launchd.out.log</string>
+	<key>StartCalendarInterval</key>
+	<dict>
+		<key>Day</key>
+		<integer>1</integer>
+		<key>Hour</key>
+		<integer>1</integer>
+		<key>Minute</key>
+		<integer>0</integer>
+	</dict>
+	<key>StartInterval</key>
+	<integer>3600</integer>
+	<key>WorkingDirectory</key>
+	<string>__HOME__/projects/douyin-settle-recon</string>
+</dict>
+</plist>

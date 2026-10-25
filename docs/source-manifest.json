@@ -1,0 +1,2627 @@
+{
+  "snapshot_date": "2026-10-25",
+  "files": [
+    {
+      "path": "components/shopdesk-workbench-src/README.md",
+      "source": "shopdesk-workbench-src/README.md",
+      "sha256": "c277bff0fe7d50a8a07f518d85a52321701363838dc88e604d011152aba76219",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/appeal.js",
+      "source": "shopdesk-workbench-src/appeal.js",
+      "sha256": "301885a8f23b0b773c3ab3fa30e84997326dc49ada808f6043ad46c78aa07963",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/autodeploy.sh",
+      "source": "shopdesk-workbench-src/autodeploy.sh",
+      "sha256": "0f36e7c3a7382f0daa97d7402bdf963b5a9adbad6a22cd77d5be9d6c93ea2139",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/build.sh",
+      "source": "shopdesk-workbench-src/build.sh",
+      "sha256": "f4d1980d45782b22eef4c0b78748c8bc9d9a2545da07859b2222100680e64f60",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/backfill.py",
+      "source": "shopdesk-workbench-src/collectors/builtin/backfill.py",
+      "sha256": "44bac7741a74b04ef207819864be80751ecb1f56447823169f03c82c6137e89b",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/collector.json",
+      "source": "shopdesk-workbench-src/collectors/builtin/collector.json",
+      "sha256": "5b16c4f88372bbad987aa291e77a5fc2299cba69fa2c6e92f5857ca203c5478f",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/douyin.py",
+      "source": "shopdesk-workbench-src/collectors/builtin/douyin.py",
+      "sha256": "1b700bfd1fea4981af0e65a2257122f0c0392404407b22f2c7bfc256ffc4b81d",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/experience.py",
+      "source": "shopdesk-workbench-src/collectors/builtin/experience.py",
+      "sha256": "e56caf1de449a2cf0462eefb5ebe29dabd83ad85414836717cb8764edc271cdf",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/quality.py",
+      "source": "shopdesk-workbench-src/collectors/builtin/quality.py",
+      "sha256": "1d0f5414edb7de238c9d8dd28236af5900453b0a63badf391957035627c5e874",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/refunds.py",
+      "source": "shopdesk-workbench-src/collectors/builtin/refunds.py",
+      "sha256": "061afb0ff9b3685db2d0a9e261af91353890e8b5f936592d8bf67e74e19b91e8",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/collectors/builtin/worker.py",
+      "source": "shopdesk-workbench-src/collectors/builtin/worker.py",
+      "sha256": "3b531128e308a2a0ecbabf9c5d54b34e66bee10f285ad14b05bba363d765c10c",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/package.json",
+      "source": "shopdesk-workbench-src/package.json",
+      "sha256": "0bd908fa930b00de384173f904f20f7e911fc8e911804de53db12515975a965a",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/progress.sh",
+      "source": "shopdesk-workbench-src/progress.sh",
+      "sha256": "5cabd2652147bb54476e05207c52c7eef2e80edb920ba7421761bfdcd18957fe",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/agent-api.js",
+      "source": "shopdesk-workbench-src/src/agent-api.js",
+      "sha256": "6052dd12a4652df49c036d3dc1e3eadeb947163caf489a77c01ece969ca66517",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/appeal-queue-policy.js",
+      "source": "shopdesk-workbench-src/src/appeal-queue-policy.js",
+      "sha256": "87f2f8101a53b552801d56bafa6bd0f3ce7861d4d426e70f6fc7566d7189384d",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/appeal-web.js",
+      "source": "shopdesk-workbench-src/src/appeal-web.js",
+      "sha256": "77e3493289108a4b4ae8e9776fac7e24131e272dcf4f7611c6f6fd7541ede2d9",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/appeal.js",
+      "source": "shopdesk-workbench-src/src/appeal.js",
+      "sha256": "f5348e31aed31ebc8a8ac525f0a87ee753393f3a503e6a226625dcb8b0a254e3",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/assets/app-icon.png",
+      "source": "shopdesk-workbench-src/src/assets/app-icon.png",
+      "sha256": "2a1ffdf6eb1563d1056ca0770cbf0638fe885c9b1ace2110e968935c26bd2050",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/backfill.js",
+      "source": "shopdesk-workbench-src/src/backfill.js",
+      "sha256": "4c2707121b65d7813017358a002afa7cf2177db2dabc7bb9b5aa999323d3900a",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/collector-jobs.js",
+      "source": "shopdesk-workbench-src/src/collector-jobs.js",
+      "sha256": "67dd32f182ffe3e47a4bf8d75b310149b3d519b3e35f4e315f2c38a6a7bdb061",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/collector-ui.js",
+      "source": "shopdesk-workbench-src/src/collector-ui.js",
+      "sha256": "71c41a7fbb5f8dc0f6367815ac28cc69cbac10ea240f63605ac17da30b4c2c63",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/collectors.js",
+      "source": "shopdesk-workbench-src/src/collectors.js",
+      "sha256": "17e47a26eeb2c686c88d707aec7510a65810191ba0058c7b928f1209f1c4d392",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/exploration.js",
+      "source": "shopdesk-workbench-src/src/exploration.js",
+      "sha256": "b62cfbc1c89838322a48453ee5483913506ae6292407262fe76b245e25b567bb",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/finance-extension.cjs",
+      "source": "shopdesk-workbench-src/src/finance-extension.cjs",
+      "sha256": "47047e02b7cb180a8954a4f874fdf2adcd8a42c1d20b3676aaa09b1a1aacf690",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/index.html",
+      "source": "shopdesk-workbench-src/src/index.html",
+      "sha256": "06daf74d904e1ae06a055004f6d31cf4786933403f3377a1c8330a5a431a2d89",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/invoice.js",
+      "source": "shopdesk-workbench-src/src/invoice.js",
+      "sha256": "e32b44fc9eb8832a4d01a48a3c6791aa965b9018d989368510dfb10f006ebace",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/login-health.js",
+      "source": "shopdesk-workbench-src/src/login-health.js",
+      "sha256": "17fcb3e231c555f6e8ea0c6015e8e2ead425f1043b3f7769fa9927fdb63ee70f",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/login-scan.js",
+      "source": "shopdesk-workbench-src/src/login-scan.js",
+      "sha256": "001969457707a0287f2c8012aa15e44c7829356b07f9e35a95a34aad008df883",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/login.js",
+      "source": "shopdesk-workbench-src/src/login.js",
+      "sha256": "ffe7597d54f843f1fa3fc268a052d79fd91d4b7738d698fad85cb1230409a361",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/main.js",
+      "source": "shopdesk-workbench-src/src/main.js",
+      "sha256": "94a7c1380eeeb60e1709b7021dce9fdbd4aaaf265f660ac34616371ffbeccce2",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/metrics-performance.js",
+      "source": "shopdesk-workbench-src/src/metrics-performance.js",
+      "sha256": "9ded904e016d1e4065048d73b92830cc07c5f5680895fd67937f222ec03e236a",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/metrics-service.js",
+      "source": "shopdesk-workbench-src/src/metrics-service.js",
+      "sha256": "418329e34212a962e84a4a5480f535ef0d993404f9131f81b5c82e91727934b2",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/metrics.js",
+      "source": "shopdesk-workbench-src/src/metrics.js",
+      "sha256": "afda8323a41dd4946bf710d52e12a8b8c556d52b1302b89e4db0fde55e1753f2",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/preload.js",
+      "source": "shopdesk-workbench-src/src/preload.js",
+      "sha256": "527139665d397fc8915ca60a87854dd82fe6e5cc48503404695db55102e49dd1",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/python-worker.js",
+      "source": "shopdesk-workbench-src/src/python-worker.js",
+      "sha256": "c52d26c5fe442edf07372f4edd58c91dbc8d1ce31e10cd4c27d35a7fdc2ef42b",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/renderer.js",
+      "source": "shopdesk-workbench-src/src/renderer.js",
+      "sha256": "da71564b6178518a1d5c44b7f57b6652ba69093941b31f5788853a8e96e4eafb",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/stealth-preload.js",
+      "source": "shopdesk-workbench-src/src/stealth-preload.js",
+      "sha256": "d3fdc235841d39898568465c1a7a6f4f54d183ca47860c11c150581793148aa6",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/stealth.js",
+      "source": "shopdesk-workbench-src/src/stealth.js",
+      "sha256": "4e6041336fb7ee7ae97ce6b568004179f0675cf8d9c02e2dec6d415f11871392",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/store.js",
+      "source": "shopdesk-workbench-src/src/store.js",
+      "sha256": "bda02715c8d949fede94b5b5a1e63136f4617b4fa5c3aeedeabca9cfafc553b5",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/style.css",
+      "source": "shopdesk-workbench-src/src/style.css",
+      "sha256": "3c1126d78ad984ab31c2c7ac58bb9fb989363d1341213782a6a039da08741c81",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/src/tabs.js",
+      "source": "shopdesk-workbench-src/src/tabs.js",
+      "sha256": "698cefa849b2ee9bef3062739f349e1d385d9ef47fb9b81de14ac4c0b26fc14c",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/status.sh",
+      "source": "shopdesk-workbench-src/status.sh",
+      "sha256": "21c967f922ebca746f5603e49181395459ca3863a53d51dfda24a87bea1cd2b8",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/test/appeal-queue.test.cjs",
+      "source": "shopdesk-workbench-src/test/appeal-queue.test.cjs",
+      "sha256": "64c6c2aab274a414c173a15d8daa4f81edfce26f426571cd85bb50c7c9bcd8af",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/test/exploration.test.cjs",
+      "source": "shopdesk-workbench-src/test/exploration.test.cjs",
+      "sha256": "8ea8f7f902bdc48946b9848c69a95e19da0a92f98dfed0ecc4a6e681d1763cff",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/test/login.test.cjs",
+      "source": "shopdesk-workbench-src/test/login.test.cjs",
+      "sha256": "22874f5a4416a9420012ba427a9104f7d9eb4aed45dcb3a82724e5c74863b99a",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/daily-appeal.sh",
+      "source": "shopdesk-workbench-src/tools/daily-appeal.sh",
+      "sha256": "6919c142c3e1679d9736bb64b273368e44fbbb4747f683f0070e5707f7218aa6",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/daily-summary.sh",
+      "source": "shopdesk-workbench-src/tools/daily-summary.sh",
+      "sha256": "027369d651da54e80ab1aed6bf89972634750735f49b457a74094a1308d54f96",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/health-check.sh",
+      "source": "shopdesk-workbench-src/tools/health-check.sh",
+      "sha256": "e3686ede5c5b41f537a4f29dbdf2e14288fa925cf55aa7426c93dfb9191cf86d",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/local.shopdesk.appeal-submit.plist",
+      "source": "shopdesk-workbench-src/tools/local.shopdesk.appeal-submit.plist",
+      "sha256": "b0760f546c745be7964cf914531dffc7f7a952a170aaaa903e5c415f46b7705c",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/local.shopdesk.appeal.plist",
+      "source": "shopdesk-workbench-src/tools/local.shopdesk.appeal.plist",
+      "sha256": "4ff1b51cf88915ae10ef72e72481e7d0d901aebd75931cb3c84fa244a91afe61",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/local.shopdesk.autodeploy.plist",
+      "source": "shopdesk-workbench-src/tools/local.shopdesk.autodeploy.plist",
+      "sha256": "26bafa94290d7b90159ce2dea4747cb3683abdb7c842e2d0650cc94759c2996a",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/local.shopdesk.health.plist",
+      "source": "shopdesk-workbench-src/tools/local.shopdesk.health.plist",
+      "sha256": "bf652036378a9f5eacea24fb922861da8767d5b5196233dbba43fa06a2c9b3ad",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/local.shopdesk.summary.plist",
+      "source": "shopdesk-workbench-src/tools/local.shopdesk.summary.plist",
+      "sha256": "2265827ea5fc963bc25420106099986321cb7d7cd878c3a31d42f1386c0d49f7",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/submit-confirmed.sh",
+      "source": "shopdesk-workbench-src/tools/submit-confirmed.sh",
+      "sha256": "48abe67807b9df1bf7294e553b193638f48f5047f16bcbe04143ff3d1ae729d3",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/sync-appeal-cloud.sh",
+      "source": "shopdesk-workbench-src/tools/sync-appeal-cloud.sh",
+      "sha256": "63b91c46f4eafa83451d7aef9f08280b4284ff78575816d5fb61556aedbc5461",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/tools/wait-appeal.py",
+      "source": "shopdesk-workbench-src/tools/wait-appeal.py",
+      "sha256": "8c146a80644386a0aaad87d938f6901602304e78c17b8e30ebff21cfcb7775f1",
+      "modified": false
+    },
+    {
+      "path": "components/shopdesk-workbench-src/流程说明.md",
+      "source": "shopdesk-workbench-src/流程说明.md",
+      "sha256": "6cf9a8445ac0790dd457a28f95468bb80ccd3a965e3052bc9da68add5ea969bf",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/README.md",
+      "source": "doudian-daily/README.md",
+      "sha256": "f5e90524ad16f190abe09f31afda71d999c0cafbf47274e3abfd9048c2103e54",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/badreviews_to_mysql.py",
+      "source": "doudian-daily/badreviews_to_mysql.py",
+      "sha256": "bebe25158faa76f73b68443328a2bf3ceb71e3e2a677ffbebc77d4d633a3fb79",
+      "modified": true
+    },
+    {
+      "path": "components/doudian-daily/check_login.py",
+      "source": "doudian-daily/check_login.py",
+      "sha256": "cc343c03e9503300164417cd7df12101d0640bb880ab0926e545acb54aa15032",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/com.lee.doudian-daily.plist",
+      "source": "doudian-daily/com.lee.doudian-daily.plist",
+      "sha256": "9f0b3d6d6df32aba75ed80e69dd68314d1b98e572d8157300eff9bc72c01959a",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/cookies.py",
+      "source": "doudian-daily/cookies.py",
+      "sha256": "12f1c8e1179bc292fee10066d407c10564d6b70a6af1202931ddb696642df6ab",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/daily_collect.py",
+      "source": "doudian-daily/daily_collect.py",
+      "sha256": "11a0ad524f1d0d0bfd3b8a18a0b7a54c59f56013721ce1cbebfd32d699c7bb81",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/docs/抖店工作台-自建采集模块说明.md",
+      "source": "doudian-daily/docs/抖店工作台-自建采集模块说明.md",
+      "sha256": "d3c2e52daa3c7002377a9ef6d0e4cbb96d9d76e49ca4720fabba0c34b05f87aa",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/docs/抖店接口清单.md",
+      "source": "doudian-daily/docs/抖店接口清单.md",
+      "sha256": "99dd8f6c61710cab2778ecd2bab6d576df52752f1a7949ae939215696d12c6e3",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/doudian.py",
+      "source": "doudian-daily/doudian.py",
+      "sha256": "935badaec109dc92e5f48fe5e0cc6cc9c287fc8e251a014005d2dd75762232d7",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/doudian_client_sync.py",
+      "source": "doudian-daily/doudian_client_sync.py",
+      "sha256": "3cd6d7015f2fff35eb8d1378b2200773a1b248002873c1c3adb64a8b55fa2cde",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/doudian_sync.py",
+      "source": "doudian-daily/doudian_sync.py",
+      "sha256": "6da2cd5bf4f52761a98352c1a2da6127c797a6e0bde6d95ad2cc95c6a28d657b",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/excel/fill_excel.py",
+      "source": "doudian-daily/excel/fill_excel.py",
+      "sha256": "bd709f1ca32a575188906e233031acf8e7bbfa57c6c1151c2bae3208dc7de43c",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/excel/fill_shop_excel.py",
+      "source": "doudian-daily/excel/fill_shop_excel.py",
+      "sha256": "897d03409a4022e2246cca4bcdad725c1ebbd18b45d49bec33744f4e080fb9f2",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/find_purple_orders.py",
+      "source": "doudian-daily/find_purple_orders.py",
+      "sha256": "83fe27c660b9bf94e04d247c8e20c561a798483fd29e56ec69ace0b4133dca0f",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/invoice.py",
+      "source": "doudian-daily/invoice.py",
+      "sha256": "7c84bec1ea59b97ebaa862a1c6e81e54d703eabbcfed961e7d00b8558223af09",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/invoice_sync.py",
+      "source": "doudian-daily/invoice_sync.py",
+      "sha256": "c63565be821ec2463c83c413e289d6a5c0ce2eea89f34deeb3e4cd3f1b51d427",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/jst_brush.py",
+      "source": "doudian-daily/jst_brush.py",
+      "sha256": "c12c2b548c1411b72479e9db03f84675598464b63fde705a1cd1fea2e6a21f97",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/jst_purple_orders.py",
+      "source": "doudian-daily/jst_purple_orders.py",
+      "sha256": "e0d9d5f15fcc74ccc5a622099a54503825f2396319e21a3b14fa4ba77d10db31",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/jst_purple_sync.py",
+      "source": "doudian-daily/jst_purple_sync.py",
+      "sha256": "5eaea778fd51809ebeb5297d71d8e53c036d71ce0a1393812b9d4c5c85111cb7",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/metrics_contract.json",
+      "source": "doudian-daily/metrics_contract.json",
+      "sha256": "ad021cbd4297dca5a457d5cc04c113bb6512f686181e0c02760c11b5e70a25e0",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/workbook-module/collector.json",
+      "source": "doudian-daily/workbook-module/collector.json",
+      "sha256": "03dd91de29b3668e5197b43909f5985b58627aebb0f74f9f71163b64e23032b1",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/workbook-module/doudian.py",
+      "source": "doudian-daily/workbook-module/doudian.py",
+      "sha256": "698344acdb7b52dda08287696aa2ddf742b2e355663c283ba933d6b21b029c43",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/workbook-module/install.sh",
+      "source": "doudian-daily/workbook-module/install.sh",
+      "sha256": "6627ff1a4aa45f96939589dd748cdfc69f0a5e25d608881f3a5be9d862b70df3",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/workbook-module/metrics.py",
+      "source": "doudian-daily/workbook-module/metrics.py",
+      "sha256": "c98c598393976f0df8091c2a8909b7eeb28d068e45407f4e00bca6e5419d6218",
+      "modified": false
+    },
+    {
+      "path": "components/doudian-daily/workbook-module/probe.py",
+      "source": "doudian-daily/workbook-module/probe.py",
+      "sha256": "4995fbd262cb5af0bcd14a9875e361ab6a9b4af7b1b9ef729c2fcd3f0111ab61",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/bin/jst-aftersales.js",
+      "source": "jushuitan-aftersales/bin/jst-aftersales.js",
+      "sha256": "bf5124f4aea97d1c6ebeb5aa0962686811869f70cf0e9091bb81cd1543a02c9b",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/export-refund-daily.mjs",
+      "source": "jushuitan-aftersales/export-refund-daily.mjs",
+      "sha256": "a5939c776ecbc642cd51b19afc95cc6341c8e5886b959e1e41f0ccf6efe76044",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/import-refund-export.py",
+      "source": "jushuitan-aftersales/import-refund-export.py",
+      "sha256": "b28d60e8eb4e4c31196d28ae92381d26f818253b45805d3f7c52967e58ca5ec6",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/src/session.js",
+      "source": "jushuitan-aftersales/src/session.js",
+      "sha256": "a628182e97326f92a242442a9b44a83fa2c6c8059a763182356937d7f9e19fef",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/src/sync.js",
+      "source": "jushuitan-aftersales/src/sync.js",
+      "sha256": "6ef863ac5373be662d2d85cbd4cd21b7039e5e299476c8798e1cb52226798cd2",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/test/session.test.js",
+      "source": "jushuitan-aftersales/test/session.test.js",
+      "sha256": "d1cb4876d42327defa785569e8b9e9c5a778cac515b1d47b55472c81b0e97bff",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-aftersales/test/sync.test.js",
+      "source": "jushuitan-aftersales/test/sync.test.js",
+      "sha256": "03e3d73d6ba7506dd1b19f41ba329ee297b0a3c79a061d074af4de3bde675b05",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/ARCHAEOLOGY.md",
+      "source": "jushuitan-order-page/ARCHAEOLOGY.md",
+      "sha256": "a636fe14df3d25bbe5ee8356d1d5b1791126c38392d9cc6b270ded8dfecb399d",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/README.md",
+      "source": "jushuitan-order-page/README.md",
+      "sha256": "7386df2fd5fbba34e3c6c3257701d0d1fb549a62cf580b296274a3082499b8b6",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/bin/jst-order-page.js",
+      "source": "jushuitan-order-page/bin/jst-order-page.js",
+      "sha256": "21cf979fde9350da036f485759b70bc4d300a165a574bcdca0103cca309cf4a0",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/examples/sent.json",
+      "source": "jushuitan-order-page/examples/sent.json",
+      "sha256": "a53f73ccd74e84cac2796ef49e8668d5a20f19022b5a236f9fc08860a644dae6",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/package.json",
+      "source": "jushuitan-order-page/package.json",
+      "sha256": "6482554b73a3c0d24e1cd5bb6c7b98709b921f45d258b970906e2c1369ad257c",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/scripts/catalog.js",
+      "source": "jushuitan-order-page/scripts/catalog.js",
+      "sha256": "46f49ac07b61e5b44fc0580dece669522b5d6dc578cbf1701418b0e4a97fa927",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/src/bridge.js",
+      "source": "jushuitan-order-page/src/bridge.js",
+      "sha256": "9cde97b67feed8271cefb6f1b26d36e9af71df14dab19b14e7bde7b062c39056",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/src/day-sync.js",
+      "source": "jushuitan-order-page/src/day-sync.js",
+      "sha256": "82c993dc27ab95caf88a5b18aa61e86a37921071b1cf20365bbd1ebda7e95f86",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/src/page.js",
+      "source": "jushuitan-order-page/src/page.js",
+      "sha256": "8bc36c92c532025de15046910adb5d43810bdfc5d3c5e500554e9457c92853b4",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/src/render.js",
+      "source": "jushuitan-order-page/src/render.js",
+      "sha256": "fc94a8d3c759db5974071435002e8c2bfdd6277d67a1b539ac9832099e8e2962",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/src/storage.js",
+      "source": "jushuitan-order-page/src/storage.js",
+      "sha256": "9fdf1f2a61a1d11dd75b413fd26bc5627426295f6876d69ad2e90af4031edc4a",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/src/unshipped-sync.js",
+      "source": "jushuitan-order-page/src/unshipped-sync.js",
+      "sha256": "525c44bc074d7b05e89ce6902ae232c89bc35ee31aba116c4e99351ebf9557a6",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/test/bridge.test.js",
+      "source": "jushuitan-order-page/test/bridge.test.js",
+      "sha256": "2b7fd411aa18992f41f863e44db04a47e2622faad8c316b9f5f98d4abbd5372e",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/test/snapshot.test.js",
+      "source": "jushuitan-order-page/test/snapshot.test.js",
+      "sha256": "4b6c5c152128862c4779da9dc94f6933f16972ea1d4ba040d2a25fae2957961e",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-page/web/index.html",
+      "source": "jushuitan-order-page/web/index.html",
+      "sha256": "171eae919e59093bec46301400df6fba8c20b7b6be32a3b73daa011d56293bba",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/ARCHAEOLOGY.md",
+      "source": "jushuitan-order-details/ARCHAEOLOGY.md",
+      "sha256": "9772da92a7673f8c1292282dd2971686ab1f4679ddcfb91ec8e75de81799925a",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/README.md",
+      "source": "jushuitan-order-details/README.md",
+      "sha256": "644a27021d5c3ea17435a84c72f6cdc24094fadb7d7ec736f3e35ff0f00502fd",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/bin/jst-orders.js",
+      "source": "jushuitan-order-details/bin/jst-orders.js",
+      "sha256": "16fd3e3077c20dfaa9d8e9c51fd3dba4b0c8d2a677b92a80c6bfd51cf6ae8e5e",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/package.json",
+      "source": "jushuitan-order-details/package.json",
+      "sha256": "7bd5f8bcc0c3fbd2842130ac194b4360bb019df0d1d93f2a45e04b6644d501ea",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/src/api.js",
+      "source": "jushuitan-order-details/src/api.js",
+      "sha256": "41c297be0111711029ff24900d46c2472bc7f0d928f3b9f099c3df58a2cde133",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/src/errors.js",
+      "source": "jushuitan-order-details/src/errors.js",
+      "sha256": "81cace44ea51d5bcf04f5fe8f0d049b379640a4eca6f07daf1c183683d88ef36",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/src/item-sqlite-export.js",
+      "source": "jushuitan-order-details/src/item-sqlite-export.js",
+      "sha256": "0b7870f8ecbb4b46f5892978a8e448f46a2341d034ae1af59536b674b595b490",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/src/session.js",
+      "source": "jushuitan-order-details/src/session.js",
+      "sha256": "2b628ec57f2d75c246502a60b68f1c78f12bae41eeefa531ddf9c1060d168835",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/src/sqlite-export.js",
+      "source": "jushuitan-order-details/src/sqlite-export.js",
+      "sha256": "e450199ee9d442e1fcbd53f1c6588e0cb88beb4e339603b7febdd8a0be0ed63b",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/test/api.test.js",
+      "source": "jushuitan-order-details/test/api.test.js",
+      "sha256": "fa8146522016deff0252acddb6b84702361120dadda4b2d582dbbe1b558f1ba3",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/test/item-sqlite-export.test.js",
+      "source": "jushuitan-order-details/test/item-sqlite-export.test.js",
+      "sha256": "e95c70b8e71bfc2beae24cb2a28d8b65ce3597a43b887d4fdd1320524728527d",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-order-details/test/sqlite-export.test.js",
+      "source": "jushuitan-order-details/test/sqlite-export.test.js",
+      "sha256": "4893b3b600f0d954eb72e134ff30bbcbc0ef31cdb69716eee4441c4622a6338f",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/ARCHAEOLOGY.md",
+      "source": "jushuitan-inventory-warning/ARCHAEOLOGY.md",
+      "sha256": "8b16178b8c7aa2dab8c822c7bdac36f3d9da0a9bc91f51352a9efb82192b7a34",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/FIELD-COVERAGE.md",
+      "source": "jushuitan-inventory-warning/FIELD-COVERAGE.md",
+      "sha256": "60b58913c320eafbb13e31bf3a9865543d632e6902ed2e109c57e26e01d86fc2",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/PAGE-API-MAP.md",
+      "source": "jushuitan-inventory-warning/PAGE-API-MAP.md",
+      "sha256": "f66eb3376527a8d3cc5606bbb53de6a71145dd132aa3e16e25e5b297be476ce8",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/PORTABLE-README.md",
+      "source": "jushuitan-inventory-warning/PORTABLE-README.md",
+      "sha256": "19702c55901a1ca33f46f92e32e17776a09b9d1e4975b9a7d8ac95bfe6bc24d7",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/README.md",
+      "source": "jushuitan-inventory-warning/README.md",
+      "sha256": "06aa791c2e9b0727c5256e13d1b662df23acb6abcce714727125bb7179371e27",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/bin/jst-inventory.js",
+      "source": "jushuitan-inventory-warning/bin/jst-inventory.js",
+      "sha256": "2f41e55d8ac16a5c4559baef1877f413eaf29fc2c2b1fb1ed32254949fe67d93",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/install.sh",
+      "source": "jushuitan-inventory-warning/install.sh",
+      "sha256": "ea52f4471e444768cd6172248de24f3a92933b2b31f1d05f44b57d511afdcc15",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/package.json",
+      "source": "jushuitan-inventory-warning/package.json",
+      "sha256": "d199e6d7d5f00f3ad81f255143a5cec0d04ac9345bc2c4fddeaf771b1538bc5d",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/scripts/sync-shop-groups-into-sqlite.mjs",
+      "source": "jushuitan-inventory-warning/scripts/sync-shop-groups-into-sqlite.mjs",
+      "sha256": "2d71413f15da844b665bdd51b4a307049ea61a140790c621b44395905ac4fa65",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/api.js",
+      "source": "jushuitan-inventory-warning/src/api.js",
+      "sha256": "56fd22c077d4cc497c8051afd1b23d807694d788ff313a71d199244e887ec024",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/chrome-session.js",
+      "source": "jushuitan-inventory-warning/src/chrome-session.js",
+      "sha256": "29ccdf90492c2e0e034a63e091ad8191e70604223c24f7bd5c2c3b61467df9fa",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/daily-metrics.js",
+      "source": "jushuitan-inventory-warning/src/daily-metrics.js",
+      "sha256": "9d7d9f9491d8067608432f1ef2e58edffb74a7255065839dc3b96bde7b715f8c",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/errors.js",
+      "source": "jushuitan-inventory-warning/src/errors.js",
+      "sha256": "ac85f563730802414bed7a8e35b9ab9c2ba9ca3a0ab907372b04d977289c1c33",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/profit-analysis-export.js",
+      "source": "jushuitan-inventory-warning/src/profit-analysis-export.js",
+      "sha256": "d185d3671d3f437baade760ecc867359c1d2928a8ad4d1fc27809d9d686c2b78",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/sale-channel-sqlite.js",
+      "source": "jushuitan-inventory-warning/src/sale-channel-sqlite.js",
+      "sha256": "693ce488455a339681cd1e5bef54f487e0a82e5cd7e457261cc620626d57f22f",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/sales-analysis-sqlite.js",
+      "source": "jushuitan-inventory-warning/src/sales-analysis-sqlite.js",
+      "sha256": "72853f7945b461a053b49dda911251b761ff63d1c61b00e7fca6d94d9b438989",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/sales-analysis.js",
+      "source": "jushuitan-inventory-warning/src/sales-analysis.js",
+      "sha256": "08765652ceda6b40dde2bcc29988c1290baf6906dea289812983084bd20fe546",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/secret-input.js",
+      "source": "jushuitan-inventory-warning/src/secret-input.js",
+      "sha256": "7d4a100211554d8853514aef5239738d73838c2cb27811c17aea24ff5fcdfbf5",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/shop-products-export.js",
+      "source": "jushuitan-inventory-warning/src/shop-products-export.js",
+      "sha256": "c4882b06f84ac052f8f60f0933e50f671cd767ee2975462bcf1ac61104177d74",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/shop-shortage-sqlite.js",
+      "source": "jushuitan-inventory-warning/src/shop-shortage-sqlite.js",
+      "sha256": "eea00eba4a07fdd745856356393c85476e0dd907b5f3c5669525054448718c21",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/shop-shortage.js",
+      "source": "jushuitan-inventory-warning/src/shop-shortage.js",
+      "sha256": "419ea64f37e655ca41eb529f0ffb4175e5a943dd1d7fd2bb7eece06202a82ec2",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/shop-sku-batch.js",
+      "source": "jushuitan-inventory-warning/src/shop-sku-batch.js",
+      "sha256": "896e82f9a1d384df0ad997ae4aa200257107a7e4bd4c904667e4a41cfc2c0341",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/src/sqlite-export.js",
+      "source": "jushuitan-inventory-warning/src/sqlite-export.js",
+      "sha256": "3b642417c13ac72fa5f05d4259f8a6bdebdeeeb926364120844cb1c3fdb93c59",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/api.test.js",
+      "source": "jushuitan-inventory-warning/test/api.test.js",
+      "sha256": "ab520c683d59a085a48058107cc193b5fa56e0029a855b3734fee75cdcfc8451",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/batch-schema-reuse.test.js",
+      "source": "jushuitan-inventory-warning/test/batch-schema-reuse.test.js",
+      "sha256": "df5060fedea03cff9de4c204f4896e325fb45562c3ceee5c7acab5c652232031",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/chrome-session.test.js",
+      "source": "jushuitan-inventory-warning/test/chrome-session.test.js",
+      "sha256": "214c1e2e88420ba1e2584c010c9e094c97d81c78d1010034c0e44f45ecafcdd6",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/daily-metrics.test.js",
+      "source": "jushuitan-inventory-warning/test/daily-metrics.test.js",
+      "sha256": "39a3497567983366d7af85f9facbd13d5323475e5d5f051b71f6d4f62b2f664e",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/inventory-api-recovery.test.js",
+      "source": "jushuitan-inventory-warning/test/inventory-api-recovery.test.js",
+      "sha256": "98a1bb30f61b1b9e06efcba86542e27e9a643b9f70a9788a7ec3959e5b0b5470",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/profit-analysis-export.test.js",
+      "source": "jushuitan-inventory-warning/test/profit-analysis-export.test.js",
+      "sha256": "a6abe9fff542003d31278df33ae68bd7e8ea083cad11af03491d53de03d72111",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/sale-channel-sqlite.test.js",
+      "source": "jushuitan-inventory-warning/test/sale-channel-sqlite.test.js",
+      "sha256": "c8a4b56130eab8cc4ba79b9047441d31fa9b63ac03ed5ddfbea3d2bbbcedf3c8",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/sales-analysis-sqlite.test.js",
+      "source": "jushuitan-inventory-warning/test/sales-analysis-sqlite.test.js",
+      "sha256": "a12f1b19353661b7cd8ec478651dae7edf320d52f9b1ab9c0316cdb8627a8caa",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/sales-analysis.test.js",
+      "source": "jushuitan-inventory-warning/test/sales-analysis.test.js",
+      "sha256": "d05c54d111c7a117e9e21cd5bfe5de3e6c6ddf64ce1bbd3b34fa34bfeddc3473",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/shop-products-export.test.js",
+      "source": "jushuitan-inventory-warning/test/shop-products-export.test.js",
+      "sha256": "1f88e0e0feb4fded8419685aa10e9b16041cae1fa9d57a157e1d4437de2fc6d0",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/shop-products-night.test.js",
+      "source": "jushuitan-inventory-warning/test/shop-products-night.test.js",
+      "sha256": "b75111fe2e62b7741127e74351255688650c367abf3f794be1492efc1c262f45",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/shop-products-resume.test.js",
+      "source": "jushuitan-inventory-warning/test/shop-products-resume.test.js",
+      "sha256": "9ade7adbed3729fa12e23c3442d0014adba6aa88fbc860336ad6ce1980bef085",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/shop-shortage-sqlite.test.js",
+      "source": "jushuitan-inventory-warning/test/shop-shortage-sqlite.test.js",
+      "sha256": "69ff58829c98f48a17e3343ee780972470e89baadf079355aa731f882c0a29f9",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/shop-shortage.test.js",
+      "source": "jushuitan-inventory-warning/test/shop-shortage.test.js",
+      "sha256": "b1ebae23b80a120856bb3a029ab107b3365c0641a215b9fd95f4387f007ada08",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/shop-sku-batch.test.js",
+      "source": "jushuitan-inventory-warning/test/shop-sku-batch.test.js",
+      "sha256": "14d33b7e47fdfc0a40135ebf0176518544c6ba3256c2bceba933c6a6ba783d08",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/spu-api-recovery.test.js",
+      "source": "jushuitan-inventory-warning/test/spu-api-recovery.test.js",
+      "sha256": "ff5bc5d14182bc7c0f8e00bf726d50a58261e46534c9ec9a59fb9593791e7382",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/spu-live-export.test.js",
+      "source": "jushuitan-inventory-warning/test/spu-live-export.test.js",
+      "sha256": "9b4cb0a5b42a39a8f21791039358220a76a87e2c9f7041250ea6f5ae0a40011e",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-inventory-warning/test/sqlite-export.test.js",
+      "source": "jushuitan-inventory-warning/test/sqlite-export.test.js",
+      "sha256": "51e7adb9a1d63f39a0706aece3bf57ff1d8350334b6f055c1e3f7e12ae6eb1c7",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/ARCHAEOLOGY.md",
+      "source": "jushuitan-sales-performance/ARCHAEOLOGY.md",
+      "sha256": "252f2b76a4307f336e240196cf787cbe7ad784f05d196741d903aa7f92416eab",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/README.md",
+      "source": "jushuitan-sales-performance/README.md",
+      "sha256": "989f0f2bd4b4e88950bbf39d55b1576221ab37c68d7ede78a271c4c77c456abe",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/bin/jst-sales.js",
+      "source": "jushuitan-sales-performance/bin/jst-sales.js",
+      "sha256": "e26c482463a049e100a2f903bd5b01a19198ea1ca1ed57d00feba4bc23b90b30",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/doc/a.md",
+      "source": "jushuitan-sales-performance/doc/a.md",
+      "sha256": "99b6b9d0eefc02810738dc051a431c97a8d8f634ca0c3a15556cc6a6d38cd05b",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/doc/invoice-management-v2-technical-plan.md",
+      "source": "jushuitan-sales-performance/doc/invoice-management-v2-technical-plan.md",
+      "sha256": "99b6b9d0eefc02810738dc051a431c97a8d8f634ca0c3a15556cc6a6d38cd05b",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/package.json",
+      "source": "jushuitan-sales-performance/package.json",
+      "sha256": "e76d9ed7a9d16122495907ee942639ad65715fac7f70971cf1681967f383ff18",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/src/api.js",
+      "source": "jushuitan-sales-performance/src/api.js",
+      "sha256": "aad124d5174fe23c968dae9a9bbe391baa13d5331fc3c39f36238b139648c6a4",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/src/errors.js",
+      "source": "jushuitan-sales-performance/src/errors.js",
+      "sha256": "81cace44ea51d5bcf04f5fe8f0d049b379640a4eca6f07daf1c183683d88ef36",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/src/report.js",
+      "source": "jushuitan-sales-performance/src/report.js",
+      "sha256": "ca59fb1ff4b9a3d3fb2ac65cec9bad4bcfbd798284f31fed3e6583fb5fb861b7",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/src/session.js",
+      "source": "jushuitan-sales-performance/src/session.js",
+      "sha256": "0a78fce659fec762d55e682d256b33d3739f725410f845ef5e38c368e355d06b",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/src/sqlite.js",
+      "source": "jushuitan-sales-performance/src/sqlite.js",
+      "sha256": "6bbc6ea6f6a07d0ed23a80c2cc0b44ab63659c3ae0875e2f4d0d90217ad8efc4",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/test/api.test.js",
+      "source": "jushuitan-sales-performance/test/api.test.js",
+      "sha256": "424470a6bcf68dc6c4e1bea3544cf94bd858a235e915e3427381b2d53d8ea2cb",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/test/report.test.js",
+      "source": "jushuitan-sales-performance/test/report.test.js",
+      "sha256": "efea3e67ce226ffc523dd85e96b4e991089289d4698ba31b85d8a21d39f1700a",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-sales-performance/test/sqlite.test.js",
+      "source": "jushuitan-sales-performance/test/sqlite.test.js",
+      "sha256": "6861bb6bab516a28aa521565b4eff85cd05fd0d1b5156eeada8c7ec0066f2657",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-profit-facts/README.md",
+      "source": "jushuitan-profit-facts/README.md",
+      "sha256": "f78187257ecb7d94789513c5614a10415d9de6740b62480419819a474d6908b2",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-profit-facts/VALIDATION.md",
+      "source": "jushuitan-profit-facts/VALIDATION.md",
+      "sha256": "737e2b4235fd73c6c46a68a9a4a52bd0ce081d6456f08701f3420d112362304b",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-profit-facts/bin/jst-profit-facts",
+      "source": "jushuitan-profit-facts/bin/jst-profit-facts",
+      "sha256": "87c3900fcf335d86ece3c1769cb3f1fb0f6870556221ec2f97fbf116e62466d6",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-profit-facts/build_facts.py",
+      "source": "jushuitan-profit-facts/build_facts.py",
+      "sha256": "134caa9929aa7c5a9b79221069df48087ee3a33ce2a7f66dff871cd10ef1b1da",
+      "modified": false
+    },
+    {
+      "path": "components/jushuitan-profit-facts/verify_facts.py",
+      "source": "jushuitan-profit-facts/verify_facts.py",
+      "sha256": "616507b211f0cedf6d58b8b067f4a54ee6a7e288c16d4652f3c1d29a5b0d68c9",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/README.md",
+      "source": "projects/xdr-sync-agent/README.md",
+      "sha256": "7345758c476caf8a19c817d8aced3d4b1e218c9a21bc319dc50efa9b21d501ba",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/bin/heartbeat-loop.js",
+      "source": "projects/xdr-sync-agent/bin/heartbeat-loop.js",
+      "sha256": "885ad7fdafb7605efe1ce81d0f4258c7565109ea70751e0c683816457780bf23",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/bin/xdr-failure-alert.js",
+      "source": "projects/xdr-sync-agent/bin/xdr-failure-alert.js",
+      "sha256": "c84bc9e086aaae03ee83fe9b10bfdfba591d50ed1187ce623b5da2d40420f24f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/bin/xdr-failure-repair.js",
+      "source": "projects/xdr-sync-agent/bin/xdr-failure-repair.js",
+      "sha256": "a06890665ec94471c1ea7a3311469bcf707a9d4a235278ccf303f6ced35f4c25",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/bin/xdr-failure-watch.js",
+      "source": "projects/xdr-sync-agent/bin/xdr-failure-watch.js",
+      "sha256": "bb0b507850d71cd975d1f873e525cfb5be73926b9b38b959f608cd756f3d8a22",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/bin/xdr-sync-agent.js",
+      "source": "projects/xdr-sync-agent/bin/xdr-sync-agent.js",
+      "sha256": "a547ee25c3c0923af8a4920b2c8960b65df156a9f2e7ab3ace6df59fea82fac5",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/config/failure-repair.json",
+      "source": "projects/xdr-sync-agent/config/failure-repair.json",
+      "sha256": "47672576a9a93bb9b4bc98a5acdd61eb67f1c8ef720c044e0f24d17121f8384f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/macos/com.xdr.failure-repair.plist",
+      "source": "projects/xdr-sync-agent/macos/com.xdr.failure-repair.plist",
+      "sha256": "7211aa1841b4f0fc846688397cfa0944acecf79d766abc4d79b27f696e01adcd",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/macos/com.xdr.failure-watch.plist",
+      "source": "projects/xdr-sync-agent/macos/com.xdr.failure-watch.plist",
+      "sha256": "dfacdc0b0d4f26ff51e7ce354c667ae322476b2cccd82fd0fc36c770cb889713",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/macos/com.xdr.sync-agent.plist",
+      "source": "projects/xdr-sync-agent/macos/com.xdr.sync-agent.plist",
+      "sha256": "e425ca593829ffd0d39dc680f3264c69d36b1f0c7466bf03c9901d0e4753684c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/macos/com.xdr.sync-shop-products.plist",
+      "source": "projects/xdr-sync-agent/macos/com.xdr.sync-shop-products.plist",
+      "sha256": "82017ccde9f76ab625d647659e754bba7b489dacdb37b5efac7811b86575eb39",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/package.json",
+      "source": "projects/xdr-sync-agent/package.json",
+      "sha256": "23c4ab233fc57fe576ae47419b6ee1f2dc008c75b2ef451a88bebbad9019efab",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/requirements-excel.txt",
+      "source": "projects/xdr-sync-agent/requirements-excel.txt",
+      "sha256": "8c3969cd6eedf1e54474cd3ff885b09e8c86eb809a1a49590c7ac8dac6760897",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/requirements-warehouse.txt",
+      "source": "projects/xdr-sync-agent/requirements-warehouse.txt",
+      "sha256": "de53eb885e0b5ef686757fe5beaa508ad504c82b879793d8e5a7a1b9fe77553b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/aftersales-pending-dates.py",
+      "source": "projects/xdr-sync-agent/scripts/aftersales-pending-dates.py",
+      "sha256": "0f7055cafc48de2cdf0475752e7d7a07c1091fa9a3997581122cc68b10d1ba2f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/append-today-order-page.py",
+      "source": "projects/xdr-sync-agent/scripts/append-today-order-page.py",
+      "sha256": "294fa04c19ec1946e0ae8d833f0f47bcc4c8e96d00da86fc73c928c2b753a867",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/build-paid-sales-snapshots.py",
+      "source": "projects/xdr-sync-agent/scripts/build-paid-sales-snapshots.py",
+      "sha256": "4c58f5e60336eb8407e75c9ab01afebf597c87790880ade9f4beee49556672b6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/build-shop-products-delta.py",
+      "source": "projects/xdr-sync-agent/scripts/build-shop-products-delta.py",
+      "sha256": "92a26b605bd4c1255783e65b7e337dab3ae3a62fa9809fb24766fb964397b9f0",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/cleanup-stale-work.sh",
+      "source": "projects/xdr-sync-agent/scripts/cleanup-stale-work.sh",
+      "sha256": "9d543d1e42f579eebe5ebd0d3a4782e47e1255c8bdbc5f109dff8b07375ba677",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/compact-paid-orders-ods.py",
+      "source": "projects/xdr-sync-agent/scripts/compact-paid-orders-ods.py",
+      "sha256": "c86e0ffbab863f805a21f54ff79dc4bc8c611154a5dfb125d040f01190e27d20",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/import-paid-order-exports.py",
+      "source": "projects/xdr-sync-agent/scripts/import-paid-order-exports.py",
+      "sha256": "0202a461146eff296f0073cae35beccc0a6bf951ffcfa75ed62bc9d251926bb4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/import-profit-analysis-export.py",
+      "source": "projects/xdr-sync-agent/scripts/import-profit-analysis-export.py",
+      "sha256": "b855dcc1d2f410576ad1b2eabaf6121bcfce78bb79f2facba2b9192fab26f19e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/import-shop-product-exports-duckdb.py",
+      "source": "projects/xdr-sync-agent/scripts/import-shop-product-exports-duckdb.py",
+      "sha256": "e4a0d15686dde9a1dc6c125836392ad4da1d95053559237b92237639b0c4bdf9",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/import-shop-product-exports.py",
+      "source": "projects/xdr-sync-agent/scripts/import-shop-product-exports.py",
+      "sha256": "ee5dc0a122f56e4fa650f8f3bcd24f3fc46a5d8a40e9cd311aed9f88d11c2d4e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/install-failure-repair.sh",
+      "source": "projects/xdr-sync-agent/scripts/install-failure-repair.sh",
+      "sha256": "e68d07eba6e415a14fad43d650751a999f591fe501b3e89ae808047418f8c147",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/install-failure-watch.sh",
+      "source": "projects/xdr-sync-agent/scripts/install-failure-watch.sh",
+      "sha256": "99bc512ff16f227ef3660b720afaad674540bac0466248c4adaf3a4e2d460d7a",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/install-mac.sh",
+      "source": "projects/xdr-sync-agent/scripts/install-mac.sh",
+      "sha256": "d219b609cb55d21ff764ac0d20ae5730530abb2209e836b8352f598176a33cb6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/login-jst-saved.mjs",
+      "source": "projects/xdr-sync-agent/scripts/login-jst-saved.mjs",
+      "sha256": "1e16e7ac4c4b5d5b8fff445e3e47079dd5c19ee12d982297b1b4abf41c0cc1fc",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/materialize-paid-sales-analysis.py",
+      "source": "projects/xdr-sync-agent/scripts/materialize-paid-sales-analysis.py",
+      "sha256": "8ba3748ff1ca323c0d87ebc911a387c2817e48c555d648b8fee80b99750f2a53",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/merge-paid-sales-into-inventory.py",
+      "source": "projects/xdr-sync-agent/scripts/merge-paid-sales-into-inventory.py",
+      "sha256": "6530ebcae00103a6094dabc25b0750a2058fc2672bf84af995bb899a078094f5",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/paid-orders-gap.py",
+      "source": "projects/xdr-sync-agent/scripts/paid-orders-gap.py",
+      "sha256": "43eb545543bc931c4798ce35bff54887ea8f6f0f24907e70933e6dfd144ae03b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/plan-shop-product-exports.py",
+      "source": "projects/xdr-sync-agent/scripts/plan-shop-product-exports.py",
+      "sha256": "60c126f4cb870b7b250db2db96f15ac1021286f9ea63e7698b8a825be8b609b3",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/refresh-jst-auth.mjs",
+      "source": "projects/xdr-sync-agent/scripts/refresh-jst-auth.mjs",
+      "sha256": "f5dfbc05da61693588699e8774ce7496861c759ea54c61569c18598fac7a7a3e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/refresh-jst-auth.sh",
+      "source": "projects/xdr-sync-agent/scripts/refresh-jst-auth.sh",
+      "sha256": "8eb6ee9b6bd68c8be70325687e86e33ed42d906aa29d7b300dff6c45d4c3ce15",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/smoke-failure-repair.mjs",
+      "source": "projects/xdr-sync-agent/scripts/smoke-failure-repair.mjs",
+      "sha256": "fe5ad88af39e9a2805f0fb6c50a615100fbbf39b883273f88c839e8aa64c6168",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/sync-jst-aftersales.sh",
+      "source": "projects/xdr-sync-agent/scripts/sync-jst-aftersales.sh",
+      "sha256": "6e2e3450cb2389c8c08c2d2a978ccc9cc3b790f234ac3d01319c7caf610da604",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/sync-jst-purple-orders.sh",
+      "source": "projects/xdr-sync-agent/scripts/sync-jst-purple-orders.sh",
+      "sha256": "742ad81ed742ee2832d04932a2628de9b02e0b956d2cdca55d40916c447512c3",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/tests/login-jst-saved.test.mjs",
+      "source": "projects/xdr-sync-agent/scripts/tests/login-jst-saved.test.mjs",
+      "sha256": "f31c42b94793d9228f84e84479ddb08bf8203a34cbc228d4a643e6b1d16324dd",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/tests/refresh-jst-auth.test.mjs",
+      "source": "projects/xdr-sync-agent/scripts/tests/refresh-jst-auth.test.mjs",
+      "sha256": "a8f578bd69b25c79033bc39768e40f88bdf07373419fb954d998a9b6e0e6810c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/tests/test_aftersales_pending_dates.py",
+      "source": "projects/xdr-sync-agent/scripts/tests/test_aftersales_pending_dates.py",
+      "sha256": "df614c989bb5f4630d0c4bace24af3c4b359150df95b20aec6fc9f0bb2ccf7cc",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/scripts/uninstall-mac.sh",
+      "source": "projects/xdr-sync-agent/scripts/uninstall-mac.sh",
+      "sha256": "b79312c83f5a1eb625bd6d369049cc80b173cfd4e68eb08d1f146bde477ea12f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/app.py.deploy",
+      "source": "projects/xdr-sync-agent/server/app.py.deploy",
+      "sha256": "7d16dfcce7a969fe322b0cd3764621f887964b9950edae88d077f374546e308d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/bi.README.md",
+      "source": "projects/xdr-sync-agent/server/bi.README.md",
+      "sha256": "73d9ac94649de5b8b33137c20e6a08f6262783551ed42bcf264adf843a0f6d59",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/install.sh",
+      "source": "projects/xdr-sync-agent/server/install.sh",
+      "sha256": "59a581858e5d8c5e219b701e13d888d1abd415e33857a0526ff4326030405b9c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/paid_orders_duckdb.py",
+      "source": "projects/xdr-sync-agent/server/paid_orders_duckdb.py",
+      "sha256": "ce32992833a3f6a4dfe5f9b010f2468490773af737d59426677a4359d1dbba73",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/paid_orders_warehouse.py",
+      "source": "projects/xdr-sync-agent/server/paid_orders_warehouse.py",
+      "sha256": "2b6c1d760fa31e995d1d3bd38a64288fb10cbfe99e5e44dc13ad4fa891df8d62",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_api.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_api.py",
+      "sha256": "52beda8c47b0472a63503c996a2acc6cf84ebed868d129a02897d722e985aaa4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_append_today_order_page.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_append_today_order_page.py",
+      "sha256": "eb30a3f24389560403a1c56053f64b0503406aeb2762a1b106298951d79ada6c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_paid_order_importer.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_paid_order_importer.py",
+      "sha256": "89da0469d8d0375d631aeb862991266cf23e4a4d54502ca610f35a6405cc8742",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_paid_orders_duckdb.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_paid_orders_duckdb.py",
+      "sha256": "0371cc3ad05199277738bf93c7a7a986931aa67f90ae0877f19cacec6e697125",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_paid_orders_warehouse.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_paid_orders_warehouse.py",
+      "sha256": "0ca2a1369e32a8594655d7a06585e9abef625e24c8a4cb3c18532a656499bb4c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_server.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_server.py",
+      "sha256": "0df157039b30e84fbfa1edcd785556a6fc042811071866f6dc4be4d108a99982",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_shop_products_delta.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_shop_products_delta.py",
+      "sha256": "327430ebf006f2e1bb6173336b6fe7e059c5575de7facd95bbeaf4397f052e2d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/tests/test_shop_products_night.py",
+      "source": "projects/xdr-sync-agent/server/tests/test_shop_products_night.py",
+      "sha256": "5aab6488198b61be63fa32b5c195115b70aab14f1967eac481b4021c3ec04f7a",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/uninstall.sh",
+      "source": "projects/xdr-sync-agent/server/uninstall.sh",
+      "sha256": "16b7b41900a82d6cfcdc2a94b7a282c45deb30d41b6e3bdd51132504fb7363c4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/xdr-api-paid-orders-duckdb.conf",
+      "source": "projects/xdr-sync-agent/server/xdr-api-paid-orders-duckdb.conf",
+      "sha256": "29e16f27943b5aef4135d6016e44db20e0810cbb2658e896b11996df3ebb0b58",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/xdr-sync-ssh",
+      "source": "projects/xdr-sync-agent/server/xdr-sync-ssh",
+      "sha256": "1f5441fc898a9907d6f417c8e21aad537154ed0bbc4752d1b663c14911f0aa81",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/xdr-syncctl",
+      "source": "projects/xdr-sync-agent/server/xdr-syncctl",
+      "sha256": "179759fa1ecb38ab2df1590b24233c747f20cf08574cbd1225b2b96f6b7b7159",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/server/xdr_sync_server.py",
+      "source": "projects/xdr-sync-agent/server/xdr_sync_server.py",
+      "sha256": "2d972ffec9b4ecfa5aed2d798d6cb398bc8e6b7c782f30d9e1192f083264e5b9",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/shared/datasets.json",
+      "source": "projects/xdr-sync-agent/shared/datasets.json",
+      "sha256": "1f4b3878c4f429fe30aa7e1a27efb1cbcb7b237e1752d74fdcf86a32ba183fae",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/shared/jst-tools.js",
+      "source": "projects/xdr-sync-agent/shared/jst-tools.js",
+      "sha256": "14eb3525cb8a7b7415ccd3b8a8c534989b3a8dec8391f9eef1b73d31f143a78c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/agent.js",
+      "source": "projects/xdr-sync-agent/src/agent.js",
+      "sha256": "f8389c28c41a783c98b7604a49197ea1aa0f0e06c8d9921cb85f77e7cee21d1f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/config.js",
+      "source": "projects/xdr-sync-agent/src/config.js",
+      "sha256": "fed49bd391c00ae9f8952f95594742b8ef76f1f5ce47ba2c225697cebfc4923d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/date.js",
+      "source": "projects/xdr-sync-agent/src/date.js",
+      "sha256": "bba8726a48c1812ee4579796276e590e947789172bf4bae89b6fb5596d14b3fd",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/failure-alerts.js",
+      "source": "projects/xdr-sync-agent/src/failure-alerts.js",
+      "sha256": "9606cec71daa4a5e709d56c53064212abb4fd1cf83d34cabe5707224572962c9",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/failure-incidents.js",
+      "source": "projects/xdr-sync-agent/src/failure-incidents.js",
+      "sha256": "bf695def97c07afe571dbafa22035aafbde061c53fe34e90334c766662b268c6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/failure-repair.js",
+      "source": "projects/xdr-sync-agent/src/failure-repair.js",
+      "sha256": "be80114411c1d924228c373df489b90f8d97ca4834d26577fbae74ac5569cbf4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/failure-watch.js",
+      "source": "projects/xdr-sync-agent/src/failure-watch.js",
+      "sha256": "0b3682822c93ae45d627653ff42cf1cf1af61954a3ee6474234caa83ee815b7e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/lock.js",
+      "source": "projects/xdr-sync-agent/src/lock.js",
+      "sha256": "cf7d675657788e9b2d3e1f2ab1133c02fdc2e59d5a02225785d3e017a6d38efc",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/patch.js",
+      "source": "projects/xdr-sync-agent/src/patch.js",
+      "sha256": "ef08d119c50131e940692d93741313fd31f24a82a426dc068142904cc387382e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/process.js",
+      "source": "projects/xdr-sync-agent/src/process.js",
+      "sha256": "cbdb1f846671c7158452e511bd9fa3b18c0880062853ef0c8d5ff12942c68ba0",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/publish-channels.js",
+      "source": "projects/xdr-sync-agent/src/publish-channels.js",
+      "sha256": "fcb6bafc99f39580c532ee6fd1027d23f2f27b614062a9d88a30cf5ec12fad00",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/repair-workspace.js",
+      "source": "projects/xdr-sync-agent/src/repair-workspace.js",
+      "sha256": "2deb9fa37650c44bfe499c5e78ba540ffaf1ea1d41fdec0005edcd851b5b7621",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/transport.js",
+      "source": "projects/xdr-sync-agent/src/transport.js",
+      "sha256": "e9fe3dbb7cc65aa4aa81d24adab34c7b832cf2de7773edc213af0bf4005a51b4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/src/validation.js",
+      "source": "projects/xdr-sync-agent/src/validation.js",
+      "sha256": "1872dce0ac3d22b1c94a55214d512a0d63b489139f8d327c433d571a4f6a0cce",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/agent.test.js",
+      "source": "projects/xdr-sync-agent/test/agent.test.js",
+      "sha256": "be86b69942f71256b477e398d8978a43de22dc340a3742d4e6f157ef83c48f71",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/date.test.js",
+      "source": "projects/xdr-sync-agent/test/date.test.js",
+      "sha256": "4585fc887def7f5e94e0404385d82226edbcee55e55ed6225cd851501c51c26f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/failure-alerts.test.js",
+      "source": "projects/xdr-sync-agent/test/failure-alerts.test.js",
+      "sha256": "f0f7de499f80bd5f61f52e99e7ecf57cff6a2ae6b2205c997cee7e196bd9d820",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/failure-repair-diagnostics.test.js",
+      "source": "projects/xdr-sync-agent/test/failure-repair-diagnostics.test.js",
+      "sha256": "690d560fbf961dc085b89c4ac652881112545937e8b6271382855dad6050c62d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/failure-repair.test.js",
+      "source": "projects/xdr-sync-agent/test/failure-repair.test.js",
+      "sha256": "2748149e8840a78bb912f1f0fb7bfbea448595038db4bba92603e3e2ca83f1f1",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/lock.test.js",
+      "source": "projects/xdr-sync-agent/test/lock.test.js",
+      "sha256": "f4c430aedd79092f407c7681125ef191c2a3438f3ffbb53299685b06680ddb3e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/patch.test.js",
+      "source": "projects/xdr-sync-agent/test/patch.test.js",
+      "sha256": "9cce2f6a7688a3a7a689eb757015362a873d5048f69e1305acc7fb939fda1a78",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/process.test.js",
+      "source": "projects/xdr-sync-agent/test/process.test.js",
+      "sha256": "88edb9fffc631e3cd809d689079c5f22f1a26a3d98db20b9fec228535c4cad31",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/publish-channels.test.js",
+      "source": "projects/xdr-sync-agent/test/publish-channels.test.js",
+      "sha256": "b330103278c19fc6be51b2f0553ad4b3a11d5c89bba8004d813fe43840de1972",
+      "modified": false
+    },
+    {
+      "path": "components/projects/xdr-sync-agent/test/shop-products-resume.test.js",
+      "source": "projects/xdr-sync-agent/test/shop-products-resume.test.js",
+      "sha256": "611595561c62bdc99e491162fa29b1a0e4724b76c0702848106bb81279b013e4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/README.md",
+      "source": "projects/shopdesk-aftersale/README.md",
+      "sha256": "bbef9944184de05820565d419f2c6ba52219ec60134f28a888bb2359a83cad63",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/bin/push.py",
+      "source": "projects/shopdesk-aftersale/bin/push.py",
+      "sha256": "c87a8214ba659748c87633b3f912e5f8b94f3c2e12734a5fad300fcfcf4ca2fe",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/bin/query.py",
+      "source": "projects/shopdesk-aftersale/bin/query.py",
+      "sha256": "ed85b88851e2035119226c1650ef7ffacf7aeca950d6a22d5fcddfb6928895b0",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/bin/scrape_counts.py",
+      "source": "projects/shopdesk-aftersale/bin/scrape_counts.py",
+      "sha256": "d432efb34ebcca472aba757300b82047de3832d8a1d6da15d90f784ffd672075",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/config/config.env.example",
+      "source": "projects/shopdesk-aftersale/config/config.env.example",
+      "sha256": "ce73bda3050de088f8837f08caafb9ac98576e49c640f8a35501fe547191b891",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/exploration-pool/manifest.json",
+      "source": "projects/shopdesk-aftersale/deploy/exploration-pool/manifest.json",
+      "sha256": "de2504ca747b58a43e4015ef8e0284f6b2e3cde83566f997ecfc8ff0b8686132",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/go-live.sh",
+      "source": "projects/shopdesk-aftersale/deploy/go-live.sh",
+      "sha256": "67681470e511a4a5e1ebf50c34c4ad63fb6e08af01f73da2073b0364e16d4181",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/install-exploration-pool.py",
+      "source": "projects/shopdesk-aftersale/deploy/install-exploration-pool.py",
+      "sha256": "54f4c6f44ee40c48b8d7c94afde4395d932b6a9a88fb35de73a7ab887176672e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/install.sh",
+      "source": "projects/shopdesk-aftersale/deploy/install.sh",
+      "sha256": "423ab29d5dc8f1fb4809e208fa48e395d2432a5151daf50b5b6fce536583d4ad",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/launchd/local.shopdesk.aftersale-counts.plist.tmpl",
+      "source": "projects/shopdesk-aftersale/deploy/launchd/local.shopdesk.aftersale-counts.plist.tmpl",
+      "sha256": "8651bd00f8ea16dc930a23dadbe4bae0a46339adc6f2a6fbd4f00a7f7a6b4644",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/launchd/local.shopdesk.aftersale-push.plist.tmpl",
+      "source": "projects/shopdesk-aftersale/deploy/launchd/local.shopdesk.aftersale-push.plist.tmpl",
+      "sha256": "06265bc08da0c42b2ddd104db0774bd4bb3a6d708c1202bb84155863742577e8",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/uninstall.sh",
+      "source": "projects/shopdesk-aftersale/deploy/uninstall.sh",
+      "sha256": "ced0c31203d3801be04c58bea3cbd8057be503ff0262c1564a90ba05b1d65d05",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/deploy/verify-exploration-pool.py",
+      "source": "projects/shopdesk-aftersale/deploy/verify-exploration-pool.py",
+      "sha256": "5fe6fd534ea6a77b8e143a22609cd75b4efedacea82c152498a33113f59065e6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/docs/cloud-api-design.md",
+      "source": "projects/shopdesk-aftersale/docs/cloud-api-design.md",
+      "sha256": "b68bee0d478b5bf4e27465d4adf13029a37d73432b55582cc7b53509df2a94f2",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/docs/openapi.yaml",
+      "source": "projects/shopdesk-aftersale/docs/openapi.yaml",
+      "sha256": "9c3256301c07db43e8b5031cf6b39a3bb531c05241beb0050c9b94c9fa635559",
+      "modified": false
+    },
+    {
+      "path": "components/projects/shopdesk-aftersale/tests/test_page_pool.py",
+      "source": "projects/shopdesk-aftersale/tests/test_page_pool.py",
+      "sha256": "c4f4a59fc76c20dd0cf5c2b5c9beadd90918b018127449d0f4bd2cbbdae023cb",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/README.md",
+      "source": "projects/feige-customer-daily/README.md",
+      "sha256": "a592257cf94b135887333177cd10a12a5a37bbb9f33fd54a2f21381ef48c0d9c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/catalog/fields.json",
+      "source": "projects/feige-customer-daily/catalog/fields.json",
+      "sha256": "e16df1520e8fd05818c866c810d48a25c6c22e5bccd96101bb966e98075cc871",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/catalog/warehouse-schema.json",
+      "source": "projects/feige-customer-daily/catalog/warehouse-schema.json",
+      "sha256": "7435c6ceef7bda567feb078bdefa61c3e27e97e8abcc0d8b1cce708d8a114bf6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/cloud/apply-snapshot.py",
+      "source": "projects/feige-customer-daily/cloud/apply-snapshot.py",
+      "sha256": "4beb26ba1430233f567c4e5d067e62618704a01c01458f49626251e2befa1caa",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/collect.mjs",
+      "source": "projects/feige-customer-daily/collect.mjs",
+      "sha256": "c772ce50fc07f156f7534668ac0a6b482b8dba63a8c2b810aa5547183dcbd51f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/install.sh",
+      "source": "projects/feige-customer-daily/install.sh",
+      "sha256": "224af315b382ba4967c368c65c7da8f71700dadeddd76810449bcd7975857fb5",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/launchd/com.xdr.feige-customer-daily.plist",
+      "source": "projects/feige-customer-daily/launchd/com.xdr.feige-customer-daily.plist",
+      "sha256": "568d205da016114a4c863cacaa006b34129705f552b15f4c0546cda66992700d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/lib/common.mjs",
+      "source": "projects/feige-customer-daily/lib/common.mjs",
+      "sha256": "d4b99dd74178a45b17562acb702ce30f0a6923d8c3c79f4aa3b4581d0a9b9fc8",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/lib/source.mjs",
+      "source": "projects/feige-customer-daily/lib/source.mjs",
+      "sha256": "faf87ce0013de6edff70bba031eb17c036fbdb4e1dea3782555cf9942ee0e470",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/lib/store.mjs",
+      "source": "projects/feige-customer-daily/lib/store.mjs",
+      "sha256": "4fe2ace9abf55c3db6853a90b007267e6e6b72a9fb8653a8d6b8830b53166ba6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/lib/warehouse.mjs",
+      "source": "projects/feige-customer-daily/lib/warehouse.mjs",
+      "sha256": "fa57e7bd60640d3df84523d9aa1b9276cd4ba737e189a73a20fac87d86daa726",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/package.json",
+      "source": "projects/feige-customer-daily/package.json",
+      "sha256": "46d4e1be86bc517acb93f0697f577ba610392c0b66354bd58c78808f39fa06ac",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/test/capture.test.mjs",
+      "source": "projects/feige-customer-daily/test/capture.test.mjs",
+      "sha256": "01d637a0916d7f659676f558211b366e7bd81006331b957748d3390c99f2bf0c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/test/warehouse.test.mjs",
+      "source": "projects/feige-customer-daily/test/warehouse.test.mjs",
+      "sha256": "ffb28e31b743a2e4fbf2950dc516721252dd89e60dd61550de78d011506c09f6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/feige-customer-daily/upload.mjs",
+      "source": "projects/feige-customer-daily/upload.mjs",
+      "sha256": "51ff67d30adc8320fd072ab6b9a74ce895ffe84042d2a2d87ec0e7b2a2228c28",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/README.md",
+      "source": "projects/douyin-commission-rates/README.md",
+      "sha256": "afb801de99b08a4ad9741777d11e428fd60b927cfa9ba14b6fa80d3d93af6795",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/config/daily.example.json",
+      "source": "projects/douyin-commission-rates/config/daily.example.json",
+      "sha256": "31f71bb456c69480ef9832b44e7686345f9a5b877c68451d16fdb90228619728",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/config/shops.example.json",
+      "source": "projects/douyin-commission-rates/config/shops.example.json",
+      "sha256": "ed723112bf09099064b2c130cb5c27400492a267fc046204ea400612a8cf1d39",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/deploy/com.xdr.douyin-commission-rates.plist",
+      "source": "projects/douyin-commission-rates/deploy/com.xdr.douyin-commission-rates.plist",
+      "sha256": "67a066ed7f340363364d35c74389f56db68c4b741af56fe716211e7c7853110c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/docs/bi_queries.sql",
+      "source": "projects/douyin-commission-rates/docs/bi_queries.sql",
+      "sha256": "c0aab8f4f00c1f6ea25ec60e8717cd8020f8f49a790636f4645d290106437fac",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/docs/implementation-status.md",
+      "source": "projects/douyin-commission-rates/docs/implementation-status.md",
+      "sha256": "9e6d1bbff15fc718a6e3bab40e9534ca8a4e75dcb0b125f9be22143b9d2d9a9a",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/pyproject.toml",
+      "source": "projects/douyin-commission-rates/pyproject.toml",
+      "sha256": "806f3be2d590fedafeb582f265eb25a5c452f6ab9fdc1105b299baefb983bbd4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/__init__.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/__init__.py",
+      "sha256": "326b3546fcff931f9b7661de76b917e3d3cec4160492cdd74feeaf904ed64525",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/bridge.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/bridge.py",
+      "sha256": "92e942d9313c33ada315074b1ca71957b5cf7815fdb76a329deb40d8d02fe907",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/cli.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/cli.py",
+      "sha256": "c36a30f372d5de914f11df367bdf7b42da7949f9dad14769def715925f49edcc",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/cloud_apply.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/cloud_apply.py",
+      "sha256": "2d320ebceeca9ac5c29a9bb9749084194ddb1947f2e97942ca0b793d3fd0d658",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/daily.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/daily.py",
+      "sha256": "bbf2381c2b06ff35f6140fe55de78a7593f33d4b6181327384c94b7c8a59f543",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/model.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/model.py",
+      "sha256": "e1c989b4427f0590292e7c8d5e6a3e0cc6f8eb9dfec09dc536caf50adc13c26f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/publish.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/publish.py",
+      "sha256": "2acbd0cd4cbcde81470ceff44d1f046d2b5af535b9fc846e547b600c12e0e6c6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/runner.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/runner.py",
+      "sha256": "2f811fb90e9c1f23cbf3219ee780d27e22f0ba8213b9a937602d4994ac7aaec5",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/source.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/source.py",
+      "sha256": "865424ad8835e56160ad122fece7bffd29e607470d24da3b87a92076a1b74f84",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/src/commission_rates/store.py",
+      "source": "projects/douyin-commission-rates/src/commission_rates/store.py",
+      "sha256": "83a8102252f23bb419e941a9ebe74eaf1a7af4230c666bc4eb89663cb442714b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/tests/test_capture.py",
+      "source": "projects/douyin-commission-rates/tests/test_capture.py",
+      "sha256": "0def2fbb46c5a87b701a9380acdc8ecc8f9b234aae79522614d38de4e0c31533",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/tools/audit_shop_aliases.py",
+      "source": "projects/douyin-commission-rates/tools/audit_shop_aliases.py",
+      "sha256": "3e0cb89d382e00751f60354a318de267df2d7426ed00e59109668b5793671c9e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/tools/install_daily.py",
+      "source": "projects/douyin-commission-rates/tools/install_daily.py",
+      "sha256": "330120f187e7b9c3b4853029773f6357016da50cdb1ae452850f05799ed84ec4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/tools/publish_active_batch.py",
+      "source": "projects/douyin-commission-rates/tools/publish_active_batch.py",
+      "sha256": "6b17c69f30f204db5df9cbe323a59126144ee39d26d1bb3f6d81b9f0bf08af14",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/tools/retry_verified_renames.py",
+      "source": "projects/douyin-commission-rates/tools/retry_verified_renames.py",
+      "sha256": "9d508d6865f8263e22454b02d77697c87ccd877b47e7219a6628924112c0ea54",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-commission-rates/uv.lock",
+      "source": "projects/douyin-commission-rates/uv.lock",
+      "sha256": "bd921569eaac74711acde6603d8d403c2d6594d8f6870f495df623b0785d9599",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/README.md",
+      "source": "projects/douyin-settle-recon/README.md",
+      "sha256": "a64f3271e30d81d3b6b830086049ba2255e7876b8a31b3bc4c6e5382f7dc37d1",
+      "modified": true
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/config/input.example.json",
+      "source": "projects/douyin-settle-recon/config/input.example.json",
+      "sha256": "4997cae12b2f954cab7165a6939e302722c3aeca2e96732acdf92aa3c36d4a49",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/config/upload.example.json",
+      "source": "projects/douyin-settle-recon/config/upload.example.json",
+      "sha256": "bf5cb6437f377fc99dfe728826a44b30426c39172e8f3c2cfd1d2b7e25f9aaca",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/2026-10-25_Mac端千川空数据与公式缓存修改说明.md",
+      "source": "projects/douyin-settle-recon/doc/2026-10-25_Mac端千川空数据与公式缓存修改说明.md",
+      "sha256": "59ded218665796000d87dda278a4a0abc477c6c0f16930f0c7f16cd1820a078b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/mac-douyin-recon-upload.md",
+      "source": "projects/douyin-settle-recon/doc/mac-douyin-recon-upload.md",
+      "sha256": "dca12edef38443e30ead21d26ab555fbe33f1f4e8138b24fe7f7efc230e336fe",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/mac-douyin-recon-upload.openapi.json",
+      "source": "projects/douyin-settle-recon/doc/mac-douyin-recon-upload.openapi.json",
+      "sha256": "4270076fee1ac61a3c424238596fabe6d54710b5b49e25ed3035d7fd7beb9084",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/云端报表上传元数据.example.json",
+      "source": "projects/douyin-settle-recon/doc/云端报表上传元数据.example.json",
+      "sha256": "96474865b3c597a5ab09c23f6fca5dcf411598e6017f46b195d8c2b5eded924e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/云端报表接收接口.openapi.json",
+      "source": "projects/douyin-settle-recon/doc/云端报表接收接口.openapi.json",
+      "sha256": "063f98a8b3cc12764c4f3ee3bde57b4d5082495d34bdca757d55b637bc2d765f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/云端报表接收接口技术方案.md",
+      "source": "projects/douyin-settle-recon/doc/云端报表接收接口技术方案.md",
+      "sha256": "5ddd225a6adc1198c8c3637c2ded5e3c996cb5ed5e0d4954da7feb8a4d40b7d2",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/实现方案.md",
+      "source": "projects/douyin-settle-recon/doc/实现方案.md",
+      "sha256": "b58548348c3398f359c9ff3ff1706fc639bb4cf731e2e31a69cb5172559ca410",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/实现方案_v2_云端gzip交付.md",
+      "source": "projects/douyin-settle-recon/doc/实现方案_v2_云端gzip交付.md",
+      "sha256": "b58548348c3398f359c9ff3ff1706fc639bb4cf731e2e31a69cb5172559ca410",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/实现方案_v3_店铺归属与云端全量交付.md",
+      "source": "projects/douyin-settle-recon/doc/实现方案_v3_店铺归属与云端全量交付.md",
+      "sha256": "f4867474b846d5bb23bfd6a69100b59f7f3b29a8e1d89793af3bc2843651c502",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/doc/本地开发与真实联调记录.md",
+      "source": "projects/douyin-settle-recon/doc/本地开发与真实联调记录.md",
+      "sha256": "7ec8460610a36d9f5af8c250fdbabcdd3de3ca8fbfe33715646cf43fb8897fb4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/pyproject.toml",
+      "source": "projects/douyin-settle-recon/pyproject.toml",
+      "sha256": "81ebb5b1caf0a39d71e0294510d4a753277bb97cdc9b2d849dabf04b569cf851",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/shopdesk/exploration.patched.js",
+      "source": "projects/douyin-settle-recon/shopdesk/exploration.patched.js",
+      "sha256": "052c8a6a6fbaee597cf13a6ecf1acccb470979e9c6a412e517ab388d3c7debeb",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/shopdesk/finance-extension.cjs",
+      "source": "projects/douyin-settle-recon/shopdesk/finance-extension.cjs",
+      "sha256": "23010b0889eb893a01c757881e838e9fc3d6417b78ac31a9e24475c6a4bf6d1f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/__init__.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/__init__.py",
+      "sha256": "fcd78428b0ba31c09a58a34daaa9fde098608bb2066b51753f0219808e328b3b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/cli.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/cli.py",
+      "sha256": "8eff92f205db42424027818326adcab307ab07bb131a748b309fea2b22ea0cb8",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/cloud_sync.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/cloud_sync.py",
+      "sha256": "c5568dd1f0438796275313c3739c069c1bbce821bb39195e62ba4d8491840878",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/collect.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/collect.py",
+      "sha256": "a5c8eb8a99defd714fbfb9f6eadf4554aaa5cceda57473c92162b7c546017e09",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/collect_qianchuan.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/collect_qianchuan.py",
+      "sha256": "7ac930d44f6281f49639258db14543542d6978925429810eee1c8622369f5b72",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/collection_status.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/collection_status.py",
+      "sha256": "114cfdc539f5af1e925dde359cdf3834388a61076f607e6857f47cfef812aa07",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/export.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/export.py",
+      "sha256": "5f2ebeec3308ed6ca0ae1467cac2ac3eae983c93bca06eac8b4f7942eee96113",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/identity.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/identity.py",
+      "sha256": "30499105308b617c5f655293c3da553c9ca8fc2811b039d0bc52b492fea6467c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/model.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/model.py",
+      "sha256": "15976996b698a4db4288e8df85075870368b5282193d44a8098463a477c2e45b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/monthly.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/monthly.py",
+      "sha256": "ada83decd1f0b5c528213128a696e845932af6c6a126618e1c7bcb97b50e2b28",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/parse.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/parse.py",
+      "sha256": "80091821c2898071f4ac96f40c656be21b092ee0a3ea99e30b48ddd92b76c795",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/pipeline.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/pipeline.py",
+      "sha256": "8535790763618f2b57f98fef8caaa74311fe77c57903ee3a660c7f7da3f4df57",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/qianchuan.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/qianchuan.py",
+      "sha256": "9dcdafc36ab3734f4d3e65a5eb01ddc2a7c68bfce1cbc4d94b6fd61d7b2ad478",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/report_validation.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/report_validation.py",
+      "sha256": "dd003f0fd8c20a73da2bd8b34fa6de9e9dee7b556c1ea11946bc85257336a80c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/retention.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/retention.py",
+      "sha256": "7151a81a1a31abc3d2a2d01ccf34c5cdc4ba6efabed232f7bf61179379d48e02",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/review.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/review.py",
+      "sha256": "094dabdeabcfd0c064c0510eb38358b9c496688b8fff1cab13425b50864cc7d7",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/rules.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/rules.py",
+      "sha256": "72b65feeda5c3a6e746b27067b52d6d2dabc0a7082ab08256d8cad8309111d67",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/scheduler.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/scheduler.py",
+      "sha256": "a4313bdce2d23c7101c5f98bc51dce2e749ce090ce3df0a2312817d8ede2ab7c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/schema.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/schema.py",
+      "sha256": "864cb301c3340f31b2b3849d8ae4d85fef796aae634d5964b49f1987042ec608",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/shopdesk.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/shopdesk.py",
+      "sha256": "f6a7281515d950fb109ab09696d3c9973f4512a64fc73a8797242edeeae2aa5b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/upload.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/upload.py",
+      "sha256": "f5bb97f10ccb8dd79ddcb5ec88172a4e3e9365070155958a4367120dc45f3b8c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/web/app.js",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/web/app.js",
+      "sha256": "6c6d00bc6d378244802b42b6d67186474f5a7fb4ded36e387419d3468548c35f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/web/index.html",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/web/index.html",
+      "sha256": "98447d861eb90ed7cd23618143a526a141804ebb91d1cac98030b5e0675621a4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/web/style.css",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/web/style.css",
+      "sha256": "03b5eaedd13fb9a1a43f3196b9935fdd12e72abfe2f615af5d079c77451914c0",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/src/douyin_settle_recon/workbook_layout.py",
+      "source": "projects/douyin-settle-recon/src/douyin_settle_recon/workbook_layout.py",
+      "sha256": "231c3b1c4c12c59c070f84b41a9cd3052c1949cd56b429129bf60d8e657921d5",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/recon_samples.py",
+      "source": "projects/douyin-settle-recon/tests/recon_samples.py",
+      "sha256": "912a9b07bb53b0620ee74ce43b94629dfd7a6cfc9f36ad3da88756818c1dc1a9",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_access_audit_report.py",
+      "source": "projects/douyin-settle-recon/tests/test_access_audit_report.py",
+      "sha256": "99d8a05bff0639e6cb424c49a0757464b15ef318407babf9e951f719eaaf1a92",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_cloud_sync.py",
+      "source": "projects/douyin-settle-recon/tests/test_cloud_sync.py",
+      "sha256": "828699a29d220f62d1df4445cfa9f135e2f5e31fd4dc55af1cfb0df6dcbbcd3f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_collect_empty_periods.py",
+      "source": "projects/douyin-settle-recon/tests/test_collect_empty_periods.py",
+      "sha256": "7ffcb037a171f31552de012eb170964a9e91d26b265ffe749d2b380cb4cb119e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_collect_qianchuan.py",
+      "source": "projects/douyin-settle-recon/tests/test_collect_qianchuan.py",
+      "sha256": "ae4dad47586c28f3960cb900f3e7bfd29c614febf833128cbb3900bbf26ee0a8",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_collect_tax_month.py",
+      "source": "projects/douyin-settle-recon/tests/test_collect_tax_month.py",
+      "sha256": "cd852de04f721d6a8701974d4460f0fe9e3bc22d9d5daa7a5b5b60a6ea3a665e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_collect_wallet.py",
+      "source": "projects/douyin-settle-recon/tests/test_collect_wallet.py",
+      "sha256": "047c9abb10d80303d1513db6197a4d3f893e0cece78a3323135d63423a4bb6cf",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_collection_blockers_audit.py",
+      "source": "projects/douyin-settle-recon/tests/test_collection_blockers_audit.py",
+      "sha256": "50c35e386f3d53cfd4a7f31d4cf8d7b0dbc7e7598d3c2edb14f16ad5e33c4e86",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_local_pipeline.py",
+      "source": "projects/douyin-settle-recon/tests/test_local_pipeline.py",
+      "sha256": "714ffe97c53c87380977df978c9fe852c577bd0a98c9020972994951189286b3",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_monthly.py",
+      "source": "projects/douyin-settle-recon/tests/test_monthly.py",
+      "sha256": "20c439eccbb6ee5060956f437ef64cb35072aeb7b9595f229e81a98ecefadac4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_platform_identity.py",
+      "source": "projects/douyin-settle-recon/tests/test_platform_identity.py",
+      "sha256": "623e3bf1d6c9e558d1ba5c6c91a412792fdba7e64c6abc7190ba02b842c3c62b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_qianchuan.py",
+      "source": "projects/douyin-settle-recon/tests/test_qianchuan.py",
+      "sha256": "53843493edd38532c7fb9481785f65f279bedc3d4bc4f812410575a1a084cd2e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_report_validation.py",
+      "source": "projects/douyin-settle-recon/tests/test_report_validation.py",
+      "sha256": "0941cb28928754a185ed72baa2f8341ff0bc6cc28a019701b30b83f86af4cd58",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_retention.py",
+      "source": "projects/douyin-settle-recon/tests/test_retention.py",
+      "sha256": "9e3a512029b1a0418a3e705649433b1ae91249a2ca602949a0c8cf47079129c6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_review.py",
+      "source": "projects/douyin-settle-recon/tests/test_review.py",
+      "sha256": "78fbe65bdb0a000601d0dbbfb437532b1ff64686ae270bc5c6270b2f404f75c2",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_shopdesk_extension.cjs",
+      "source": "projects/douyin-settle-recon/tests/test_shopdesk_extension.cjs",
+      "sha256": "99324263aac12fe22e8503ad98fa4507489ff4c11dacc8da446dfc8d96b9d78b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_shopdesk_pool.py",
+      "source": "projects/douyin-settle-recon/tests/test_shopdesk_pool.py",
+      "sha256": "b504b8665397e0f7d35fc044fa14401c57bfd7e324ae234bd5ab054a4b825588",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_upload.py",
+      "source": "projects/douyin-settle-recon/tests/test_upload.py",
+      "sha256": "ccd2c67668e626ab19ac15e633a3bfde7ab3e9d3b920950a769814629b0d5830",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tests/test_workbook_layout.py",
+      "source": "projects/douyin-settle-recon/tests/test_workbook_layout.py",
+      "sha256": "d26dc882e9dfcffda8212622e94e5445b99d680e1e0afc3b17051edffa3abc02",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/audit_collection_blockers.py",
+      "source": "projects/douyin-settle-recon/tools/audit_collection_blockers.py",
+      "sha256": "46296944670ceb8a7c972dd01f440064cc1ecd290944b3f7d3c9dc8ab486eed1",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/audit_finance_access.py",
+      "source": "projects/douyin-settle-recon/tools/audit_finance_access.py",
+      "sha256": "0dec4676ade6577d963022fc0919f8dfab7b10bbac2e113d377759311f796001",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/install_shopdesk_extension.py",
+      "source": "projects/douyin-settle-recon/tools/install_shopdesk_extension.py",
+      "sha256": "141d1666844b0bf8b004f78b4ddac5aa17bd83d2b7267eb9f5a40fa2a9d4ff6f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/probe_finance.py",
+      "source": "projects/douyin-settle-recon/tools/probe_finance.py",
+      "sha256": "2a10f2e3f451a4ee8d4cee70bcd01a3921fd88eb621f94135608d6ac2e4ef34e",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/recheck_finance_access.py",
+      "source": "projects/douyin-settle-recon/tools/recheck_finance_access.py",
+      "sha256": "1aacc7f1db77fa1293034bfa242b86b56969c9c7d7a12e21f13cdb61a0195aa6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/render_access_audit.py",
+      "source": "projects/douyin-settle-recon/tools/render_access_audit.py",
+      "sha256": "a350f9c214d7de65a8827f4e93b3ef251320e71cf3d6e47207bdfac7a0cbcceb",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/tools/render_collection_blockers.py",
+      "source": "projects/douyin-settle-recon/tools/render_collection_blockers.py",
+      "sha256": "7f0884634f33d2abe917a2599eed863dbdc3a20d09a327a819867cab506cdaaf",
+      "modified": false
+    },
+    {
+      "path": "components/projects/douyin-settle-recon/uv.lock",
+      "source": "projects/douyin-settle-recon/uv.lock",
+      "sha256": "5b609cab28f2d593e4ddbfeee43d04e4c03aea44dedba682be2889fa0b1b4204",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/README.md",
+      "source": "projects/invoice-mac-agent/README.md",
+      "sha256": "aa6b2408c4212fedaba407a5ca8d7627fc079988f248c52ea42845dde5365a8a",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/agent.mjs",
+      "source": "projects/invoice-mac-agent/agent.mjs",
+      "sha256": "f6a4f0e76db4ed738a6ab599ef54cdbab8b2da0b87677624d2b735dacfe3b50f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-cleanup-cli.mjs",
+      "source": "projects/invoice-mac-agent/capture-cleanup-cli.mjs",
+      "sha256": "04524b4671c60946606b900dbdd4d12d404584cfc8519a4011a84bfacf45990f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-cleanup.mjs",
+      "source": "projects/invoice-mac-agent/capture-cleanup.mjs",
+      "sha256": "a11904d4320e473ee374fa101bcaa3d4ec0832a47315ec3a103528e1992680e4",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-cli.mjs",
+      "source": "projects/invoice-mac-agent/capture-cli.mjs",
+      "sha256": "ad485dbabaef5612d63882ea91d2b273246ff4e5dce85e2adf1e1d756cfe574d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-lock.mjs",
+      "source": "projects/invoice-mac-agent/capture-lock.mjs",
+      "sha256": "4537bbac8787226e68326b43bab7912ff6965ba1f482523203c8e1b0f6ee3958",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-pack.mjs",
+      "source": "projects/invoice-mac-agent/capture-pack.mjs",
+      "sha256": "caf3fefc2828b77c778c2b195cdbf6f9f559b031a7e2379af1c061ac23e3fc97",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-runner.mjs",
+      "source": "projects/invoice-mac-agent/capture-runner.mjs",
+      "sha256": "4d180ed60cbb23a6fddec80a3e0b8346bce00d52254c148552f6d565d77bb34a",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-source.mjs",
+      "source": "projects/invoice-mac-agent/capture-source.mjs",
+      "sha256": "992d64c488a93cba40652785e1ae0c67e9838b1041df4eb9438245dcd98c90a2",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/capture-upload.mjs",
+      "source": "projects/invoice-mac-agent/capture-upload.mjs",
+      "sha256": "f237ae1d09106f656a1e31c3a9a2407a60f34056fa5ab272fc4f6ec0b87cf207",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/cloud-client.mjs",
+      "source": "projects/invoice-mac-agent/cloud-client.mjs",
+      "sha256": "94b2fea42adda88d84d3e4ff81371cf9c6affac2f63ed04b8ea4059a04b28ba3",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/config.example.json",
+      "source": "projects/invoice-mac-agent/config.example.json",
+      "sha256": "844a383e6e83c42b670837fb64533d5e918e4b82669888c4049e9af93a889d8f",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/config.mjs",
+      "source": "projects/invoice-mac-agent/config.mjs",
+      "sha256": "921269ea4d36557a4eadb9691bbdb269cb55ee35d7e1c4a1c600f5dcb1f09d15",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/2026-10-16_V2-Mac开发验证记录.md",
+      "source": "projects/invoice-mac-agent/doc/2026-10-16_V2-Mac开发验证记录.md",
+      "sha256": "dc2640a491ebe7ce55b73840c002623db3f4762b08b8868c2d5c0a79b5f6e347",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/2026-10-16_发票同步V2改造方案-Mac侧.md",
+      "source": "projects/invoice-mac-agent/doc/2026-10-16_发票同步V2改造方案-Mac侧.md",
+      "sha256": "040fa6647eaa57474e3b4e84ee8eed4ef49106757c91e6dd4fe7b66f7dcb6f45",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/2026-10-16_发票管理 V2 技术改造方案.md",
+      "source": "projects/invoice-mac-agent/doc/2026-10-16_发票管理 V2 技术改造方案.md",
+      "sha256": "dc42c84489faf71e0eb16366686209d24abf4762df9408232d10b0bdac425e1c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/2026-10-19_主体同步接口补充.md",
+      "source": "projects/invoice-mac-agent/doc/2026-10-19_主体同步接口补充.md",
+      "sha256": "e7e1abad979c6ebab8f5c9a184dbd6c8c42a3da19c6dea49cce81ebec406b3b3",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/invoice-return-doudian-api.md",
+      "source": "projects/invoice-mac-agent/doc/invoice-return-doudian-api.md",
+      "sha256": "554f5e5849a843b26a412b87517f16c3e7928d4d78bbdc16c84099e4dc278247",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/invoice-return-feature-checklist.md",
+      "source": "projects/invoice-mac-agent/doc/invoice-return-feature-checklist.md",
+      "sha256": "c29428b794783e436c9609168ba21a4885b8be072877b368142848aa71f991f2",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/invoice-return-mac-agent-dev-plan.md",
+      "source": "projects/invoice-mac-agent/doc/invoice-return-mac-agent-dev-plan.md",
+      "sha256": "c204a9e4651113c96f50a578791ac93c6056abda619f8e83a055fed68edd7160",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/invoice-return-mac-code-layout.md",
+      "source": "projects/invoice-mac-agent/doc/invoice-return-mac-code-layout.md",
+      "sha256": "ac67603766bc46cd7a2d7a0edf0cf1d3a12055e1e928cb24e4e74be647829aaa",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/invoice-return-shopdesk-reuse.md",
+      "source": "projects/invoice-mac-agent/doc/invoice-return-shopdesk-reuse.md",
+      "sha256": "da4a902d4eb009431c17453a5396f35ad9a32e0bcc07c076b5b3b5b6da7b8546",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/doc/invoice-worker-api.md",
+      "source": "projects/invoice-mac-agent/doc/invoice-worker-api.md",
+      "sha256": "7cce1f213a1e6fa7cf0ead31185ffb942ff6480ed21f4198bb3437bebace74b2",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/job-runner.mjs",
+      "source": "projects/invoice-mac-agent/job-runner.mjs",
+      "sha256": "6afdf7eaaaa8d75906d67043cff1248c971e4ba06a6f51fffb656a6d3bbff699",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/latest-shops.mjs",
+      "source": "projects/invoice-mac-agent/latest-shops.mjs",
+      "sha256": "96c1980982244e76ff0cdf8d626ea07956e70d421f060bff0c9ddbb711da7bbe",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/launchd/local.invoice-capture-cleanup.plist",
+      "source": "projects/invoice-mac-agent/launchd/local.invoice-capture-cleanup.plist",
+      "sha256": "fb94fbd0d7a511264cd171a628bbbb2c51ce9e784d188e88c9d9744bdf692c41",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/launchd/local.invoice-capture-sync.plist",
+      "source": "projects/invoice-mac-agent/launchd/local.invoice-capture-sync.plist",
+      "sha256": "274559c09d77f6c382fb8f059760adea82589c466eacbbfeb022cff3d926788d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/launchd/local.invoice-mac-agent.plist",
+      "source": "projects/invoice-mac-agent/launchd/local.invoice-mac-agent.plist",
+      "sha256": "38bedc8560f21bcbbf65553ea0ff5e41beea97ea8788b8b8d8486b8880cb2d20",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/log.mjs",
+      "source": "projects/invoice-mac-agent/log.mjs",
+      "sha256": "bb8976ce6d91d56a351132d256fe77ce9d23e75d24f0cf54e5e79dca9cd6f67d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/package.json",
+      "source": "projects/invoice-mac-agent/package.json",
+      "sha256": "0092eb42625276514c8d40eab0999e187135cfb3bc84c88c7cdccb4d562df5b8",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/pdf-stage.mjs",
+      "source": "projects/invoice-mac-agent/pdf-stage.mjs",
+      "sha256": "f429a9a8be17b1a6559e48927f88b8cfff99d04a1176511194d8b2c2fe58c078",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/redact.mjs",
+      "source": "projects/invoice-mac-agent/redact.mjs",
+      "sha256": "6f989c3e6bea8874f14c2a574403cd1597eb684b44ebaeef2ddc9a82e963081c",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/shopdesk-invoice-driver.mjs",
+      "source": "projects/invoice-mac-agent/shopdesk-invoice-driver.mjs",
+      "sha256": "488522296e9583316c43e1bfed9469c6555f0c5ef75163badffffd703967deac",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/state.mjs",
+      "source": "projects/invoice-mac-agent/state.mjs",
+      "sha256": "a4954456d6ce123a7d2eb31249c637bb5e07808fcd1ed69b02ec16c476d12a1d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/capture-cleanup.test.mjs",
+      "source": "projects/invoice-mac-agent/test/capture-cleanup.test.mjs",
+      "sha256": "bb99c407bf00002a32c0da9dcc3f11ac6ccce67d065d78addfdb6634f80a605b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/capture-pack.test.mjs",
+      "source": "projects/invoice-mac-agent/test/capture-pack.test.mjs",
+      "sha256": "5cb8a77dc818f0871189c2dc306bc35b2efc01527bafa5681116ca9fea27902b",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/capture-runner.test.mjs",
+      "source": "projects/invoice-mac-agent/test/capture-runner.test.mjs",
+      "sha256": "4f8a0b28db5bc7b377e61804ef28b26869b790e5eb81c11c4be11ab725182aab",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/capture-source.test.mjs",
+      "source": "projects/invoice-mac-agent/test/capture-source.test.mjs",
+      "sha256": "a4c35b148b74540a54385a3be2e57619c670d3dea98baa70252341414c006b71",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/capture-subjects.test.mjs",
+      "source": "projects/invoice-mac-agent/test/capture-subjects.test.mjs",
+      "sha256": "ad4847bc105ae5dd19f72e6dafa643bf7fb14f3db8bfc6e64214bf70d4ba4c79",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/capture-upload.test.mjs",
+      "source": "projects/invoice-mac-agent/test/capture-upload.test.mjs",
+      "sha256": "90e13d2ade7b62d0733e8c141c37d9dc6cd607aeb39ea8d6e4abab61fac952fa",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/cloud-client.test.mjs",
+      "source": "projects/invoice-mac-agent/test/cloud-client.test.mjs",
+      "sha256": "3888b2f508078d3ea8a5150daf41574ea9825a3e4e395af374f62d2e9b254871",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/job-runner.test.mjs",
+      "source": "projects/invoice-mac-agent/test/job-runner.test.mjs",
+      "sha256": "11a10bb8ed8f8ee11429b8f990a1418fc7c80425b035fc3277f0877ccba24118",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/job-safety.test.mjs",
+      "source": "projects/invoice-mac-agent/test/job-safety.test.mjs",
+      "sha256": "d133f22898419e5544c2160f4bd05c401e86b42fdb30aaaa57b3a9d8a9e25ca6",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/latest-shops.test.mjs",
+      "source": "projects/invoice-mac-agent/test/latest-shops.test.mjs",
+      "sha256": "c92f446abcb9315c4e8f98fccf9478cc5ff4d56ada51e20730a73a823dc717ab",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/pdf-stage.test.mjs",
+      "source": "projects/invoice-mac-agent/test/pdf-stage.test.mjs",
+      "sha256": "53f9c21abf1ba2ef87f20d1362f6f83ef866bc855a6e1c59d8bd6dc254c6e382",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/redact.test.mjs",
+      "source": "projects/invoice-mac-agent/test/redact.test.mjs",
+      "sha256": "d837447fe34e503d6c47d66618fc2b77b37f284b278a93fa8bff47d259b4c23d",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/schedule.test.mjs",
+      "source": "projects/invoice-mac-agent/test/schedule.test.mjs",
+      "sha256": "1522caa6d7fb9bb484f22c4f9ed602bb87aa77f53a1d47c5fd57dc638cfd3597",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/shopdesk-driver.test.mjs",
+      "source": "projects/invoice-mac-agent/test/shopdesk-driver.test.mjs",
+      "sha256": "10c03bdc84017cb42b699a8c95e1fe3f1870959af6dd8e78fa2467701d979883",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/test/worker-round.test.mjs",
+      "source": "projects/invoice-mac-agent/test/worker-round.test.mjs",
+      "sha256": "5b478a25e2bfd9846a5f141b01ae3ad69a077e344dc9092b4f81ae46c9504b86",
+      "modified": false
+    },
+    {
+      "path": "components/projects/invoice-mac-agent/worker-round.mjs",
+      "source": "projects/invoice-mac-agent/worker-round.mjs",
+      "sha256": "f43f2c167905e73d06b4163873c0341764fb303a80606bbcdc9d3392494705d5",
+      "modified": false
+    },
+    {
+      "path": "runtime-wrappers/daily-appeal.sh",
+      "source": "Library/Application Support/shopdesk/daily-appeal.sh",
+      "sha256": "6919c142c3e1679d9736bb64b273368e44fbbb4747f683f0070e5707f7218aa6",
+      "modified": false
+    },
+    {
+      "path": "runtime-wrappers/daily-summary.sh",
+      "source": "Library/Application Support/shopdesk/daily-summary.sh",
+      "sha256": "027369d651da54e80ab1aed6bf89972634750735f49b457a74094a1308d54f96",
+      "modified": false
+    },
+    {
+      "path": "runtime-wrappers/health-check.sh",
+      "source": "Library/Application Support/shopdesk/health-check.sh",
+      "sha256": "e3686ede5c5b41f537a4f29dbdf2e14288fa925cf55aa7426c93dfb9191cf86d",
+      "modified": false
+    },
+    {
+      "path": "runtime-wrappers/submit-confirmed.sh",
+      "source": "Library/Application Support/shopdesk/submit-confirmed.sh",
+      "sha256": "48abe67807b9df1bf7294e553b193638f48f5047f16bcbe04143ff3d1ae729d3",
+      "modified": false
+    }
+  ]
+}

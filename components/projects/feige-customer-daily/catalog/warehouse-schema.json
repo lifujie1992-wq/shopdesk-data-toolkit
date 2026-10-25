@@ -1,0 +1,248 @@
+{
+  "dataset": "feige_customer",
+  "schema_version": 1,
+  "filename": "feige-customer.sqlite",
+  "primary_table": "staff_daily",
+  "tables": {
+    "staff_daily": [
+      {
+        "name": "stat_date",
+        "type": "TEXT",
+        "pk": 1
+      },
+      {
+        "name": "shop_id",
+        "type": "TEXT",
+        "pk": 2
+      },
+      {
+        "name": "shop_name",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "staff_id",
+        "type": "TEXT",
+        "pk": 3
+      },
+      {
+        "name": "staff_name",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "staff_account",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "rank",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "reception_sessions",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "received_users",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "valid_reviews",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "metrics_json",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "raw_json",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "fetched_at",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "run_id",
+        "type": "TEXT",
+        "pk": 0
+      }
+    ],
+    "shop_daily": [
+      {
+        "name": "stat_date",
+        "type": "TEXT",
+        "pk": 1
+      },
+      {
+        "name": "shop_id",
+        "type": "TEXT",
+        "pk": 2
+      },
+      {
+        "name": "shop_name",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "row_kind",
+        "type": "TEXT",
+        "pk": 3
+      },
+      {
+        "name": "metrics_json",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "raw_json",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "fetched_at",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "run_id",
+        "type": "TEXT",
+        "pk": 0
+      }
+    ],
+    "shop_snapshots": [
+      {
+        "name": "stat_date",
+        "type": "TEXT",
+        "pk": 1
+      },
+      {
+        "name": "shop_id",
+        "type": "TEXT",
+        "pk": 2
+      },
+      {
+        "name": "shop_name",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "total_staff",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "core_json",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "fetched_at",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "run_id",
+        "type": "TEXT",
+        "pk": 0
+      }
+    ],
+    "runs": [
+      {
+        "name": "run_id",
+        "type": "TEXT",
+        "pk": 1
+      },
+      {
+        "name": "stat_date",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "started_at",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "completed_at",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "total_shops",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "success_shops",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "failed_shops",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "staff_rows",
+        "type": "INTEGER",
+        "pk": 0
+      }
+    ],
+    "shop_runs": [
+      {
+        "name": "run_id",
+        "type": "TEXT",
+        "pk": 1
+      },
+      {
+        "name": "shop_id",
+        "type": "TEXT",
+        "pk": 2
+      },
+      {
+        "name": "shop_name",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "row_count",
+        "type": "INTEGER",
+        "pk": 0
+      },
+      {
+        "name": "error_code",
+        "type": "TEXT",
+        "pk": 0
+      },
+      {
+        "name": "error_message",
+        "type": "TEXT",
+        "pk": 0
+      }
+    ]
+  },
+  "views": [
+    "v_staff_daily",
+    "v_shop_daily",
+    "v_shop_core_daily"
+  ]
+}

@@ -1,0 +1,425 @@
+openapi: 3.1.0
+info:
+  title: 抖店售后待商家审核数据服务
+  version: 1.0.0
+  description: |
+    接收本机采集器每 30 分钟推送的一轮「售后工作台 → 待商家审核」6 项数量，
+    并提供最新快照、单店历史、时间序列查询。
+    详见 docs/cloud-api-design.md。
+servers:
+  - url: https://api.example.com/v1
+    description: 生产
+security:
+  - bearerAuth: []
+tags:
+  - name: ingest
+  - name: query
+  - name: system
+
+paths:
+  /health:
+    get:
+      tags: [system]
+      security: []
+      summary: 健康检查
+      responses:
+        '200':
+          description: 服务与数据库可用
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, version, db]
+                properties:
+                  ok: { type: boolean }
+                  version: { type: string }
+                  db: { type: string, enum: [ok, error] }
+                  uptime_s: { type: number }
+        '503':
+          description: 数据库不可用
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /ingest/runs:
+    post:
+      tags: [ingest]
+      summary: 推送一整轮采集结果（幂等）
+      description: |
+        以 (run_id, shop_id) 为唯一键 upsert；同一 run_id 重复推送不产生重复行。
+        允许部分店铺被拒收（HTTP 200 + rejected_items），整轮回调不合法时返回 422。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/IngestRequest' }
+            example:
+              schema_version: 1
+              client: { name: shopdesk-mac, version: "1.0.0", timezone: Asia/Shanghai }
+              run:
+                run_id: 20261017-162345-306bca
+                started_at: '2026-10-17T16:23:45+08:00'
+                finished_at: '2026-10-17T16:26:11+08:00'
+                shops_total: 2
+                shops_ok: 1
+                shops_failed: 1
+                total_count: 13
+              shops:
+                - shop_id: ba958668-8bfc-4fc3-923f-0ab06dea66f2
+                  shop_name: 香朵儿官方旗舰店
+                  platform: 抖店
+                  captured_at: '2026-10-17T16:23:49+08:00'
+                  status: ok
+                  error: null
+                  counts:
+                    unshipped_refund: 0
+                    shipped_refund: 13
+                    return_refund: 0
+                    exchange: 0
+                    resend: 0
+                    repair: 0
+                  total_count: 13
+                - shop_id: 9f2c0382-fa7e-4d34-8e04-60fe913291ea
+                  shop_name: 柒亿女装
+                  platform: 抖店
+                  captured_at: '2026-10-17T16:26:05+08:00'
+                  status: needs_login
+                  error: 会话已失效，需在工作台重新登录
+                  counts: null
+                  total_count: null
+      responses:
+        '200':
+          description: 已处理（可能含部分拒收）
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/IngestResponse' }
+        '400':
+          description: JSON 解析失败或 schema_version 不支持
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '413': { $ref: '#/components/responses/PayloadTooLarge' }
+        '422':
+          description: 请求校验失败
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+
+  /shops/latest:
+    get:
+      tags: [query]
+      summary: 各店最近一次成功快照
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string, enum: [ok, needs_login, all], default: ok }
+        - name: with_zero
+          in: query
+          description: 是否包含 total_count = 0 的店铺
+          schema: { type: boolean, default: true }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LatestResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /shops/{shop_id}/history:
+    get:
+      tags: [query]
+      summary: 单店历史
+      parameters:
+        - name: shop_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 1000, default: 200 }
+        - name: status
+          in: query
+          schema: { type: string, enum: [ok, needs_login, error, all], default: all }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/HistoryResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /metrics/timeseries:
+    get:
+      tags: [query]
+      summary: 时间序列（桶内每店最后一次成功快照再求和）
+      parameters:
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+        - name: interval
+          in: query
+          schema: { type: string, enum: [30m, 1h, 1d], default: 1h }
+        - name: shop_id
+          in: query
+          description: 不传表示全部店铺求和
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TimeseriesResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /runs:
+    get:
+      tags: [query]
+      summary: 轮次列表
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 500, default: 50 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RunsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 采集端令牌（32 字节随机串）
+
+  responses:
+    Unauthorized:
+      description: 令牌缺失或错误
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    PayloadTooLarge:
+      description: 请求体超过 1 MB
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    RateLimited:
+      description: 超出频率限制
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+
+  schemas:
+    Counts:
+      type: object
+      required: [unshipped_refund, shipped_refund, return_refund, exchange, resend, repair]
+      additionalProperties: false
+      properties:
+        unshipped_refund: { type: integer, minimum: 0, description: 未发货退款 }
+        shipped_refund: { type: integer, minimum: 0, description: 已发货退款 }
+        return_refund: { type: integer, minimum: 0, description: 退货退款 }
+        exchange: { type: integer, minimum: 0, description: 换货 }
+        resend: { type: integer, minimum: 0, description: 补寄 }
+        repair: { type: integer, minimum: 0, description: 维修 }
+
+    ShopItem:
+      type: object
+      required: [shop_id, shop_name, captured_at, status]
+      properties:
+        shop_id: { type: string, minLength: 1, maxLength: 64 }
+        shop_name: { type: string }
+        platform: { type: string, default: 抖店 }
+        captured_at: { type: string, format: date-time }
+        status: { type: string, enum: [ok, needs_login, error] }
+        error: { type: [string, 'null'] }
+        counts:
+          oneOf:
+            - $ref: '#/components/schemas/Counts'
+            - type: 'null'
+        total_count: { type: [integer, 'null'], minimum: 0 }
+      allOf:
+        - if:
+            properties: { status: { const: ok } }
+          then:
+            required: [counts, total_count]
+          else:
+            properties: { counts: { type: 'null' }, total_count: { type: 'null' } }
+
+    IngestRequest:
+      type: object
+      required: [schema_version, run, shops]
+      additionalProperties: false
+      properties:
+        schema_version: { type: integer, enum: [1] }
+        client:
+          type: object
+          properties:
+            name: { type: string }
+            version: { type: string }
+            timezone: { type: string }
+        run:
+          type: object
+          required: [run_id, started_at, shops_total]
+          properties:
+            run_id: { type: string, minLength: 1, maxLength: 64, pattern: '^[A-Za-z0-9._:-]+$' }
+            started_at: { type: string, format: date-time }
+            finished_at: { type: [string, 'null'], format: date-time }
+            source: { type: [string, 'null'] }
+            shops_total: { type: integer, minimum: 1, maximum: 500 }
+            shops_ok: { type: integer, minimum: 0 }
+            shops_failed: { type: integer, minimum: 0 }
+            total_count: { type: integer, minimum: 0 }
+        shops:
+          type: array
+          minItems: 1
+          maxItems: 500
+          items: { $ref: '#/components/schemas/ShopItem' }
+
+    IngestResponse:
+      type: object
+      required: [ok, run_id, accepted, rejected]
+      properties:
+        ok: { type: boolean }
+        run_id: { type: string }
+        accepted: { type: integer }
+        rejected: { type: integer }
+        rejected_items:
+          type: array
+          items:
+            type: object
+            properties:
+              shop_id: { type: string }
+              reason: { type: string }
+        server_time: { type: string, format: date-time }
+
+    SnapshotItem:
+      type: object
+      required: [shop_id, shop_name, captured_at, status, counts, total_count]
+      properties:
+        shop_id: { type: string }
+        shop_name: { type: string }
+        run_id: { type: string }
+        captured_at: { type: string, format: date-time }
+        status: { type: string, enum: [ok, needs_login, error] }
+        counts:
+          oneOf:
+            - $ref: '#/components/schemas/Counts'
+            - type: 'null'
+        total_count: { type: [integer, 'null'] }
+        delta_since_previous: { type: [integer, 'null'] }
+        pending_minutes: { type: integer }
+
+    LatestResponse:
+      type: object
+      required: [generated_at, count, totals, shops]
+      properties:
+        generated_at: { type: string, format: date-time }
+        count: { type: integer }
+        totals:
+          allOf:
+            - $ref: '#/components/schemas/Counts'
+            - type: object
+              properties:
+                total_count: { type: integer }
+        shops:
+          type: array
+          items: { $ref: '#/components/schemas/SnapshotItem' }
+
+    HistoryPoint:
+      type: object
+      properties:
+        captured_at: { type: string, format: date-time }
+        run_id: { type: string }
+        status: { type: string }
+        counts:
+          oneOf:
+            - $ref: '#/components/schemas/Counts'
+            - type: 'null'
+        total_count: { type: [integer, 'null'] }
+
+    HistoryResponse:
+      type: object
+      properties:
+        shop_id: { type: string }
+        shop_name: { type: string }
+        points:
+          type: array
+          items: { $ref: '#/components/schemas/HistoryPoint' }
+
+    TimeseriesResponse:
+      type: object
+      properties:
+        interval: { type: string, enum: [30m, 1h, 1d] }
+        series:
+          type: array
+          items:
+            type: object
+            properties:
+              bucket: { type: string, format: date-time }
+              unshipped_refund: { type: integer }
+              shipped_refund: { type: integer }
+              return_refund: { type: integer }
+              exchange: { type: integer }
+              resend: { type: integer }
+              repair: { type: integer }
+              total_count: { type: integer }
+              shops_reported: { type: integer }
+
+    RunsResponse:
+      type: object
+      properties:
+        runs:
+          type: array
+          items:
+            type: object
+            properties:
+              run_id: { type: string }
+              started_at: { type: string, format: date-time }
+              finished_at: { type: [string, 'null'], format: date-time }
+              shops_total: { type: integer }
+              shops_ok: { type: integer }
+              shops_failed: { type: integer }
+              total_count: { type: integer }
+              received_at: { type: string, format: date-time }
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum: [bad_request, unsupported_schema_version, unauthorized, forbidden,
+                     not_found, payload_too_large, validation_failed, rate_limited,
+                     internal_error, db_unavailable]
+            message: { type: string }
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  path: { type: string }
+                  issue: { type: string }
+            request_id: { type: string }

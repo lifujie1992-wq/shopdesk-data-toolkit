@@ -1,0 +1,40 @@
+import { spawnSync } from "node:child_process";
+
+import { CliError } from "./errors.js";
+
+const KEYCHAIN_ACCOUNT = "erp321.com";
+const KEYCHAIN_PREFIXES = ["com.xx-cli.jst-sales", "com.xx-cli.jst-inventory"];
+const COOKIE_NAMES = ["u_sso_token", "u_id", "u_co_id"];
+
+function readSecret(service) {
+  const result = spawnSync(
+    "/usr/bin/security",
+    ["find-generic-password", "-a", KEYCHAIN_ACCOUNT, "-s", service, "-w"],
+    { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
+  );
+  return result.status === 0 ? result.stdout.trim() : null;
+}
+
+export function loadSession() {
+  for (const prefix of KEYCHAIN_PREFIXES) {
+    const cookies = COOKIE_NAMES.map((name) => ({
+      name,
+      value: readSecret(`${prefix}.cookie.${name}`),
+    }));
+    if (cookies.every((cookie) => cookie.value)) {
+      return { source: prefix, cookies };
+    }
+  }
+  throw new CliError(
+    "auth_required",
+    "No saved 聚水潭 session. Run: jst-inventory auth import",
+  );
+}
+
+export function cookieHeader(session) {
+  return session.cookies.map(({ name, value }) => `${name}=${value}`).join("; ");
+}
+
+export function cookieValue(session, name) {
+  return session.cookies.find((cookie) => cookie.name === name)?.value ?? "";
+}

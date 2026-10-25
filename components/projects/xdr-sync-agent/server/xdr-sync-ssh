@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+import os, re, shlex, sys
+
+CTL = "/usr/local/bin/xdr-syncctl"
+ALLOWED = {"agent-lease", "agent-heartbeat", "agent-upload-ready", "agent-apply", "agent-complete", "agent-fail", "status", "enqueue"}
+original = os.environ.get("SSH_ORIGINAL_COMMAND", "")
+try: args = shlex.split(original)
+except ValueError: raise SystemExit("invalid command")
+upload = re.compile(r"^/var/lib/xdr-sync/incoming/[0-9a-f-]{36}\.(inventory|spu_live|orders|sales|order_page|paid_orders|unshipped_orders|profit_analysis|shop_products|doudian|doudian_client|doudian_invoice|jst_purple_orders)\.(full|patch)\.(sqlite\.gz|sha256)\.partial$", re.I)
+if len(args) == 3 and args[:2] == ["scp", "-t"] and (args[2] in ("/var/lib/xdr-sync/incoming/", "/var/lib/xdr-sync/incoming") or upload.fullmatch(args[2])):
+    os.execv("/usr/bin/scp", args)
+if not args or args[0] != CTL or len(args) < 2 or args[1] not in ALLOWED or len(args) > 14:
+    raise SystemExit("command not allowed")
+for value in args[2:]:
+    if len(value) > 220 or not re.fullmatch(r"[A-Za-z0-9_./:@+-]+", value): raise SystemExit("invalid argument")
+os.execv(CTL, args)

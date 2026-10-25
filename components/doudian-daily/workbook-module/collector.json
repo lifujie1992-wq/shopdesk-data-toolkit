@@ -1,0 +1,426 @@
+{
+  "id": "shopmetrics",
+  "version": "2.0.0",
+  "title": "店铺经营指标（自建）",
+  "entry": "metrics.py",
+  "files": [
+    "metrics.py",
+    "doudian.py"
+  ],
+  "capabilities": [
+    {
+      "id": "metrics",
+      "action": "metrics",
+      "title": "经营指标汇总 · 抖店",
+      "description": "一次抓取经营首页/体验分(含分项得分)/评价/订单计数/商品/售后/物流，按店铺汇总成一行。实时口径与页面一致，缺失项留空不填 0。",
+      "platforms": [
+        "抖店"
+      ],
+      "cookieURL": "https://fxg.jinritemai.com/ffa/mshop/homepage/index",
+      "columns": [
+        {
+          "key": "sales",
+          "label": "成交金额",
+          "format": "money"
+        },
+        {
+          "key": "orders",
+          "label": "成交订单数"
+        },
+        {
+          "key": "aov",
+          "label": "客单价",
+          "format": "money"
+        },
+        {
+          "key": "pay_amt",
+          "label": "用户支付金额",
+          "format": "money"
+        },
+        {
+          "key": "settle_amt",
+          "label": "结算金额",
+          "format": "money"
+        },
+        {
+          "key": "refund_pay",
+          "label": "退款金额(支付时间)",
+          "format": "money"
+        },
+        {
+          "key": "refund7",
+          "label": "7日退款金额",
+          "format": "money"
+        },
+        {
+          "key": "refund_orders",
+          "label": "退款订单数"
+        },
+        {
+          "key": "exposure_uv",
+          "label": "商品曝光人数"
+        },
+        {
+          "key": "click_uv",
+          "label": "商品点击人数"
+        },
+        {
+          "key": "buyer_uv",
+          "label": "成交人数"
+        },
+        {
+          "key": "ctr",
+          "label": "曝光点击率%"
+        },
+        {
+          "key": "cvr",
+          "label": "点击成交率%"
+        },
+        {
+          "key": "ad_cost",
+          "label": "投放消耗",
+          "format": "money"
+        },
+        {
+          "key": "ad_ratio",
+          "label": "投放费比%"
+        },
+        {
+          "key": "spend",
+          "label": "支出金额",
+          "format": "money"
+        },
+        {
+          "key": "todo_stockup",
+          "label": "待发货"
+        },
+        {
+          "key": "todo_aftersale",
+          "label": "待处理售后"
+        },
+        {
+          "key": "todo_exception",
+          "label": "异常包裹"
+        },
+        {
+          "key": "todo_ticket",
+          "label": "服务工单"
+        },
+        {
+          "key": "exp_total",
+          "label": "体验分总分"
+        },
+        {
+          "key": "exp_goods",
+          "label": "体验分-商品"
+        },
+        {
+          "key": "exp_logistics",
+          "label": "体验分-物流"
+        },
+        {
+          "key": "exp_service",
+          "label": "体验分-服务"
+        },
+        {
+          "key": "exp_category",
+          "label": "体验分类目"
+        },
+        {
+          "key": "exp_window",
+          "label": "体验分统计窗口"
+        },
+        {
+          "key": "m_quality_return",
+          "label": "品质退货率"
+        },
+        {
+          "key": "s_quality_return",
+          "label": "品质退货率得分"
+        },
+        {
+          "key": "m_collect_ontime",
+          "label": "揽收时效达成率"
+        },
+        {
+          "key": "s_collect_ontime",
+          "label": "揽收时效达成率得分"
+        },
+        {
+          "key": "m_delivery_ontime",
+          "label": "运单配送时效达成率"
+        },
+        {
+          "key": "s_delivery_ontime",
+          "label": "运单配送时效得分"
+        },
+        {
+          "key": "m_feige_response",
+          "label": "飞鸽平均响应时长"
+        },
+        {
+          "key": "s_feige_response",
+          "label": "飞鸽响应时长得分"
+        },
+        {
+          "key": "m_feige_dissatisfy",
+          "label": "飞鸽会话不满意率"
+        },
+        {
+          "key": "s_feige_dissatisfy",
+          "label": "飞鸽不满意率得分"
+        },
+        {
+          "key": "m_aftersale_audit",
+          "label": "售后平均审核时长"
+        },
+        {
+          "key": "s_aftersale_audit",
+          "label": "售后审核时长得分"
+        },
+        {
+          "key": "m_platform_help",
+          "label": "平台求助率"
+        },
+        {
+          "key": "s_platform_help",
+          "label": "平台求助率得分"
+        },
+        {
+          "key": "m_goods_rating",
+          "label": "商品综合评分"
+        },
+        {
+          "key": "m_logistics_return",
+          "label": "发货物流品退率"
+        },
+        {
+          "key": "comment_good_rate",
+          "label": "好评率%"
+        },
+        {
+          "key": "comment_good_count",
+          "label": "好评数"
+        },
+        {
+          "key": "comment_neutral_count",
+          "label": "中评数"
+        },
+        {
+          "key": "comment_bad_count",
+          "label": "差评数"
+        },
+        {
+          "key": "comment_neutral_rate",
+          "label": "中评率%"
+        },
+        {
+          "key": "comment_order_rate",
+          "label": "近30天订单评价率%"
+        },
+        {
+          "key": "comment_detailed_rate",
+          "label": "近30天详实评价率%"
+        },
+        {
+          "key": "comment_new_30d",
+          "label": "近30天新增评价数"
+        },
+        {
+          "key": "comment_good_30d",
+          "label": "近30天好评数"
+        },
+        {
+          "key": "comment_bad_30d",
+          "label": "近30天差评数"
+        },
+        {
+          "key": "comment_in_score_30d",
+          "label": "评价计入体验分量"
+        },
+        {
+          "key": "comment_with_photo",
+          "label": "有图评价数"
+        },
+        {
+          "key": "comment_with_video",
+          "label": "有视频评价数"
+        },
+        {
+          "key": "comment_with_content",
+          "label": "有内容评价数"
+        },
+        {
+          "key": "comment_unreply",
+          "label": "未回复评价数"
+        },
+        {
+          "key": "comment_latest_date",
+          "label": "评价统计截至"
+        },
+        {
+          "key": "comment_bad_rate",
+          "label": "差评率%"
+        },
+        {
+          "key": "comment_worst",
+          "label": "极差评数"
+        },
+        {
+          "key": "comment_bad_to_reply",
+          "label": "待回复差评"
+        },
+        {
+          "key": "order_stock_up",
+          "label": "订单-待发货"
+        },
+        {
+          "key": "order_ship_delay",
+          "label": "订单-延迟发货"
+        },
+        {
+          "key": "order_exp_ship",
+          "label": "订单-超时未发"
+        },
+        {
+          "key": "order_in_aftersale",
+          "label": "订单-售后中"
+        },
+        {
+          "key": "order_on_delivery",
+          "label": "订单-配送中"
+        },
+        {
+          "key": "order_received",
+          "label": "订单-已收货"
+        },
+        {
+          "key": "order_closed",
+          "label": "订单-已关闭"
+        },
+        {
+          "key": "order_all",
+          "label": "订单-全部"
+        },
+        {
+          "key": "product_onsale",
+          "label": "在售商品数"
+        },
+        {
+          "key": "product_draft",
+          "label": "草稿商品数"
+        },
+        {
+          "key": "product_audit",
+          "label": "审核中商品数"
+        },
+        {
+          "key": "product_total",
+          "label": "商品总数"
+        },
+        {
+          "key": "product_offline_total",
+          "label": "已下架商品数"
+        },
+        {
+          "key": "listed_today",
+          "label": "今日上架数"
+        },
+        {
+          "key": "offline_today",
+          "label": "今日下架数"
+        },
+        {
+          "key": "listed_7d",
+          "label": "近7天上架数"
+        },
+        {
+          "key": "offline_7d",
+          "label": "近7天下架数"
+        },
+        {
+          "key": "listed_daily_7d",
+          "label": "近7天每日上架"
+        },
+        {
+          "key": "offline_daily_7d",
+          "label": "近7天每日下架"
+        },
+        {
+          "key": "aftersale_total",
+          "label": "近30天售后单数"
+        },
+        {
+          "key": "package_total",
+          "label": "近30天包裹数"
+        },
+        {
+          "key": "package_exception_sampled",
+          "label": "异常包裹(抽样)"
+        },
+        {
+          "key": "stock_sold_out",
+          "label": "店铺缺货件数"
+        },
+        {
+          "key": "stock_alarm",
+          "label": "缺货预警"
+        },
+        {
+          "key": "stock_advised_increase",
+          "label": "建议补货件数"
+        },
+        {
+          "key": "stock_sku_total",
+          "label": "库存SKU总数"
+        },
+        {
+          "key": "steps_ok",
+          "label": "采集完整性"
+        },
+        {
+          "key": "step_status",
+          "label": "分步状态"
+        },
+        {
+          "key": "captured_at",
+          "label": "采集时间",
+          "format": "date"
+        },
+        {
+          "key": "notes",
+          "label": "部分失败项"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "id": "probe",
+      "action": "probe",
+      "title": "接口探测（诊断）",
+      "description": "探测抖店后台各接口是否可由 Python 直连获取，仅用于确认可用范围。",
+      "platforms": [
+        "抖店"
+      ],
+      "cookieURL": "https://fxg.jinritemai.com/ffa/mshop/homepage/index",
+      "columns": [
+        {
+          "key": "api",
+          "label": "接口"
+        },
+        {
+          "key": "http",
+          "label": "HTTP"
+        },
+        {
+          "key": "ok",
+          "label": "可用"
+        },
+        {
+          "key": "note",
+          "label": "说明"
+        }
+      ]
+    }
+  ]
+}

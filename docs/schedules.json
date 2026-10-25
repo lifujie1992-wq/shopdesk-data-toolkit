@@ -1,0 +1,386 @@
+[
+  {
+    "label": "com.lee.badreviews-mysql",
+    "calendar": {
+      "Hour": 9,
+      "Minute": 15
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/usr/bin/python3",
+      "__HOME__/doudian-daily/badreviews_to_mysql.py"
+    ]
+  },
+  {
+    "label": "com.lee.doudian-daily",
+    "calendar": {
+      "Hour": 8,
+      "Minute": 30
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/usr/bin/python3",
+      "__HOME__/doudian-daily/daily_collect.py"
+    ]
+  },
+  {
+    "label": "com.xdr.douyin-commission-rates",
+    "calendar": {
+      "Hour": 5,
+      "Minute": 10
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "__HOME__/projects/douyin-commission-rates/.venv/bin/python",
+      "-m",
+      "commission_rates.cli",
+      "--db",
+      "__HOME__/projects/douyin-commission-rates/data/jst-commission-rates.sqlite",
+      "daily",
+      "--config",
+      "__HOME__/projects/douyin-commission-rates/config/daily.json"
+    ]
+  },
+  {
+    "label": "com.xdr.failure-repair",
+    "calendar": null,
+    "interval": 60,
+    "run_at_load": true,
+    "args": [
+      "__HOME__/.local/bin/node",
+      "__HOME__/projects/xdr-sync-agent/bin/xdr-failure-repair.js",
+      "--once"
+    ]
+  },
+  {
+    "label": "com.xdr.failure-watch",
+    "calendar": null,
+    "interval": 60,
+    "run_at_load": true,
+    "args": [
+      "__HOME__/.local/bin/node",
+      "__HOME__/projects/xdr-sync-agent/bin/xdr-failure-watch.js"
+    ]
+  },
+  {
+    "label": "com.xdr.feige-customer-daily",
+    "calendar": {
+      "Hour": 10,
+      "Minute": 30
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "__NODE__",
+      "__HOME__/projects/feige-customer-daily/collect.mjs"
+    ]
+  },
+  {
+    "label": "com.xdr.jst-aftersales-sync",
+    "calendar": [
+      {
+        "Hour": 8,
+        "Minute": 0
+      },
+      {
+        "Hour": 12,
+        "Minute": 0
+      },
+      {
+        "Hour": 16,
+        "Minute": 0
+      }
+    ],
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/xdr-sync-agent/scripts/sync-jst-aftersales.sh"
+    ]
+  },
+  {
+    "label": "com.xdr.jst-auth-refresh",
+    "calendar": [
+      {
+        "Hour": 9,
+        "Minute": 10
+      },
+      {
+        "Hour": 15,
+        "Minute": 0
+      },
+      {
+        "Hour": 21,
+        "Minute": 0
+      }
+    ],
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/xdr-sync-agent/scripts/refresh-jst-auth.sh"
+    ]
+  },
+  {
+    "label": "com.xdr.jst-purple-orders-sync",
+    "calendar": {
+      "Hour": 9,
+      "Minute": 25
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/xdr-sync-agent/scripts/sync-jst-purple-orders.sh"
+    ]
+  },
+  {
+    "label": "com.xdr.openbridge-daemon",
+    "calendar": null,
+    "interval": null,
+    "run_at_load": true,
+    "args": [
+      "__NODE__",
+      "__HOME__/.openbridge/repo/packages/daemon/dist/cli/index.js",
+      "serve"
+    ]
+  },
+  {
+    "label": "com.xdr.refund-daily",
+    "calendar": {
+      "Hour": 7,
+      "Minute": 0
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "__NODE__",
+      "__HOME__/jushuitan-aftersales/export-refund-daily.mjs",
+      "--days",
+      "3"
+    ]
+  },
+  {
+    "label": "com.xdr.sync-agent-cleanup",
+    "calendar": {
+      "Hour": 4,
+      "Minute": 30
+    },
+    "interval": null,
+    "run_at_load": true,
+    "args": [
+      "/bin/bash",
+      "__HOME__/xdr-sync-agent/scripts/cleanup-stale-work.sh"
+    ]
+  },
+  {
+    "label": "com.xdr.sync-agent-profit-facts",
+    "calendar": null,
+    "interval": null,
+    "run_at_load": true,
+    "args": [
+      "__NODE__",
+      "__HOME__/xdr-sync-agent/bin/xdr-sync-agent.js",
+      "daemon"
+    ]
+  },
+  {
+    "label": "com.xdr.sync-agent",
+    "calendar": null,
+    "interval": null,
+    "run_at_load": true,
+    "args": [
+      "__NODE__",
+      "__HOME__/xdr-sync-agent/bin/xdr-sync-agent.js",
+      "daemon"
+    ]
+  },
+  {
+    "label": "local.douyin-settle-recon.monthly",
+    "calendar": {
+      "Day": 1,
+      "Hour": 1,
+      "Minute": 0
+    },
+    "interval": 3600,
+    "run_at_load": false,
+    "args": [
+      "__HOME__/projects/douyin-settle-recon/.venv/bin/python",
+      "-u",
+      "-m",
+      "douyin_settle_recon.cli",
+      "monthly",
+      "--scheduled",
+      "--state-dir",
+      "__HOME__/projects/douyin-settle-recon/data/monthly",
+      "--output",
+      "__HOME__/projects/douyin-settle-recon/data/runs",
+      "--template",
+      "__HOME__/projects/douyin-settle-recon/doc/【抖音】月度账单处理模版.xlsx",
+      "--queue-dir",
+      "__HOME__/projects/douyin-settle-recon/data/upload-queue"
+    ]
+  },
+  {
+    "label": "local.invoice-capture-cleanup",
+    "calendar": {
+      "Hour": 4,
+      "Minute": 10
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "__NODE__",
+      "__HOME__/projects/invoice-mac-agent/capture-cleanup-cli.mjs",
+      "--once"
+    ]
+  },
+  {
+    "label": "local.invoice-capture-sync",
+    "calendar": {
+      "Hour": 10,
+      "Minute": 15
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "__NODE__",
+      "__HOME__/projects/invoice-mac-agent/capture-cli.mjs",
+      "--once",
+      "--complete"
+    ]
+  },
+  {
+    "label": "local.invoice-mac-agent",
+    "calendar": null,
+    "interval": 60,
+    "run_at_load": true,
+    "args": [
+      "__NODE__",
+      "__HOME__/projects/invoice-mac-agent/agent.mjs",
+      "--once"
+    ]
+  },
+  {
+    "label": "local.shopdesk.aftersale-counts",
+    "calendar": [
+      {
+        "Minute": 2
+      },
+      {
+        "Minute": 32
+      }
+    ],
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/usr/bin/python3",
+      "__HOME__/projects/shopdesk-aftersale/bin/scrape_counts.py"
+    ]
+  },
+  {
+    "label": "local.shopdesk.aftersale-push",
+    "calendar": null,
+    "interval": 300,
+    "run_at_load": true,
+    "args": [
+      "/usr/bin/python3",
+      "__HOME__/projects/shopdesk-aftersale/bin/push.py",
+      "--once"
+    ]
+  },
+  {
+    "label": "local.shopdesk.appeal-submit",
+    "calendar": [
+      {
+        "Minute": 17
+      },
+      {
+        "Minute": 47
+      }
+    ],
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/Library/Application Support/shopdesk/submit-confirmed.sh"
+    ]
+  },
+  {
+    "label": "local.shopdesk.appeal",
+    "calendar": {
+      "Hour": 6,
+      "Minute": 35
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/Library/Application Support/shopdesk/daily-appeal.sh"
+    ]
+  },
+  {
+    "label": "local.shopdesk.autodeploy",
+    "calendar": null,
+    "interval": 300,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/shopdesk-workbench-src/autodeploy.sh"
+    ]
+  },
+  {
+    "label": "local.shopdesk.health",
+    "calendar": [
+      {
+        "Hour": 9,
+        "Minute": 5
+      },
+      {
+        "Hour": 13,
+        "Minute": 5
+      },
+      {
+        "Hour": 17,
+        "Minute": 5
+      },
+      {
+        "Hour": 21,
+        "Minute": 5
+      }
+    ],
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/Library/Application Support/shopdesk/health-check.sh"
+    ]
+  },
+  {
+    "label": "local.shopdesk.summary",
+    "calendar": {
+      "Hour": 22,
+      "Minute": 0
+    },
+    "interval": null,
+    "run_at_load": false,
+    "args": [
+      "/bin/bash",
+      "__HOME__/Library/Application Support/shopdesk/daily-summary.sh"
+    ]
+  },
+  {
+    "label": "local.xdr.nosleep",
+    "calendar": null,
+    "interval": null,
+    "run_at_load": true,
+    "args": [
+      "/usr/bin/caffeinate",
+      "-i",
+      "-s"
+    ]
+  }
+]

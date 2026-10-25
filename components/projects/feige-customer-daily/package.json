@@ -1,0 +1,9 @@
+{
+  "name": "feige-customer-daily",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "飞鸽客服表现每日只读采集，复用店铺工作台登录",
+  "scripts": {"start": "node collect.mjs", "test": "node --test"},
+  "engines": {"node": ">=24"}
+}

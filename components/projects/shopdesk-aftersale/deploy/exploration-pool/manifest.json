@@ -1,0 +1,10 @@
+{
+  "source_sha256": "1b053b3921a9e13cfe11beebab6db454e767a91e16220f173e8e3e8b1b101131",
+  "changed": [
+    "src/agent-api.js",
+    "src/exploration.js",
+    "src/finance-extension.cjs",
+    "src/main.js"
+  ],
+  "packed_sha256": "e748d386d8c1e74831711ff78dce089a75124bf53f57a113383d0cfb385cad0f"
+}

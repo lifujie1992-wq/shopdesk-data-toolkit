@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "shop": {
+    "shop_id": null,
+    "shopdesk_shop_uuid": "replace-with-shopdesk-uuid",
+    "platform_shop_id": "replace-with-platform-shop-id"
+  },
+  "inputs": [
+    {
+      "path": "../data/input/资金账单.xlsx",
+      "role": "fund",
+      "account": "货款账户"
+    },
+    {
+      "path": "../data/input/结算账单.xlsx",
+      "role": "settlement"
+    },
+    {
+      "path": "../data/input/体验保证金.csv",
+      "role": "experience_deposit",
+      "account": "体验保证金账户"
+    },
+    {
+      "path": "../data/input/千川日结报表.xlsx",
+      "role": "qianchuan",
+      "account": "千川账户"
+    }
+  ],
+  "screenshots": [],
+  "balances": [],
+  "collection": []
+}

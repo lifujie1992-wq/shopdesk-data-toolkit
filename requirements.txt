@@ -1,0 +1,4 @@
+# doudian-daily and legacy standalone collectors
+requests>=2.32,<3
+pymysql>=1.1,<2
+openpyxl>=3.1,<4

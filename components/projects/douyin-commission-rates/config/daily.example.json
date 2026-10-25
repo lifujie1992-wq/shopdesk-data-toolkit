@@ -1,0 +1,16 @@
+{
+  "facts": "~/Library/Application Support/xdr-sync-agent-profit-facts/baseline/jst-profit-facts.sqlite",
+  "shops": "../data/shop-mappings.json",
+  "state_dir": "../data",
+  "expected_links": 70460,
+  "interval": 1.2,
+  "acceptance_reference": null,
+  "publish": false,
+  "server": {
+    "host": "47.114.33.246",
+    "port": 22,
+    "identity_file": "~/.ssh/xdr_mac"
+  },
+  "workers": 1,
+  "incremental_publish": true
+}

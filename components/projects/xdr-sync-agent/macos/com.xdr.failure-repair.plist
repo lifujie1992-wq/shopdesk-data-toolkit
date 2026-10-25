@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/Users/zhaoxiaozhong/.local/bin:/Users/zhaoxiaozhong/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>TZ</key>
+		<string>Asia/Shanghai</string>
+	</dict>
+	<key>ExitTimeOut</key>
+	<integer>10</integer>
+	<key>Label</key>
+	<string>com.xdr.failure-repair</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/zhaoxiaozhong/.local/bin/node</string>
+		<string>/Users/zhaoxiaozhong/projects/xdr-sync-agent/bin/xdr-failure-repair.js</string>
+		<string>--once</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/Users/zhaoxiaozhong/projects/xdr-sync-agent/var/logs/failure-repair.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/zhaoxiaozhong/projects/xdr-sync-agent/var/logs/failure-repair.out.log</string>
+	<key>StartInterval</key>
+	<integer>60</integer>
+	<key>WorkingDirectory</key>
+	<string>/Users/zhaoxiaozhong/projects/xdr-sync-agent</string>
+</dict>
+</plist>

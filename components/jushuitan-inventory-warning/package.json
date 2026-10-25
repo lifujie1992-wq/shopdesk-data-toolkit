@@ -1,0 +1,15 @@
+{
+  "name": "jushuitan-inventory-cli",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "jst-inventory": "./bin/jst-inventory.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

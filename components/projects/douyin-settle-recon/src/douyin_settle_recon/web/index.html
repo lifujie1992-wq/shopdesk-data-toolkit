@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>抖音月度账单 · 核对工作台</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23256aab'/%3E%3Ctext x='9' y='29' font-size='25' fill='white'%3E账%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/"><span class="brand-icon">账</span><span><strong>抖音月度账单</strong><small>结果核对工作台</small></span></a>
+    <div class="side-search"><span>⌕</span><input id="shop-search" placeholder="搜索店铺或月份" aria-label="搜索店铺或月份"></div>
+    <div class="side-caption"><span>账单目录</span><span id="shop-count">—</span></div>
+    <nav id="catalog" aria-label="账单目录"></nav>
+    <div class="side-footer"><span class="live-dot"></span>本地文件 · 只读核对<small>自动选取同名账单的最新运行版本</small></div>
+  </aside>
+  <main>
+    <header class="page-heading"><div><div class="eyebrow">MONTHLY BILL REVIEW</div><h1>月度账单结果核对</h1><p>对照预期账单，逐项检查本次运行结果。</p></div><div class="heading-actions"><span class="local-badge"><span class="live-dot"></span>本机核对</span><button id="rescan">↻ 重新读取</button></div></header>
+    <div id="empty" class="empty hidden"></div>
+    <div id="workspace" class="hidden">
+      <section class="stats" aria-label="汇总统计">
+        <article class="stat"><span>费用项目</span><strong id="metric-total">—</strong><small>核对汇总中的费用分类</small></article>
+        <article class="stat"><span>金额一致</span><strong class="green" id="metric-same">—</strong><small>金额按分四舍五入比较</small></article>
+        <article class="stat danger"><span>金额不一致</span><strong id="metric-diff">—</strong><small>点击费用分类查看差异</small></article>
+        <article class="stat"><span>预期净发生额 <em>元</em></span><strong id="metric-expected">—</strong><small>费用分类金额合计</small></article>
+        <article class="stat"><span>实际 − 预期 <em>元</em></span><strong id="metric-delta">—</strong><small>仅费用分类同范围对比</small></article>
+      </section>
+      <section class="review-card">
+        <div class="bill-heading"><div><div class="overline">当前账单 <span id="month" class="tag"></span></div><h2 id="shop-name"></h2><div id="filename" class="muted filename"></div></div><div class="file-actions"><button id="open-expected" title="快捷键 P">↗ 打开预期表 <kbd>P</kbd></button><button id="open-actual" class="primary" title="快捷键 O">↗ 打开最新结果 <kbd>O</kbd></button></div></div>
+        <div class="source-strip"><span><b>运行批次</b><span id="run-id"></span></span><span id="version-info"></span><button class="text-button" id="show-paths">查看文件路径</button></div>
+        <div class="file-paths hidden" id="file-paths"></div>
+        <div class="notice" id="overview-notice">正在读取汇总结果…</div>
+        <div class="tabs-label"><strong>核对项目</strong><span>汇总、明细与模板可分别查看；未检查的项目保留“未核对”。</span><button id="check-all" class="text-button">核对全部明细 →</button></div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="核对项目"></div>
+        <div class="content-panel">
+          <div class="panel-heading"><div><div class="overline">当前核对项目</div><h3 id="group-title">费用分类汇总</h3><p id="group-description"></p></div><div id="group-status"></div></div>
+          <div class="review-note"><label for="review-note">核对备注</label><span id="note-status">仅保存在当前浏览器</span><textarea id="review-note" rows="2" placeholder="记录本项目的问题、待确认事项或处理建议…"></textarea></div>
+          <div class="toolbar"><div class="filters" role="group" aria-label="结果筛选"><button data-filter="diff" class="selected">只看差异 <span id="diff-count">—</span></button><button data-filter="all">全部核对项 <span id="all-count">—</span></button></div><div class="table-actions"><input id="row-search" placeholder="搜索项目、业务编号或位置" aria-label="搜索核对结果"><a id="export" class="button" href="#">↓ 导出差异</a></div></div>
+          <div id="comparison" aria-live="polite"></div>
+          <div id="pagination" class="pagination hidden"><span id="page-info"></span><div><button id="prev">上一页</button><button id="next">下一页</button></div></div>
+          <div id="scope" class="scope"></div>
+        </div>
+      </section>
+      <footer class="main-footer"><span>核对口径：金额按分比较 · 空值与 0 区分 · 编号以文本匹配</span><span id="last-checked"></span></footer>
+    </div>
+  </main>
+  <div id="toast" role="status" class="toast hidden"></div>
+</body>
+</html>

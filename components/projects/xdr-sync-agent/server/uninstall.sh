@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+systemctl disable --now xdr-sync-web.service xdr-sync-hourly.timer xdr-sync-spu-live.timer xdr-sync-paid-orders.timer xdr-sync-orders-daily.timer xdr-sync-finalize-sales.timer xdr-sync-profit-analysis.timer xdr-sync-shop-products.timer xdr-sync-inventory-analysis.timer || true
+rm -f /etc/systemd/system/xdr-sync-web.service /etc/systemd/system/xdr-sync-hourly.service /etc/systemd/system/xdr-sync-hourly.timer /etc/systemd/system/xdr-sync-spu-live.service /etc/systemd/system/xdr-sync-spu-live.timer /etc/systemd/system/xdr-sync-paid-orders.service /etc/systemd/system/xdr-sync-paid-orders.timer /etc/systemd/system/xdr-sync-orders-daily.service /etc/systemd/system/xdr-sync-orders-daily.timer /etc/systemd/system/xdr-sync-finalize-sales.service /etc/systemd/system/xdr-sync-finalize-sales.timer /etc/systemd/system/xdr-sync-profit-analysis.service /etc/systemd/system/xdr-sync-profit-analysis.timer /etc/systemd/system/xdr-sync-shop-products.service /etc/systemd/system/xdr-sync-shop-products.timer /etc/systemd/system/xdr-sync-inventory-analysis.service /etc/systemd/system/xdr-sync-inventory-analysis.timer
+systemctl daemon-reload
+echo "Services removed; /var/lib/xdr-sync and xdrsync user retained"

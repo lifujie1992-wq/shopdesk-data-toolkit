@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.shopdesk.aftersale-push</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>__PYTHON__</string>
+		<string>__ROOT__/bin/push.py</string>
+		<string>--once</string>
+	</array>
+
+	<key>WorkingDirectory</key>
+	<string>__ROOT__</string>
+
+	<!-- 每 5 分钟补传一轮：采集脚本每轮结束会立即推送，这里兜底重试/补传 -->
+	<key>StartInterval</key>
+	<integer>300</integer>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>ThrottleInterval</key>
+	<integer>60</integer>
+
+	<key>StandardOutPath</key>
+	<string>__ROOT__/logs/launchd-push.out.log</string>
+	<key>StandardErrorPath</key>
+	<string>__ROOT__/logs/launchd-push.err.log</string>
+
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>LANG</key>
+		<string>zh_CN.UTF-8</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>Label</key><string>com.xdr.sync-shop-products</string>
+<key>ProgramArguments</key><array><string>/Users/zhaoxiaozhong/.local/bin/node</string><string>/Users/zhaoxiaozhong/xdr-sync-agent/bin/xdr-sync-agent.js</string><string>schedule</string><string>shop_products</string></array>
+<key>StartCalendarInterval</key><dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>20</integer></dict>
+<key>ProcessType</key><string>Background</string>
+<key>EnvironmentVariables</key><dict><key>PATH</key><string>/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+<key>StandardOutPath</key><string>/Users/zhaoxiaozhong/Library/Logs/xdr-sync-agent/shop-products-schedule.out.log</string>
+<key>StandardErrorPath</key><string>/Users/zhaoxiaozhong/Library/Logs/xdr-sync-agent/shop-products-schedule.err.log</string>
+</dict></plist>

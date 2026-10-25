@@ -1,0 +1,2402 @@
+"""Read-only HTTP API for the JST SQLite exports."""
+
+from __future__ import annotations
+
+import hmac
+import json
+import os
+import sqlite3
+from contextlib import asynccontextmanager, closing
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+from typing import Annotated, Any, Iterator
+from urllib.parse import quote
+
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, status
+
+try:
+    import duckdb
+except ImportError:  # SQLite-only installations remain supported.
+    duckdb = None
+
+BASE_DIR = Path(__file__).resolve().parent
+INVENTORY_PATH = Path(os.getenv("INVENTORY_DB", BASE_DIR / "jst-inventory-full-second.sqlite")).resolve()
+PAID_ORDERS_ODS_PATH = Path(os.getenv(
+    "PAID_ORDERS_ODS_DB", INVENTORY_PATH.parent / "jst-paid-orders-warehouse.sqlite",
+)).resolve()
+SYNC_CONTROL_PATH = Path(os.getenv(
+    "SYNC_CONTROL_DB", INVENTORY_PATH.parent.parent / "state" / "control.sqlite",
+)).resolve()
+DB_PATHS = {
+    "sales": Path(os.getenv("SALES_DB", BASE_DIR / "jst-sales-performance.sqlite")).resolve(),
+    "orders": Path(os.getenv("ORDERS_DB", BASE_DIR / "jst-order-details.sqlite")).resolve(),
+    "inventory": INVENTORY_PATH,
+    "spu_live": Path(os.getenv(
+        "SPU_LIVE_DB", INVENTORY_PATH.parent / "jst-inventory-spu-live.sqlite",
+    )).resolve(),
+    "paid_orders": Path(os.getenv("PAID_ORDERS_DB", PAID_ORDERS_ODS_PATH)).resolve(),
+    "profit_analysis": Path(os.getenv(
+        "PROFIT_ANALYSIS_DB", INVENTORY_PATH.parent / "jst-profit-analysis.sqlite",
+    )).resolve(),
+    "shop_products": Path(os.getenv(
+        "SHOP_PRODUCTS_DB", INVENTORY_PATH.parent / "jst-shop-products.duckdb",
+    )).resolve(),
+    "doudian": Path(os.getenv(
+        "DOUDIAN_DB", INVENTORY_PATH.parent / "doudian-daily.sqlite",
+    )).resolve(),
+    "doudian_client": Path(os.getenv(
+        "DOUDIAN_CLIENT_DB", INVENTORY_PATH.parent / "doudian-client-daily.sqlite",
+    )).resolve(),
+    "doudian_invoice": Path(os.getenv(
+        "DOUDIAN_INVOICE_DB", INVENTORY_PATH.parent / "doudian-invoice.sqlite",
+    )).resolve(),
+    "sync_control": SYNC_CONTROL_PATH,
+}
+OPTIONAL_DATABASES = {
+    "paid_orders", "spu_live", "profit_analysis", "shop_products", "doudian",
+    "doudian_client", "doudian_invoice", "sync_control",
+}
+SHANGHAI = timezone(timedelta(hours=8))
+
+
+def shanghai_today() -> date:
+    """Return the reporting date used by every BI `today` field."""
+    return datetime.now(SHANGHAI).date()
+
+
+def paid_orders_is_today(run: dict[str, Any] | sqlite3.Row) -> bool:
+    return str(run["business_date"]) == shanghai_today().isoformat()
+
+
+def suppress_stale_today(items: list[dict[str, Any]], run: dict[str, Any] | sqlite3.Row) -> bool:
+    """Never expose a previous business day's quantity as today's quantity."""
+    current = paid_orders_is_today(run)
+    if not current:
+        for item in items:
+            if "pay_qty_today" in item:
+                item["pay_qty_today"] = None
+    return current
+
+
+def live_inventory_today_qty(query_type: str, product_id: str) -> tuple[float | None, dict[str, Any]]:
+    """Read the freshest same-day JST total used to reconcile partial attribution."""
+    table, key = ("sku_inventory", "sku_id") if query_type == "sku" else ("spu_inventory", "spu_id")
+    candidates: list[tuple[datetime, float, dict[str, Any]]] = []
+    latest_metadata: dict[str, Any] = {}
+    for database in dict.fromkeys((inventory_database(), "inventory")):
+        metadata = _inventory_snapshot_metadata(database)
+        latest_metadata = metadata or latest_metadata
+        if metadata.get("snapshot_date") != shanghai_today().isoformat():
+            continue
+        found = rows(database, f"SELECT pay_qty_today FROM {table} WHERE {key}=?", [product_id])
+        if not found or found[0]["pay_qty_today"] is None:
+            continue
+        captured_at = datetime.fromisoformat(str(metadata["captured_at"]).replace("Z", "+00:00"))
+        candidates.append((captured_at, float(found[0]["pay_qty_today"]), metadata))
+    if not candidates:
+        return None, latest_metadata
+    _, quantity, metadata = max(candidates, key=lambda item: item[0])
+    return quantity, metadata
+
+
+def append_unattributed_today(
+    items: list[dict[str, Any]], query_type: str, product_id: str, dimension: str,
+) -> tuple[float | None, float | None, bool | None, dict[str, Any]]:
+    """Make partial channel/platform attribution add up to the live JST total."""
+    live_total, metadata = live_inventory_today_qty(query_type, product_id)
+    if live_total is None:
+        return None, None, None, metadata
+    attributed = sum(float(item.get("pay_qty_today") or 0) for item in items)
+    gap = live_total - attributed
+    complete = abs(gap) < 1e-9
+    if gap > 0:
+        row = {dimension: "待归因", "pay_qty_today": int(gap) if gap.is_integer() else gap}
+        for field in ("pay_qty_1d", "pay_qty_3d", "pay_qty_7d", "pay_qty_15d", "pay_qty_30d"):
+            row[field] = 0
+        items.append(row)
+    return live_total, attributed, complete, metadata
+
+ORDER_COLUMNS = (
+    "o_id", "sku_id", "so_id", "mainCoid", "drp_co_from_name", "platform",
+    "shop_name", "drp_co_to_name", "wms_co_name", "order_date", "send_date",
+    "pay_date", "oi_item_end_time", "sku_cost", "r_sent_cost", "gross_margin",
+    "freight_cost", "free_amount", "freight_revenue", "gift_cost", "gift_qty",
+    "no_price_qty", "dw_pay_amount", "base_amount", "skus", "order_qty",
+    "order_amt", "r_sent_qty", "r_sent_amt", "gross_margin_rate", "refund_cost",
+    "r_refund_cost", "refund_qty", "r_refund_qty", "refund_amt", "r_refund_amt",
+    "outer_so_id", "io_ids", "labels", "order_type", "status", "creator_name",
+    "receiver_state", "receiver_city", "receiver_district", "logistics_company",
+    "packagemartial_cost", "l_id", "node", "seller_flag",
+)
+# Deliberately excluded from the public API: receiver_name, buyer_message, remark.
+ORDER_ITEM_COLUMNS = (
+    "row_key", "after_confirm_date", "after_created", "after_io_date",
+    "aftersale_type", "as_id", "base_amount", "brand_name", "category",
+    "combine_sku_id", "cost_price", "creator_name", "drp_co_from_name",
+    "drp_co_to_name", "dw_io_ids", "dw_pay_amount", "free_amount",
+    "freight_cost", "freight_price_share", "freight_revenue", "freight_share",
+    "gross_margin", "gross_margin_rate", "i_id", "io_ids", "l_id", "labels",
+    "logistics_company", "mainCoid", "market_price", "name", "node", "o_id",
+    "oi_activity_u_id", "oi_activity_u_name", "oi_is_presale",
+    "oi_item_end_time", "oi_name", "oi_outer_oi_id", "oi_properties_value",
+    "oi_raw_so_id", "oi_referrer_id", "oi_referrer_name", "oi_shop_i_id",
+    "oi_shop_sku_id", "order_amt", "order_date", "order_qty", "order_type",
+    "outer_so_id", "pay_date", "platform", "properties_value", "purchase_price",
+    "question_type", "r_refund_amt", "r_refund_cost", "r_refund_qty",
+    "r_sent_amt", "r_sent_cost", "r_sent_qty", "receiver_city",
+    "receiver_district", "receiver_state", "refund_amt", "refund_cost",
+    "refund_qty", "sale_price", "seller_flag", "send_date", "shop_id",
+    "shop_name", "short_name", "sku_cost", "sku_id", "sku_price",
+    "sku_row_number", "so_id", "status", "supplier_i_id", "supplier_id",
+    "supplier_name", "supplier_sku_id", "vc_name", "wms_co_name",
+)
+# Also excluded from item responses: buyer_id, receiver_name, buyer_message, remark.
+INVENTORY_COMMON_COLUMNS = (
+    "category", "brand_name", "vc_name", "supplier_name", "supplier_id",
+    "labels", "sku_labels", "created", "remark_time", "remark_u_id",
+    "remark_u_name", "advice_purchase_qty", "available_qty", "available_day",
+    "available_avg_qty", "stockout_qty", "real_qty", "main_qty", "purchase_qty",
+    "return_onway_item_qty", "return_qty", "in_qty", "onway_qty", "allocate_qty",
+    "wms_qty", "virtual_qty", "wait_audit_purchase_qty", "no_sent_qty",
+    "no_sent_qty_all", "pre_no_sent_qty", "pre_no_sent_qty_all", "timeout_qty",
+    "timeout_qty_all", "will_timeout_qty_1d", "will_timeout_qty_1d_all",
+    "will_timeout_qty_1d_3d", "will_timeout_qty_1d_3d_all",
+    "will_timeout_qty_3d_7d", "will_timeout_qty_3d_7d_all", "will_timeout_qty_7d",
+    "will_timeout_qty_7d_all", "pay_qty_today", "pay_qty_1d", "pay_qty_3d",
+    "pay_qty_7d", "pay_qty_15d", "pay_qty_30d", "pay_qty_180d",
+    "pay_avg_qty_1d", "pay_avg_qty_3d", "pay_avg_qty_7d", "pay_avg_qty_15d",
+    "pay_avg_qty_30d", "pay_avg_qty_180d", "pay_avg_qty_7d_calculated",
+    "inout_sent_item_qty_today", "inout_sent_item_qty_1d",
+    "inout_sent_item_qty_3d", "inout_sent_item_qty_7d",
+    "inout_sent_item_qty_15d", "inout_sent_item_qty_30d",
+    "inout_sent_item_qty_180d", "return_item_qty_3d", "return_item_qty_7d",
+    "return_item_qty_15d", "return_item_qty_30d", "return_item_qty_180d",
+    "return_fact_item_qty_3d", "return_fact_item_qty_7d",
+    "return_fact_item_qty_15d", "return_fact_item_qty_30d",
+    "return_fact_item_qty_180d", "goods_link_cnt", "goods_link_cnt_1d",
+    "goods_link_cnt_7d", "gross_margin_7d", "gross_margin_30d",
+    "order_goods_profit_rate_7d", "order_goods_profit_rate_30d",
+    "per_order_goods_profit_7d", "per_order_goods_profit_30d",
+    "order_sku_gross_profit_7d", "net_order_item_amt_7d",
+    "sent_send_refund_afs_item_qty_rate_pre3to5",
+    "sent_send_refund_afs_item_qty_rate_pre5to7",
+    "sent_send_refund_afs_item_qty_rate_pre7to15",
+    "sent_send_refund_afs_item_qty_rate_pre15to30",
+    "sent_send_refund_afs_item_qty_rate_pre7to180", "i_created",
+)
+SKU_COLUMNS = (
+    "spu_id", "sku_id", "sku_name", "properties_value", "pic", "sku_remark",
+    "cost_price", "last_purchase_price", *INVENTORY_COMMON_COLUMNS,
+)
+SPU_COLUMNS = (
+    "spu_id", "spu_name", "spu_pic", "spu_remark", *INVENTORY_COMMON_COLUMNS,
+)
+SHOP_SHORTAGE_COLUMNS = (
+    "shop_id", "shop_name", "platform", "shop_type", "link_count",
+    "shop_stockout_qty", "shop_urgent_stockout_qty", "shop_no_sent_qty",
+    "timeout_qty", "due_within_1d_qty",
+)
+INVENTORY_DAILY_METRICS_COLUMNS = (
+    "snapshot_date", "captured_at", "warning_style_count", "stockout_qty",
+    "urgent_stockout_qty", "overdue_qty", "due_within_1d_qty",
+    "presale_stockout_qty", "unshipped_qty", "available_qty", "onway_qty",
+    "active_style_count_7d", "product_stockout_style_count",
+    "purchase_warning_style_count",
+)
+SHOP_PRODUCT_SALES_COLUMNS = (
+    "spu_id", "shop_id", "shop_name", "platform", "start_date", "end_date",
+    "previous_start_date", "previous_end_date", "pay_qty_today", "pay_qty_3d",
+    "pay_qty_7d", "pay_qty_15d", "pay_qty_30d", "sales_qty",
+    "previous_sales_qty", "sales_increase", "sales_chain_ratio",
+    "sales_chain_percent", "sales_amount", "previous_sales_amount",
+    "sales_amount_increase", "sales_amount_chain_ratio",
+    "sales_amount_chain_percent", "order_count", "previous_order_count",
+    "order_count_increase", "order_count_chain_ratio",
+    "order_count_chain_percent", "paid_return_qty", "paid_return_qty_180d",
+    "return_item_qty_180d", "shipped_qty_180d", "paid_return_chain_ratio",
+    "paid_return_chain_percent",
+    "gross_margin_7d", "gross_margin_30d",
+    "sent_send_refund_afs_item_qty_rate_pre3to5",
+    "sent_send_refund_afs_item_qty_rate_pre5to7",
+    "sent_send_refund_afs_item_qty_rate_pre7to15",
+    "sent_send_refund_afs_item_qty_rate_pre15to30",
+    "sent_send_refund_afs_item_qty_rate_pre7to180",
+)
+PLATFORM_PRODUCT_SALES_COLUMNS = (
+    "spu_id", "platform", *SHOP_PRODUCT_SALES_COLUMNS[4:],
+)
+LINK_PRODUCT_SALES_COLUMNS = (
+    "spu_id", "shop_id", "shop_name", "platform", "shop_spu_id", "shop_i_id",
+    "shop_spu_name", "shop_spu_pic", "shop_spu_created",
+    "shop_spu_created_day", "shop_sku_id", "shop_sku_url",
+    *SHOP_PRODUCT_SALES_COLUMNS[4:],
+)
+PRODUCT_DAILY_SALES_COLUMNS = (
+    "spu_id", "biz_date", "sales_qty", "sales_amount", "order_count",
+    "net_sales_amount",
+)
+SHOP_DAILY_SALES_COLUMNS = (
+    "spu_id", "shop_id", "biz_date", "sales_qty", "sales_amount", "order_count",
+    "return_item_qty",
+)
+SALES_COLUMNS = (
+    "report_date", "shop_id", "shop_name", "platform", "owner_name", "sales_amount",
+    "net_sales_income", "sales_quantity", "order_count", "order_unit_price",
+    "customer_unit_price", "sales_chain_percent", "shipped_gross_margin_percent",
+    "shipped_net_profit_percent", "shipped_net_profit", "sales_cost", "commission",
+    "platform_fees", "advertising_costs", "refund_amount", "refund_only_amount",
+    "shipped_refund_amount", "returned_quantity", "send_ratio_48h", "send_ratio_24h",
+    "average_send_hours", "delayed_shipment_quantity", "stockout_overtime_orders",
+    "stockout_compensation", "delayed_shipment_percent", "daily_shipped_orders",
+    "shipped_quantity", "paid_shipped_amount", "paid_shipped_quantity",
+    "paid_shipped_orders", "paid_send_ratio", "markup_multiple", "overview", "synced_at",
+)
+PROFIT_ANALYSIS_COLUMNS = (
+    "start_date", "end_date", "sku_name", "properties_value", "sku_id", "spu_id",
+    "gross_profit", "gross_profit_rate", "item_gross_profit", "item_gross_profit_rate",
+    "net_sales_cost", "net_sales_cost_rate", "profit", "profit_chain_rate",
+    "profit_change_description", "profit_rate", "profit_rate_change", "per_item_profit",
+    "net_sales_amount", "net_sales_qty", "sales_amount", "item_revenue", "freight_revenue",
+    "net_item_cost", "net_item_cost_rate", "item_cost", "returned_cost",
+    "returned_before_shipment_cost", "returned_after_shipment_cost", "cancelled_cost",
+    "freight_cost", "freight_cost_rate", "platform_service_fee", "platform_service_fee_rate",
+    "platform_service_fee_settled", "platform_service_fee_estimated", "marketing_cost",
+    "marketing_cost_rate", "influencer_commission", "leader_commission",
+    "service_provider_commission", "other_marketing_cost", "marketing_cost_return",
+    "other_cost", "other_cost_rate", "packing_fee", "packing_fee_rate", "freight_insurance",
+    "freight_insurance_rate", "tax", "tax_rate", "freight_gross_profit",
+    "per_item_gross_profit", "special_order_total_fee", "custom_fee", "product_created_at",
+    "high_profit_order_count", "high_gross_profit_order_count",
+    "negative_profit_order_count", "negative_gross_profit_order_count",
+    "product_loss_order_count", "freight_loss_order_count",
+    "profit_status_label", "profit_change_label",
+    "gross_profit_status_label", "gross_profit_change_label",
+    "gross_profit_chain_rate", "gross_profit_change_amount", "gross_profit_rate_change",
+    "previous_gross_profit", "profit_change_amount", "previous_profit",
+)
+
+
+def connect(database: str) -> Any:
+    """Open one configured database in enforced read-only mode."""
+    path = DB_PATHS[database]
+    if path.suffix == ".duckdb":
+        if duckdb is None:
+            raise RuntimeError("DuckDB support is not installed")
+        return duckdb.connect(str(path), read_only=True)
+    uri = f"file:{quote(str(path))}?mode=ro"
+    connection = sqlite3.connect(uri, uri=True, timeout=5)
+    connection.row_factory = sqlite3.Row
+    connection.create_function(
+        "digits_only", 1,
+        lambda value: "".join(character for character in str(value or "") if character.isascii() and character.isdigit()),
+    )
+    connection.execute("PRAGMA query_only = ON")
+    connection.execute("PRAGMA busy_timeout = 5000")
+    return connection
+
+
+def rows(database: str, sql: str, parameters: list[Any]) -> list[dict[str, Any]]:
+    try:
+        with closing(connect(database)) as connection:
+            cursor = connection.execute(sql, parameters)
+            found = cursor.fetchall()
+            if DB_PATHS[database].suffix == ".duckdb":
+                columns = [item[0] for item in cursor.description]
+                return [dict(zip(columns, row)) for row in found]
+            return [dict(row) for row in found]
+    except Exception as exc:
+        if not isinstance(exc, (sqlite3.Error, RuntimeError)) and not (
+            duckdb is not None and isinstance(exc, duckdb.Error)
+        ):
+            raise
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable") from exc
+
+
+def one(database: str, sql: str, parameters: list[Any]) -> dict[str, Any]:
+    result = rows(database, sql, parameters)
+    if not result:
+        raise HTTPException(status_code=404, detail="Record not found")
+    return result[0]
+
+
+def page_result(items: list[dict[str, Any]], limit: int, offset: int) -> dict[str, Any]:
+    return {"items": items, "limit": limit, "offset": offset, "has_more": len(items) == limit}
+
+
+def add_filter(parts: list[str], values: list[Any], column: str, value: Any) -> None:
+    if value is not None:
+        parts.append(f'"{column}" = ?')
+        values.append(value)
+
+
+def like_contains(value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return f"%{escaped}%"
+
+
+def require_api_key(x_api_key: Annotated[str | None, Header()] = None) -> None:
+    expected = os.getenv("API_KEY", "")
+    if not expected or not x_api_key or not hmac.compare_digest(x_api_key, expected):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or missing API key",
+            headers={"WWW-Authenticate": "ApiKey"},
+        )
+
+
+Auth = Annotated[None, Depends(require_api_key)]
+PageLimit = Annotated[int, Query(ge=1, le=500)]
+PageOffset = Annotated[int, Query(ge=0, le=1_000_000)]
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> Iterator[None]:
+    if not os.getenv("API_KEY"):
+        raise RuntimeError("API_KEY environment variable must be set")
+    missing = [str(path) for name, path in DB_PATHS.items()
+               if name not in OPTIONAL_DATABASES and not path.is_file()]
+    if missing:
+        raise RuntimeError(f"Missing database file(s): {', '.join(missing)}")
+    yield
+
+
+app = FastAPI(
+    title="JST Read-only API",
+    version="1.0.0",
+    description="Read-only, API-key protected access to sales, orders, and inventory.",
+    lifespan=lifespan,
+)
+
+
+def paid_orders_available() -> bool:
+    return DB_PATHS["paid_orders"].is_file()
+
+
+def profit_analysis_available() -> bool:
+    return DB_PATHS["profit_analysis"].is_file()
+
+
+def shop_products_available() -> bool:
+    return DB_PATHS["shop_products"].is_file()
+
+
+def doudian_available(dataset: str = "doudian") -> bool:
+    return DB_PATHS[dataset].is_file()
+
+
+def warehouse_data_version(run: dict[str, Any] | sqlite3.Row) -> str:
+    """A stable batch identity plus its changing Excel capture generation."""
+    return f"{run['batch_id']}:{run['captured_at']}"
+
+
+def spu_live_available() -> bool:
+    """Return true only for one complete, coherent live SPU + SKU snapshot."""
+    if not DB_PATHS["spu_live"].is_file():
+        return False
+    try:
+        with closing(connect("spu_live")) as connection:
+            tables = {row["name"] for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            )}
+            if not {"export_info", "spu_inventory", "sku_inventory"}.issubset(tables):
+                return False
+            info = connection.execute(
+                "SELECT api_total_spu,fetched_spu,fetched_sku "
+                "FROM export_info ORDER BY id DESC LIMIT 1"
+            ).fetchone()
+            if (info is None or info["api_total_spu"] != info["fetched_spu"]
+                    or info["fetched_sku"] <= 0):
+                return False
+            stored_spu = connection.execute("SELECT count(*) FROM spu_inventory").fetchone()[0]
+            stored_sku = connection.execute("SELECT count(*) FROM sku_inventory").fetchone()[0]
+            return stored_spu == info["fetched_spu"] and stored_sku == info["fetched_sku"]
+    except sqlite3.Error:
+        return False
+
+
+def inventory_database() -> str:
+    if not spu_live_available():
+        return "inventory"
+    live_completed_at = _database_snapshot("spu_live").get("completed_at")
+    inventory_completed_at = _database_snapshot("inventory").get("completed_at")
+    try:
+        live_completed = datetime.fromisoformat(str(live_completed_at).replace("Z", "+00:00"))
+        inventory_completed = datetime.fromisoformat(
+            str(inventory_completed_at).replace("Z", "+00:00"),
+        )
+    except (TypeError, ValueError):
+        return "spu_live" if live_completed_at else "inventory"
+    return "inventory" if inventory_completed > live_completed else "spu_live"
+
+
+def spu_database() -> str:
+    """Compatibility name for callers that only need the SPU grain."""
+    return inventory_database()
+
+
+def _database_snapshot(database: str) -> dict[str, Any]:
+    """Read optional revision/export metadata without requiring a new schema."""
+    if not DB_PATHS[database].is_file():
+        return {}
+    try:
+        with closing(connect(database)) as connection:
+            tables = {row["name"] for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            )}
+            result: dict[str, Any] = {}
+            if "export_info" in tables:
+                found = connection.execute(
+                    "SELECT * FROM export_info ORDER BY id DESC LIMIT 1"
+                ).fetchone()
+                if found is not None:
+                    result.update(dict(found))
+            if "_xdr_meta" in tables:
+                found = connection.execute(
+                    "SELECT value FROM _xdr_meta WHERE key='revision'"
+                ).fetchone()
+                if found is not None:
+                    result["revision"] = found["value"]
+            return result
+    except sqlite3.Error:
+        return {}
+
+
+def _table_completed_at(database: str, table: str) -> str | None:
+    if not DB_PATHS[database].is_file():
+        return None
+    try:
+        with closing(connect(database)) as connection:
+            exists = connection.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", [table]
+            ).fetchone()
+            if not exists:
+                return None
+            found = connection.execute(
+                f'SELECT completed_at FROM "{table}" ORDER BY id DESC LIMIT 1'
+            ).fetchone()
+            return found["completed_at"] if found is not None else None
+    except sqlite3.Error:
+        return None
+
+
+def _table_count(database: str, table: str) -> int | None:
+    if not DB_PATHS[database].is_file():
+        return None
+    try:
+        with closing(connect(database)) as connection:
+            return int(connection.execute(f'SELECT count(*) FROM "{table}"').fetchone()[0])
+    except sqlite3.Error:
+        return None
+
+
+def _inventory_snapshot_metadata(database: str | None = None) -> dict[str, Any]:
+    selected = database or inventory_database()
+    snapshot = _database_snapshot(selected)
+    captured_at = snapshot.get("completed_at")
+    snapshot_date = None
+    if captured_at:
+        try:
+            parsed = datetime.fromisoformat(str(captured_at).replace("Z", "+00:00"))
+            snapshot_date = parsed.astimezone(timezone(timedelta(hours=8))).date().isoformat()
+        except ValueError:
+            pass
+    return {
+        "snapshot_date": snapshot_date,
+        "captured_at": captured_at,
+        "data_version": snapshot.get("revision") or captured_at,
+        "spu_sku_coherent": True,
+    }
+
+
+@app.get("/v1/inventory/status", tags=["inventory"])
+def inventory_status(_: Auth) -> dict[str, Any]:
+    """Expose source capture times separately from XDR/workbench read times."""
+    selected_inventory_database = inventory_database()
+    spu = _database_snapshot(selected_inventory_database)
+    sku = spu
+    spu_revision = spu.get("revision")
+    sku_revision = sku.get("revision")
+    spu_started = spu.get("started_at")
+    spu_completed = spu.get("completed_at")
+    sku_started = sku.get("started_at")
+    sku_completed = sku.get("completed_at")
+    compatibility_started = min(
+        (value for value in (spu_started, sku_started) if value), default=None,
+    )
+    compatibility_completed = min(
+        (value for value in (spu_completed, sku_completed) if value), default=None,
+    )
+    spu_fingerprint = spu_revision or spu_completed or "unknown"
+    sku_fingerprint = sku_revision or sku_completed or "unknown"
+    return {
+        "data_version": f"{spu_fingerprint}:{sku_fingerprint}",
+        "spu_revision": spu_revision,
+        "sku_revision": sku_revision,
+        "spu_source_started_at": spu_started,
+        "spu_source_completed_at": spu_completed,
+        "sku_source_started_at": sku_started,
+        "sku_source_completed_at": sku_completed,
+        "shop_shortage_source_completed_at": _table_completed_at(
+            "inventory", "shop_shortage_export_info",
+        ),
+        "source_started_at": compatibility_started,
+        "source_completed_at": compatibility_completed,
+        "spu_total": int(spu["fetched_spu"]) if spu.get("fetched_spu") is not None
+                     else _table_count(selected_inventory_database, "spu_inventory"),
+        "sku_total": int(sku["fetched_sku"]) if sku.get("fetched_sku") is not None
+                     else _table_count(selected_inventory_database, "sku_inventory"),
+        "spu_source": selected_inventory_database,
+        "sku_source": selected_inventory_database,
+        "spu_sku_coherent": True,
+    }
+
+
+@app.get("/v1/warehouse/status", tags=["warehouse"])
+def warehouse_status(_: Auth) -> dict[str, Any]:
+    if not paid_orders_available():
+        raise HTTPException(status_code=404, detail="Paid-order warehouse is not published")
+    result = one("paid_orders", "SELECT * FROM warehouse_runs ORDER BY published_at DESC LIMIT 1", [])
+    result["data_version"] = warehouse_data_version(result)
+    return result
+
+
+def _parse_timestamp(value: Any) -> datetime | None:
+    """Parse an ISO-8601 timestamp, normalising naive values to UTC."""
+    if value is None or value == "":
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+
+def _latest_timestamp(values: Any) -> str | None:
+    """Return the newest ISO-8601 value so mixed offsets still compare correctly."""
+    newest: tuple[datetime, str] | None = None
+    for value in values:
+        parsed = _parse_timestamp(value)
+        if parsed is None:
+            continue
+        if newest is None or parsed > newest[0]:
+            newest = (parsed, str(value))
+    return newest[1] if newest else None
+
+
+def _local_time(value: Any) -> str | None:
+    """Render an ISO-8601 timestamp as Shanghai wall-clock time for the frontend."""
+    parsed = _parse_timestamp(value)
+    if parsed is None:
+        return None
+    return parsed.astimezone(SHANGHAI).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _optional_rows(database: str, sql: str) -> list[dict[str, Any]]:
+    """Read optional dataset metadata; one missing dataset must not fail the caller."""
+    if not DB_PATHS[database].is_file():
+        return []
+    try:
+        return rows(database, sql, [])
+    except HTTPException:
+        return []
+
+
+def _mac_sync_report() -> dict[str, Any]:
+    """Latest task the remote Mac agent reported to the XDR sync service."""
+    latest_job = _optional_rows(
+        "sync_control",
+        "SELECT id,task,source,state,phase,leased_by,created_at,started_at,completed_at,"
+        "updated_at FROM jobs ORDER BY updated_at DESC LIMIT 1",
+    )
+    dataset_rows = _optional_rows(
+        "sync_control",
+        "SELECT dataset,revision,last_success_at,row_count,error FROM dataset_state "
+        "ORDER BY dataset",
+    )
+    job = latest_job[0] if latest_job else {}
+    return {
+        "mac": {
+            "agent": job.get("leased_by"),
+            "task": job.get("task"),
+            "source": job.get("source"),
+            "state": job.get("state"),
+            "phase": job.get("phase"),
+            "reported_at": job.get("updated_at"),
+            "reported_at_local": _local_time(job.get("updated_at")),
+            "started_at": job.get("started_at"),
+            "started_at_local": _local_time(job.get("started_at")),
+            "completed_at": job.get("completed_at"),
+            "completed_at_local": _local_time(job.get("completed_at")),
+        },
+        "last_success_at": _latest_timestamp(
+            item.get("last_success_at") for item in dataset_rows
+        ),
+        "datasets": {
+            str(item["dataset"]): {
+                "last_success_at": item.get("last_success_at"),
+                "last_success_at_local": _local_time(item.get("last_success_at")),
+                "revision": item.get("revision"),
+                "row_count": item.get("row_count"),
+                "error": item.get("error"),
+            }
+            for item in dataset_rows
+        },
+    }
+
+
+@app.get("/v1/bi/data-updated-at", tags=["bi"])
+def bi_data_updated_at(_: Auth) -> dict[str, Any]:
+    """Return when the Mac collector last reported, in UTC and Shanghai time."""
+    report = _mac_sync_report()
+    reported_at = report["mac"].get("reported_at")
+    return {
+        "data_updated_at": reported_at,
+        "data_updated_at_local": report["mac"].get("reported_at_local"),
+        "source": "mac_sync" if reported_at else None,
+        "mac": report["mac"],
+        "last_success_at": report["last_success_at"],
+        "last_success_at_local": _local_time(report["last_success_at"]),
+        "datasets": report["datasets"],
+    }
+
+
+def _bi_sales_channels(product_id: str, query_type: str, count_type: str) -> dict[str, Any]:
+    if query_type not in ("spu", "sku") or count_type not in ("platform", "channel"):
+        raise HTTPException(status_code=422, detail="Invalid product grain or dimension")
+    if not paid_orders_available():
+        raise HTTPException(status_code=404, detail="Paid-order warehouse is not published")
+    if DB_PATHS["paid_orders"].suffix == ".duckdb":
+        catalog = one(
+            "paid_orders", "SELECT spu_id FROM bi_product_catalog WHERE query_type=? AND product_id=?",
+            [query_type, product_id],
+        )
+        run = one("paid_orders", "SELECT * FROM warehouse_runs ORDER BY published_at DESC LIMIT 1", [])
+        fields = ("pay_qty_today", "pay_qty_1d", "pay_qty_3d", "pay_qty_7d",
+                  "pay_qty_15d", "pay_qty_30d")
+        selected = "platform," + ("shop_id,shop_name," if count_type == "channel" else "") + ",".join(fields)
+        found = rows(
+            "paid_orders", f"SELECT {selected} FROM bi_sales_channel_rows "
+            "WHERE query_type=? AND product_id=? AND count_type=? "
+            "ORDER BY coalesce(pay_qty_today,0) DESC,pay_qty_30d DESC,platform,coalesce(shop_id,'')",
+            [query_type, product_id, count_type],
+        )
+        current_today = suppress_stale_today(found, run)
+        live_today = attributed_today = attribution_complete = None
+        live_metadata: dict[str, Any] = {}
+        live_today, attributed_today, attribution_complete, live_metadata = append_unattributed_today(
+            found, query_type, product_id, "platform",
+        )
+        if count_type == "channel" and found and found[-1].get("platform") == "待归因":
+            found[-1].update({"shop_id": None, "shop_name": "待订单明细同步"})
+        for row in found:
+            for field in fields:
+                value = row[field]
+                if isinstance(value, float) and value.is_integer():
+                    row[field] = int(value)
+        return {
+            "query_type": query_type, "product_id": product_id,
+            "sku_id": product_id if query_type == "sku" else None,
+            "spu_id": catalog["spu_id"], "count_type": count_type,
+            "captured_at": run["captured_at"], "business_date": run["business_date"],
+            "start_date": run["start_date"], "end_date": run["end_date"],
+            "total": len(found), "rows": found, "source_api": "paid_order_excel_exports",
+            "quality": run["quality"], "coverage": "complete_manifest", "complete": True,
+            "is_complete_popup": False,
+            "today_complete": current_today and run["end_date"] >= run["business_date"],
+            "today_date": shanghai_today().isoformat(),
+            "stale": not current_today,
+            "batch_id": run["batch_id"], "data_version": warehouse_data_version(run),
+            "today_source": ("common_order_page_pay_date" if current_today else
+                             "inventory_snapshot" if live_today is not None else None),
+            "live_pay_qty_today": live_today,
+            "attributed_pay_qty_today": attributed_today,
+            "attribution_complete": attribution_complete,
+            "live_captured_at": live_metadata.get("captured_at"),
+        }
+    stored = one(
+        "paid_orders", "SELECT raw_json FROM ads_sales_channel_snapshots "
+        "WHERE query_type=? AND product_id=? AND count_type=?", [query_type, product_id, count_type],
+    )
+    try:
+        result = json.loads(stored["raw_json"])
+        if not isinstance(result, dict):
+            raise ValueError("snapshot is not an object")
+        result["data_version"] = (
+            f"{result['batch_id']}:{result['captured_at']}"
+            if result.get("batch_id") and result.get("captured_at")
+            else result.get("data_version")
+        )
+        return result
+    except (TypeError, ValueError, KeyError) as exc:
+        raise HTTPException(status_code=503, detail="Warehouse snapshot is invalid") from exc
+
+
+@app.get("/v1/bi/sales-channels", tags=["bi"])
+def bi_sales_channels(
+    _: Auth, product_id: str, query_type: str = "sku", count_type: str = "channel",
+) -> dict[str, Any]:
+    """Return BI sales windows grouped by platform or shop/channel."""
+    return _bi_sales_channels(product_id, query_type, count_type)
+
+
+@app.get("/v1/warehouse/sales-channels", tags=["warehouse"], deprecated=True,
+         include_in_schema=False)
+def warehouse_sales_channels(
+    _: Auth, product_id: str, query_type: str = "sku", count_type: str = "channel",
+) -> dict[str, Any]:
+    """Compatibility route; new consumers must use /v1/bi/sales-channels."""
+    return _bi_sales_channels(product_id, query_type, count_type)
+
+
+def warehouse_page(table: str, filters: list[tuple[str, Any]], limit: int, offset: int) -> dict[str, Any]:
+    if not paid_orders_available():
+        raise HTTPException(status_code=404, detail="Paid-order warehouse is not published")
+    clauses, values = [], []
+    for column, value in filters:
+        if value is not None:
+            clauses.append(f'"{column}"=?')
+            values.append(value)
+    if not clauses:
+        raise HTTPException(status_code=422, detail="At least one filter is required")
+    values.extend((limit, offset))
+    result = rows("paid_orders", f"SELECT * FROM {table} WHERE {' AND '.join(clauses)} "
+                  "ORDER BY pay_qty_today DESC,pay_qty_30d DESC LIMIT ? OFFSET ?", values)
+    run = one("paid_orders", "SELECT * FROM warehouse_runs ORDER BY published_at DESC LIMIT 1", [])
+    current_today = suppress_stale_today(result, run)
+    return {
+        **page_result(result, limit, offset),
+        "data_version": warehouse_data_version(run),
+        "captured_at": run["captured_at"],
+        "business_date": run["business_date"],
+        "quality": run["quality"],
+        "today_date": shanghai_today().isoformat(),
+        "today_complete": current_today and run["end_date"] >= run["business_date"],
+        "stale": not current_today,
+        "today_source": "common_order_page_pay_date" if current_today else None,
+    }
+
+
+@app.get("/v1/bi/platform-sales", tags=["bi"])
+def bi_platform_sales(_: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+                      spu_id: str | None = None, platform: str | None = None) -> dict[str, Any]:
+    return warehouse_page("ads_platform_product_sales", [("spu_id", spu_id), ("platform", platform)], limit, offset)
+
+
+@app.get("/v1/warehouse/platform-sales", tags=["warehouse"], deprecated=True,
+         include_in_schema=False)
+def warehouse_platform_sales(_: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+                             spu_id: str | None = None, platform: str | None = None) -> dict[str, Any]:
+    return warehouse_page("ads_platform_product_sales", [("spu_id", spu_id), ("platform", platform)], limit, offset)
+
+
+@app.get("/v1/bi/shop-sales", tags=["bi"])
+def bi_shop_sales(_: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+                  spu_id: str | None = None, shop_id: str | None = None) -> dict[str, Any]:
+    return warehouse_page("ads_shop_product_sales", [("spu_id", spu_id), ("shop_id", shop_id)], limit, offset)
+
+
+@app.get("/v1/warehouse/shop-sales", tags=["warehouse"], deprecated=True,
+         include_in_schema=False)
+def warehouse_shop_sales(_: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+                         spu_id: str | None = None, shop_id: str | None = None) -> dict[str, Any]:
+    return warehouse_page("ads_shop_product_sales", [("spu_id", spu_id), ("shop_id", shop_id)], limit, offset)
+
+
+@app.get("/v1/bi/link-sales", tags=["bi"])
+def bi_link_sales(_: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+                  spu_id: str | None = None, shop_id: str | None = None,
+                  shop_spu_id: str | None = None) -> dict[str, Any]:
+    return warehouse_page("ads_link_product_sales", [("spu_id", spu_id), ("shop_id", shop_id),
+                                                       ("shop_spu_id", shop_spu_id)], limit, offset)
+
+
+@app.get("/v1/warehouse/link-sales", tags=["warehouse"], deprecated=True,
+         include_in_schema=False)
+def warehouse_link_sales(_: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+                         spu_id: str | None = None, shop_id: str | None = None,
+                         shop_spu_id: str | None = None) -> dict[str, Any]:
+    return warehouse_page("ads_link_product_sales", [("spu_id", spu_id), ("shop_id", shop_id),
+                                                       ("shop_spu_id", shop_spu_id)], limit, offset)
+
+
+def _sku_source_sales(sku_id: str, shop_id: str | None = None, *, bi_contract: bool) -> dict[str, Any]:
+    """Build the fixed traffic-source buckets consumed by the BI API."""
+    if not paid_orders_available():
+        raise HTTPException(status_code=404, detail="Paid-order warehouse is not published")
+    table = "ads_sku_shop_source_sales" if shop_id is not None else "ads_sku_source_sales"
+    clauses, parameters = ["sku_id=?"], [sku_id]
+    if shop_id is not None:
+        clauses.append("shop_id=?")
+        parameters.append(shop_id)
+    found = rows("paid_orders", f"SELECT * FROM {table} WHERE {' AND '.join(clauses)}", parameters)
+    run = one("paid_orders", "SELECT * FROM warehouse_runs ORDER BY published_at DESC LIMIT 1", [])
+    current_today = suppress_stale_today(found, run)
+    indexed = {row["source_category"]: row for row in found}
+    buckets = []
+    for category in ("精选联盟", "直播间", "商品卡"):
+        row = indexed.get(category)
+        if row is None:
+            values = {field: 0 for field in ("pay_qty_today", "pay_qty_1d", "pay_qty_3d",
+                                              "pay_qty_7d", "pay_qty_15d", "pay_qty_30d")}
+            if run["end_date"] < run["business_date"]:
+                values["pay_qty_today"] = None
+            row = {"sku_id": sku_id, "shop_id": shop_id, "source_category": category, **values,
+                   "captured_at": run["captured_at"], "quality": run["quality"],
+                   "source_labels": None, "influencer_ids": None}
+        buckets.append(row)
+    live_today = attributed_today = attribution_complete = None
+    live_metadata: dict[str, Any] = {}
+    if shop_id is None:
+        live_today, attributed_today, attribution_complete, live_metadata = append_unattributed_today(
+            buckets, "sku", sku_id, "source_category",
+        )
+        if buckets and buckets[-1].get("source_category") == "待归因":
+            buckets[-1].update({"sku_id": sku_id, "shop_id": None,
+                                "captured_at": run["captured_at"], "quality": "partial_attribution",
+                                "source_labels": None, "influencer_ids": None})
+    if bi_contract:
+        buckets = [{**row, "source_type": row["source_category"]} for row in buckets]
+        for row in buckets:
+            del row["source_category"]
+    result = {"sku_id": sku_id, "shop_id": shop_id, "captured_at": run["captured_at"],
+              "business_date": run["business_date"], "quality": run["quality"], "rows": buckets,
+              "today_date": shanghai_today().isoformat(),
+              "today_complete": current_today and run["end_date"] >= run["business_date"],
+              "stale": not current_today,
+              "today_source": ("common_order_page_pay_date" if current_today else
+                               "inventory_snapshot" if live_today is not None else None),
+              "live_pay_qty_today": live_today,
+              "attributed_pay_qty_today": attributed_today,
+              "attribution_complete": attribution_complete,
+              "live_captured_at": live_metadata.get("captured_at")}
+    if bi_contract:
+        result.update({"query_type": "sku", "data_version": warehouse_data_version(run)})
+    return result
+
+
+@app.get("/v1/bi/sku-source-sales", tags=["bi"])
+def bi_sku_source_sales(_: Auth, sku_id: str, shop_id: str | None = None) -> dict[str, Any]:
+    """Return BI-classified 精选联盟/直播间/商品卡 sales for one SKU."""
+    return _sku_source_sales(sku_id, shop_id, bi_contract=True)
+
+
+@app.get("/v1/bi/sku-platform-sales-daily", tags=["bi"])
+def bi_sku_platform_sales_daily(
+    _: Auth, limit: PageLimit = 100, offset: PageOffset = 0, sku_id: str | None = None,
+    spu_id: str | None = None, platform: str | None = None,
+    date_from: date | None = None, date_to: date | None = None,
+) -> dict[str, Any]:
+    """Return daily SKU/platform facts materialized from paid-order exports."""
+    if not sku_id and not spu_id:
+        raise HTTPException(status_code=422, detail="Provide sku_id or spu_id")
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(status_code=422, detail="date_from must not exceed date_to")
+    clauses, parameters = [], []
+    for column, value in (("sku_id", sku_id), ("spu_id", spu_id), ("platform", platform)):
+        add_filter(clauses, parameters, column, value)
+    if date_from is not None:
+        clauses.append('"biz_date" >= ?')
+        parameters.append(date_from.isoformat())
+    if date_to is not None:
+        clauses.append('"biz_date" <= ?')
+        parameters.append(date_to.isoformat())
+    parameters.extend((limit, offset))
+    items = rows(
+        "paid_orders",
+        f"SELECT * FROM bi_sku_platform_sales_daily WHERE {' AND '.join(clauses)} "
+        "ORDER BY biz_date DESC,platform LIMIT ? OFFSET ?",
+        parameters,
+    )
+    run = one("paid_orders", "SELECT * FROM warehouse_runs ORDER BY published_at DESC LIMIT 1", [])
+    return {
+        **page_result(items, limit, offset),
+        "data_version": warehouse_data_version(run),
+        "captured_at": run["captured_at"],
+        "business_date": run["business_date"],
+        "quality": run["quality"],
+    }
+
+
+@app.get("/v1/warehouse/sku-source-sales", tags=["warehouse"], deprecated=True,
+         include_in_schema=False)
+def warehouse_sku_source_sales(_: Auth, sku_id: str, shop_id: str | None = None) -> dict[str, Any]:
+    """Compatibility route; new consumers must use /v1/bi/sku-source-sales."""
+    return _sku_source_sales(sku_id, shop_id, bi_contract=False)
+
+
+@app.get("/v1/bi/sku-profit-analysis/status", tags=["bi"])
+def sku_profit_analysis_status(_: Auth) -> dict[str, Any]:
+    if not profit_analysis_available():
+        raise HTTPException(status_code=404, detail="Profit-analysis dataset is not published")
+    run = one(
+        "profit_analysis",
+        "SELECT * FROM profit_analysis_runs WHERE complete=1 "
+        "ORDER BY end_date DESC,captured_at DESC LIMIT 1",
+        [],
+    )
+    return {**run, "rate_unit": "decimal_ratio"}
+
+
+@app.get("/v1/bi/sku-profit-analysis", tags=["bi"])
+def sku_profit_analysis(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    start_date: date | None = None,
+    end_date: date | None = None,
+    sku_id: str | None = None,
+    spu_id: str | None = None,
+    min_profit_rate: float | None = None,
+    max_profit_rate: float | None = None,
+    loss_only: bool = False,
+    sort_by: str = "profit",
+    descending: bool = True,
+) -> dict[str, Any]:
+    """Query one SKU-profit window; all percentage fields are decimal ratios."""
+    if not profit_analysis_available():
+        raise HTTPException(status_code=404, detail="Profit-analysis dataset is not published")
+    if start_date and not end_date:
+        raise HTTPException(status_code=422, detail="start_date requires end_date")
+    sort_columns = {
+        "profit": "profit", "profit_rate": "profit_rate", "gross_profit": "gross_profit",
+        "gross_profit_rate": "gross_profit_rate", "sales_amount": "sales_amount",
+        "net_sales_amount": "net_sales_amount", "net_sales_qty": "net_sales_qty",
+    }
+    if sort_by not in sort_columns:
+        raise HTTPException(status_code=422, detail="Invalid sort_by")
+    run_filters = ["complete=1"]
+    run_values: list[Any] = []
+    if end_date:
+        run_filters.append("end_date=?")
+        run_values.append(end_date.isoformat())
+    if start_date:
+        run_filters.append("start_date=?")
+        run_values.append(start_date.isoformat())
+    run = one(
+        "profit_analysis",
+        f"SELECT * FROM profit_analysis_runs WHERE {' AND '.join(run_filters)} "
+        "ORDER BY end_date DESC,captured_at DESC LIMIT 1",
+        run_values,
+    )
+    filters = ["start_date=?", "end_date=?"]
+    values: list[Any] = [run["start_date"], run["end_date"]]
+    add_filter(filters, values, "sku_id", sku_id)
+    add_filter(filters, values, "spu_id", spu_id)
+    if min_profit_rate is not None:
+        filters.append("profit_rate>=?")
+        values.append(min_profit_rate)
+    if max_profit_rate is not None:
+        filters.append("profit_rate<=?")
+        values.append(max_profit_rate)
+    if loss_only:
+        filters.append("profit<0")
+    values.extend((limit, offset))
+    items = rows(
+        "profit_analysis",
+        f"SELECT {','.join(PROFIT_ANALYSIS_COLUMNS)} FROM sku_profit_analysis "
+        f"WHERE {' AND '.join(filters)} ORDER BY {sort_columns[sort_by]} "
+        f"{'DESC' if descending else 'ASC'},sku_id ASC LIMIT ? OFFSET ?",
+        values,
+    )
+    total = rows(
+        "profit_analysis",
+        f"SELECT count(*) AS total FROM sku_profit_analysis WHERE {' AND '.join(filters)}",
+        values[:-2],
+    )[0]["total"]
+    return {**page_result(items, limit, offset), "total": total, "run": run,
+            "rate_unit": "decimal_ratio"}
+
+
+def shop_products_snapshot() -> dict[str, Any]:
+    if not shop_products_available():
+        raise HTTPException(status_code=404, detail="Shop-product dataset is not published")
+    return one("shop_products", "SELECT * FROM snapshot_info WHERE id=1 AND complete=1", [])
+
+
+def cursor_result(items: list[dict[str, Any]], limit: int, snapshot: dict[str, Any]) -> dict[str, Any]:
+    next_cursor = items[-1]["cursor"] if len(items) == limit else None
+    return {
+        "items": items, "limit": limit, "next_cursor": next_cursor,
+        "has_more": next_cursor is not None, "snapshot": snapshot,
+        "data_version": snapshot["captured_at"],
+    }
+
+
+@app.get("/v1/bi/shop-products/status", tags=["bi"])
+def shop_products_status(_: Auth) -> dict[str, Any]:
+    return shop_products_snapshot()
+
+
+@app.get("/v1/bi/shop-product-items", tags=["bi"])
+def shop_product_items(
+    _: Auth,
+    limit: PageLimit = 100,
+    after_rowid: int = Query(0, ge=0),
+    shop_id: str | None = None,
+    platform: str | None = None,
+    platform_item_id: str | None = None,
+    internal_item_code: str | None = None,
+    listed: bool | None = None,
+) -> dict[str, Any]:
+    snapshot = shop_products_snapshot()
+    filters, values = ["rowid>?"], [after_rowid]
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "platform", platform)
+    add_filter(filters, values, "platform_item_id", platform_item_id)
+    add_filter(filters, values, "internal_item_code", internal_item_code)
+    if listed is not None:
+        filters.append("is_listed=?")
+        values.append(int(listed))
+    values.append(limit)
+    items = rows(
+        "shop_products",
+        f"SELECT rowid AS cursor,* FROM shop_product_items WHERE {' AND '.join(filters)} "
+        "ORDER BY rowid LIMIT ?", values,
+    )
+    return cursor_result(items, limit, snapshot)
+
+
+@app.get("/v1/bi/shop-product-code-summary", tags=["bi"])
+def shop_product_code_summary(
+    _: Auth,
+    product_code: Annotated[
+        str, Query(min_length=1, max_length=64, pattern=r"^[0-9]+$")
+    ],
+) -> dict[str, Any]:
+    """Aggregate every raw item code with the same numeric portion."""
+    if not product_code.isascii() or not product_code.isdigit():
+        raise HTTPException(status_code=422, detail="product_code must contain ASCII digits only")
+    snapshot = shop_products_snapshot()
+    normalized = (
+        "regexp_replace(internal_item_code, '[^0-9]', '', 'g')"
+        if DB_PATHS["shop_products"].suffix == ".duckdb"
+        else "digits_only(internal_item_code)"
+    )
+    match = f"{normalized}=?"
+    summary = one(
+        "shop_products",
+        "SELECT count(*) AS link_count,"
+        "count(*) FILTER (WHERE is_listed=1) AS listed_link_count,"
+        "count(*) FILTER (WHERE is_listed=0) AS unlisted_link_count,"
+        "count(*) FILTER (WHERE is_listed IS NULL) AS unknown_status_link_count,"
+        "count(DISTINCT shop_id) AS shop_count,"
+        "count(DISTINCT CASE WHEN is_listed=1 THEN shop_id END) AS listed_shop_count,"
+        "count(DISTINCT CASE WHEN is_listed=0 THEN shop_id END) AS unlisted_shop_count,"
+        "count(DISTINCT CASE WHEN is_listed IS NULL THEN shop_id END) AS unknown_status_shop_count "
+        f"FROM shop_product_items WHERE {match}",
+        [product_code],
+    )
+    raw_codes = rows(
+        "shop_products",
+        "SELECT internal_item_code,count(*) AS link_count "
+        f"FROM shop_product_items WHERE {match} "
+        "GROUP BY internal_item_code ORDER BY link_count DESC,internal_item_code",
+        [product_code],
+    )
+    platforms = rows(
+        "shop_products",
+        "SELECT platform,count(*) AS link_count,"
+        "count(*) FILTER (WHERE is_listed=1) AS listed_link_count,"
+        "count(*) FILTER (WHERE is_listed=0) AS unlisted_link_count,"
+        "count(*) FILTER (WHERE is_listed IS NULL) AS unknown_status_link_count,"
+        "count(DISTINCT shop_id) AS shop_count "
+        f"FROM shop_product_items WHERE {match} "
+        "GROUP BY platform ORDER BY link_count DESC,platform",
+        [product_code],
+    )
+    return {
+        "product_code": product_code,
+        "match_rule": "remove_all_non_ascii_digits",
+        **summary,
+        "matched_raw_codes": raw_codes,
+        "platforms": platforms,
+        "snapshot": snapshot,
+        "data_version": snapshot["captured_at"],
+    }
+
+
+@app.get("/v1/bi/shop-product-skus", tags=["bi"])
+def shop_product_skus(
+    _: Auth,
+    limit: PageLimit = 100,
+    after_rowid: int = Query(0, ge=0),
+    shop_id: str | None = None,
+    platform: str | None = None,
+    platform_item_id: str | None = None,
+    platform_sku_id: str | None = None,
+    sku_id: str | None = None,
+    listed: bool | None = None,
+) -> dict[str, Any]:
+    snapshot = shop_products_snapshot()
+    filters, values = ["s.rowid>?"], [after_rowid]
+    for column, value in (
+        ("i.shop_id", shop_id), ("i.platform", platform),
+        ("s.platform_item_id", platform_item_id), ("s.platform_sku_id", platform_sku_id),
+        ("s.internal_sku_code", sku_id),
+    ):
+        if value is not None:
+            filters.append(f"{column}=?")
+            values.append(value)
+    if listed is not None:
+        filters.append("s.is_listed=?")
+        values.append(int(listed))
+    values.append(limit)
+    items = rows(
+        "shop_products",
+        "SELECT s.rowid AS cursor,i.shop_name,i.platform,i.internal_item_code,i.item_name,"
+        "i.item_image,i.item_url,s.* FROM shop_product_skus s JOIN shop_product_items i "
+        "USING(shop_id,platform_item_id) WHERE " + " AND ".join(filters) +
+        " ORDER BY s.rowid LIMIT ?", values,
+    )
+    return cursor_result(items, limit, snapshot)
+
+
+@app.get("/v1/bi/shop-product-status-changes", tags=["bi"])
+def shop_product_status_changes(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    change_date: date | None = None,
+    entity_type: str | None = None,
+    change_type: str | None = None,
+    shop_id: str | None = None,
+) -> dict[str, Any]:
+    snapshot = shop_products_snapshot()
+    filters, values = ["1=1"], []
+    add_filter(filters, values, "change_date", change_date.isoformat() if change_date else None)
+    add_filter(filters, values, "entity_type", entity_type)
+    add_filter(filters, values, "change_type", change_type)
+    add_filter(filters, values, "shop_id", shop_id)
+    values.extend((limit, offset))
+    items = rows(
+        "shop_products",
+        f"SELECT * FROM listing_status_changes WHERE {' AND '.join(filters)} "
+        "ORDER BY change_date DESC,entity_type,shop_id,platform_item_id,platform_sku_id "
+        "LIMIT ? OFFSET ?", values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": snapshot,
+            "data_version": snapshot["captured_at"]}
+
+
+@app.get("/health", tags=["system"])
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+DOUDIAN_DAILY_COLUMNS = [
+    "stat_date", "shop_id", "shop_name", "captured_at", "steps_ok", "notes",
+    "todo_unpaid", "todo_stockup", "todo_exception", "todo_aftersale", "todo_ticket",
+    "todo_risk", "todo_violation", "sales", "orders", "refund_pay", "exposure_uv",
+    "click_uv", "buyer_uv", "aov", "spend", "pay_amt", "ad_cost", "ad_ratio",
+    "refund_orders", "ctr", "cvr", "settle_amt", "refund7", "exp_total", "exp_goods",
+    "exp_logistics", "exp_service", "exp_has_data", "exp_category", "exp_window",
+    "comment_good_count", "comment_neutral_count", "comment_bad_count", "comment_good_rate",
+    "comment_neutral_rate", "comment_bad_rate", "comment_order_rate", "comment_detailed_rate",
+    "comment_new_30d", "comment_detailed_30d", "comment_good_30d", "comment_neutral_30d",
+    "comment_bad_30d", "comment_in_score_30d", "comment_with_photo", "comment_with_video",
+    "comment_with_content", "comment_unreply", "comment_bad_to_reply", "comment_worst",
+    "comment_latest_date", "order_stock_up", "order_ship_delay", "order_exp_ship",
+    "order_in_aftersale", "order_on_delivery", "order_received", "order_closed", "order_all",
+    "order_unpaid", "product_onsale", "product_draft", "product_audit", "product_forbidden",
+    "product_unpass", "aftersale_total", "aftersale_window_days", "package_total",
+    "package_exception_sampled", "stock_sold_out", "stock_alarm", "stock_advised_increase",
+    "stock_sku_total", "product_total", "product_onsale_cnt", "product_offline_total",
+    "listed_today", "offline_today", "listed_7d", "offline_7d", "listed_daily_7d",
+    "offline_daily_7d", "m_quality_return", "s_quality_return", "m_collect_ontime",
+    "s_collect_ontime", "m_goods_rating", "s_goods_rating", "m_collect_duration",
+    "m_delivery_ontime", "s_delivery_ontime",
+    "m_logistics_return", "s_logistics_return", "m_feige_response", "s_feige_response",
+    "m_aftersale_ontime", "m_aftersale_audit", "s_aftersale_audit", "m_feige_dissatisfy",
+    "s_feige_dissatisfy", "m_platform_help", "s_platform_help", "m_fake_trade",
+    "m_affect_experience",
+    "visit_uv", "sales_live", "sales_video", "sales_product_card",
+    "sales_artc_video", "sales_talent", "compass_pay_cnt", "compass_pay_amt",
+    "promo_cost", "promo_cost_total", "promo_cost_uni", "promo_roi",
+    "promo_net_orders", "promo_order_cost", "promo_pay_amt", "promo_order_ratio",
+    "promo_uni_roi", "promo_uni_orders", "promo_uni_order_cost", "promo_uni_pay_amt",
+]
+# Both doudian and doudian_client share the same column set.
+DOUDIAN_CLIENT_DAILY_COLUMNS = [*DOUDIAN_DAILY_COLUMNS]
+
+
+def _doudian_columns(dataset: str) -> list[str]:
+    """Columns actually present in the published table.
+
+    Lets a schema update ship before the next sync without breaking reads:
+    columns not yet uploaded are omitted until they arrive with the next sync.
+    """
+    try:
+        with closing(connect(dataset)) as connection:
+            cursor = connection.execute("SELECT * FROM shop_metrics_daily LIMIT 0")
+            present = {item[0] for item in cursor.description}
+    except Exception:
+        return []
+    return [column for column in DOUDIAN_DAILY_COLUMNS if column in present]
+
+
+def doudian_snapshot(dataset: str = "doudian") -> dict[str, Any]:
+    if not doudian_available(dataset):
+        raise HTTPException(status_code=404, detail=f"{dataset} dataset is not published")
+    snapshot = one(
+        dataset,
+        "SELECT max(stat_date) AS stat_date, max(captured_at) AS captured_at,"
+        "count(DISTINCT shop_id) AS shop_count,"
+        "count(*) AS row_count FROM shop_metrics_daily",
+        [],
+    )
+    return {**snapshot, "data_version": snapshot["captured_at"]}
+
+
+@app.get("/v1/bi/doudian/status", tags=["bi"])
+def doudian_status(_: Auth) -> dict[str, Any]:
+    return doudian_snapshot()
+
+
+@app.get("/v1/bi/doudian/daily", tags=["bi"])
+def doudian_daily(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    shop_name: str | None = None,
+) -> dict[str, Any]:
+    if not doudian_available():
+        raise HTTPException(status_code=404, detail="Doudian dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "shop_name", shop_name)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian",
+        f"SELECT {','.join(_doudian_columns('doudian') or DOUDIAN_DAILY_COLUMNS)} FROM shop_metrics_daily "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_snapshot()}
+
+
+@app.get("/v1/bi/doudian/metrics", tags=["bi"])
+def doudian_metrics(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    metric_key: str | None = None,
+    metric_status: Annotated[str | None, Query(alias="status")] = None,
+) -> dict[str, Any]:
+    if not doudian_available():
+        raise HTTPException(status_code=404, detail="Doudian dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "metric_key", metric_key)
+    add_filter(filters, values, "status", metric_status)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian",
+        "SELECT stat_date,shop_id,shop_name,metric_key,metric_label,status,has_value,"
+        "period,source,response_path,note,raw_value FROM shop_metrics_meta "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, shop_id, metric_key "
+        "LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_snapshot()}
+
+
+@app.get("/v1/bi/doudian-client/status", tags=["bi"])
+def doudian_client_status(_: Auth) -> dict[str, Any]:
+    return doudian_snapshot("doudian_client")
+
+
+@app.get("/v1/bi/doudian-client/daily", tags=["bi"])
+def doudian_client_daily(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    shop_name: str | None = None,
+) -> dict[str, Any]:
+    if not doudian_available("doudian_client"):
+        raise HTTPException(status_code=404, detail="Doudian client dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "shop_name", shop_name)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian_client",
+        f"SELECT {','.join(_doudian_columns('doudian_client') or DOUDIAN_CLIENT_DAILY_COLUMNS)} FROM shop_metrics_daily "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_snapshot("doudian_client")}
+
+
+@app.get("/v1/bi/doudian-client/metrics", tags=["bi"])
+def doudian_client_metrics(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    metric_key: str | None = None,
+    metric_status: Annotated[str | None, Query(alias="status")] = None,
+) -> dict[str, Any]:
+    if not doudian_available("doudian_client"):
+        raise HTTPException(status_code=404, detail="Doudian client dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "metric_key", metric_key)
+    add_filter(filters, values, "status", metric_status)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian_client",
+        "SELECT stat_date,shop_id,shop_name,metric_key,metric_label,status,has_value,"
+        "period,source,response_path,note,raw_value FROM shop_metrics_meta "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, shop_id, metric_key "
+        "LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_snapshot("doudian_client")}
+
+
+INVOICE_DAILY_COLUMNS = [
+    "stat_date", "shop_id", "shop_name", "platform_shop_id", "captured_at",
+    "consumer_pending_count", "consumer_pending_amount",
+    "consumer_red_count", "consumer_red_amount",
+    "platform_bill_count", "platform_bill_amount", "steps_ok", "notes",
+]
+
+
+def doudian_invoice_available() -> bool:
+    return DB_PATHS["doudian_invoice"].is_file()
+
+
+def doudian_invoice_snapshot() -> dict[str, Any]:
+    if not doudian_invoice_available():
+        raise HTTPException(status_code=404, detail="Doudian invoice dataset is not published")
+    snapshot = one(
+        "doudian_invoice",
+        "SELECT max(stat_date) AS stat_date, max(captured_at) AS captured_at, "
+        "count(DISTINCT shop_id) AS shop_count, count(*) AS row_count FROM invoice_daily",
+        [],
+    )
+    consumer = one("doudian_invoice", "SELECT count(*) AS count FROM consumer_invoice", [])
+    platform = one("doudian_invoice", "SELECT count(*) AS count FROM platform_invoice_bill", [])
+    return {
+        **snapshot,
+        "consumer_invoice_count": consumer["count"],
+        "platform_invoice_bill_count": platform["count"],
+        "data_version": snapshot["captured_at"],
+    }
+
+
+@app.get("/v1/bi/doudian-invoice/status", tags=["bi"])
+def doudian_invoice_status(_: Auth) -> dict[str, Any]:
+    return doudian_invoice_snapshot()
+
+
+@app.get("/v1/bi/doudian-invoice/daily", tags=["bi"])
+def doudian_invoice_daily(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    shop_name: str | None = None,
+) -> dict[str, Any]:
+    if not doudian_invoice_available():
+        raise HTTPException(status_code=404, detail="Doudian invoice dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "shop_name", shop_name)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian_invoice",
+        f"SELECT {','.join(INVOICE_DAILY_COLUMNS)} FROM invoice_daily "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_invoice_snapshot()}
+
+
+@app.get("/v1/bi/doudian-invoice/consumer", tags=["bi"])
+def doudian_invoice_consumer(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    invoice_status: str | None = None,
+) -> dict[str, Any]:
+    if not doudian_invoice_available():
+        raise HTTPException(status_code=404, detail="Doudian invoice dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "invoice_status", invoice_status)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian_invoice",
+        "SELECT stat_date,shop_id,shop_name,shop_order_id,registation_id,title,tax_no,"
+        "invoice_type,invoice_amount,apply_time,order_status,invoice_status,"
+        "deadline_time,deadline_text,sub_order_no FROM consumer_invoice "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, deadline_time, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_invoice_snapshot()}
+
+
+@app.get("/v1/bi/doudian-invoice/platform", tags=["bi"])
+def doudian_invoice_platform(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    stat_date: date | None = None,
+    shop_id: str | None = None,
+    scene: str | None = None,
+) -> dict[str, Any]:
+    if not doudian_invoice_available():
+        raise HTTPException(status_code=404, detail="Doudian invoice dataset is not published")
+    filters: list[str] = ["1=1"]
+    values: list[Any] = []
+    add_filter(filters, values, "stat_date", stat_date.isoformat() if stat_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "scene", scene)
+    values.extend((limit, offset))
+    items = rows(
+        "doudian_invoice",
+        "SELECT stat_date,shop_id,shop_name,credit_code,bill_id,scene,scene_text,"
+        "bill_amount_yuan,bill_amount_raw,order_count,bill_period,create_time,"
+        "corp_title,corp_tax_no,is_frozen,pay_status,unpay_amount FROM platform_invoice_bill "
+        f"WHERE {' AND '.join(filters)} ORDER BY stat_date DESC, bill_period, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(items, limit, offset), "snapshot": doudian_invoice_snapshot()}
+
+
+@app.get("/v1/orders/{o_id}", tags=["orders"])
+def get_order(o_id: str, _: Auth) -> dict[str, Any]:
+    return one(
+        "orders",
+        f"SELECT {','.join(ORDER_COLUMNS)} FROM order_details WHERE o_id = ?",
+        [o_id],
+    )
+
+
+@app.get("/v1/orders/{o_id}/items", tags=["orders"])
+def get_order_items(o_id: str, _: Auth) -> dict[str, Any]:
+    result = rows(
+        "orders",
+        f"SELECT {','.join(ORDER_ITEM_COLUMNS)} FROM order_item_details WHERE o_id = ? "
+        "ORDER BY sku_row_number, sku_id, oi_outer_oi_id",
+        [o_id],
+    )
+    return page_result(result, len(result) or 1, 0)
+
+
+@app.get("/v1/orders", tags=["orders"])
+def list_orders(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    so_id: str | None = None,
+    outer_so_id: str | None = None,
+    sku_id: str | None = None,
+    shop_name: str | None = None,
+    platform: str | None = None,
+    order_status: Annotated[str | None, Query(alias="status")] = None,
+    send_from: datetime | None = None,
+    send_to: datetime | None = None,
+) -> dict[str, Any]:
+    if not any((so_id, outer_so_id, shop_name, send_from, send_to)):
+        raise HTTPException(
+            status_code=422,
+            detail="Provide at least one indexed constraint: so_id, outer_so_id, shop_name, send_from, or send_to",
+        )
+    if send_from and send_to and send_from > send_to:
+        raise HTTPException(status_code=422, detail="send_from must not be later than send_to")
+
+    filters: list[str] = []
+    values: list[Any] = []
+    for column, value in (
+        ("so_id", so_id), ("outer_so_id", outer_so_id), ("sku_id", sku_id),
+        ("shop_name", shop_name), ("platform", platform), ("status", order_status),
+    ):
+        add_filter(filters, values, column, value)
+    if send_from:
+        filters.append("send_date >= ?")
+        values.append(send_from.isoformat(sep=" "))
+    if send_to:
+        filters.append("send_date <= ?")
+        values.append(send_to.isoformat(sep=" "))
+    values.extend((limit, offset))
+    result = rows(
+        "orders",
+        f"SELECT {','.join(ORDER_COLUMNS)} FROM order_details WHERE {' AND '.join(filters)} "
+        "ORDER BY send_date DESC, o_id DESC LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/order-items", tags=["orders"])
+def list_order_items(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    o_id: str | None = None,
+    so_id: str | None = None,
+    sku_id: str | None = None,
+    shop_id: str | None = None,
+    send_from: datetime | None = None,
+    send_to: datetime | None = None,
+) -> dict[str, Any]:
+    if not any((o_id, so_id, sku_id, shop_id, send_from, send_to)):
+        raise HTTPException(status_code=422, detail="Provide o_id, so_id, sku_id, shop_id, or a send-date range")
+    if send_from and send_to and send_from > send_to:
+        raise HTTPException(status_code=422, detail="send_from must not be later than send_to")
+    filters: list[str] = []
+    values: list[Any] = []
+    for column, value in (("o_id", o_id), ("so_id", so_id), ("sku_id", sku_id), ("shop_id", shop_id)):
+        add_filter(filters, values, column, value)
+    if send_from:
+        filters.append("send_date >= ?")
+        values.append(send_from.isoformat(sep=" "))
+    if send_to:
+        filters.append("send_date <= ?")
+        values.append(send_to.isoformat(sep=" "))
+    values.extend((limit, offset))
+    result = rows(
+        "orders",
+        f"SELECT {','.join(ORDER_ITEM_COLUMNS)} FROM order_item_details WHERE {' AND '.join(filters)} "
+        "ORDER BY send_date DESC, o_id DESC, sku_row_number, sku_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/skus/{spu_id}/{sku_id}", tags=["inventory"])
+def get_sku(spu_id: str, sku_id: str, _: Auth) -> dict[str, Any]:
+    database = inventory_database()
+    return {
+        **one(
+            database,
+            f"SELECT {','.join(SKU_COLUMNS)} FROM sku_inventory WHERE spu_id = ? AND sku_id = ?",
+            [spu_id, sku_id],
+        ),
+        **_inventory_snapshot_metadata(database),
+    }
+
+
+@app.get("/v1/inventory/shop-shortages/{shop_id}", tags=["inventory"])
+def get_shop_shortage(shop_id: str, _: Auth) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(SHOP_SHORTAGE_COLUMNS)} FROM shop_shortage_summary WHERE shop_id = ?",
+        [shop_id],
+    )
+
+
+@app.get("/v1/inventory/shop-shortages", tags=["inventory"])
+def list_shop_shortages(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    shop_name: str | None = None,
+    platform: str | None = None,
+    stockout_only: bool = False,
+) -> dict[str, Any]:
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "shop_name", shop_name)
+    add_filter(filters, values, "platform", platform)
+    if stockout_only:
+        filters.append("shop_stockout_qty > 0")
+    where = f" WHERE {' AND '.join(filters)}" if filters else ""
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(SHOP_SHORTAGE_COLUMNS)} FROM shop_shortage_summary{where} "
+        "ORDER BY shop_stockout_qty DESC, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/daily-metrics/{snapshot_date}", tags=["inventory"])
+def get_inventory_daily_metrics(snapshot_date: date, _: Auth) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(INVENTORY_DAILY_METRICS_COLUMNS)} "
+        "FROM inventory_daily_metrics WHERE snapshot_date = ?",
+        [snapshot_date.isoformat()],
+    )
+
+
+@app.get("/v1/inventory/daily-metrics", tags=["inventory"])
+def list_inventory_daily_metrics(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    date_from: date | None = None,
+    date_to: date | None = None,
+) -> dict[str, Any]:
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(status_code=422, detail="date_from must not be later than date_to")
+    filters: list[str] = []
+    values: list[Any] = []
+    if date_from:
+        filters.append("snapshot_date >= ?")
+        values.append(date_from.isoformat())
+    if date_to:
+        filters.append("snapshot_date <= ?")
+        values.append(date_to.isoformat())
+    where = f" WHERE {' AND '.join(filters)}" if filters else ""
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(INVENTORY_DAILY_METRICS_COLUMNS)} "
+        f"FROM inventory_daily_metrics{where} "
+        "ORDER BY snapshot_date DESC LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/shop-sales/{spu_id}/{shop_id}", tags=["inventory"])
+def get_shop_product_sales(spu_id: str, shop_id: str, _: Auth) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(SHOP_PRODUCT_SALES_COLUMNS)} "
+        "FROM shop_product_sales_analysis WHERE spu_id = ? AND shop_id = ?",
+        [spu_id, shop_id],
+    )
+
+
+@app.get("/v1/inventory/sales-channels", tags=["inventory"])
+def get_sale_channel_snapshot(
+    _: Auth, product_id: str, query_type: str = "sku", count_type: str = "channel",
+) -> dict[str, Any]:
+    if query_type not in ("spu", "sku") or count_type not in ("platform", "channel"):
+        raise HTTPException(status_code=422, detail="Invalid product grain or dimension")
+    # A batch list is a different, lower-coverage source. Never merge its rows
+    # into a popup snapshot or replace a complete popup merely because it is old.
+    snapshot_tables = ("sale_channel_snapshots", "sale_channel_batch_snapshots")
+    stored = None
+    is_batch = False
+    try:
+        with closing(connect("inventory")) as connection:
+            available = {row["name"] for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name IN (?,?)",
+                snapshot_tables,
+            )}
+            if not available:
+                raise HTTPException(status_code=503, detail="Sales channel snapshots are not available")
+            for table in snapshot_tables:
+                if table not in available:
+                    continue
+                stored = connection.execute(
+                    f"SELECT raw_json FROM {table} "
+                    "WHERE query_type=? AND product_id=? AND count_type=?",
+                    [query_type, product_id, count_type],
+                ).fetchone()
+                if stored is not None:
+                    is_batch = table == "sale_channel_batch_snapshots"
+                    break
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable") from exc
+    if stored is None:
+        raise HTTPException(status_code=404, detail="Record not found")
+    try:
+        result = json.loads(stored["raw_json"])
+        if (not isinstance(result, dict)
+                or result.get("query_type") != query_type
+                or result.get("count_type") != count_type
+                or result.get("product_id", result.get(f"{query_type}_id")) != product_id
+                or not isinstance(result.get("rows"), list)
+                or type(result.get("total")) is not int
+                or result["total"] < 0
+                or len(result["rows"]) != result["total"]):
+            raise ValueError("Invalid snapshot identity, rows or total")
+        captured = datetime.fromisoformat(result["captured_at"].replace("Z", "+00:00"))
+        if captured.tzinfo is None:
+            raise ValueError("Snapshot timestamp has no timezone")
+    except (ValueError, TypeError, KeyError, AttributeError) as exc:
+        raise HTTPException(status_code=503, detail="Sales channel snapshot is invalid") from exc
+    if is_batch:
+        if not result["rows"]:
+            raise HTTPException(status_code=404, detail="Record not found")
+        result.update({
+            "source_api": "purchase_alarm_sku_detail_unfold",
+            "quality": "batch_list",
+            "coverage": "listed_shops_only",
+            "scope": "listed_shops_only",
+            "complete": False,
+            "is_complete_popup": False,
+            "distributor_granularity": "unavailable",
+        })
+    else:
+        # Older complete snapshots predate these metadata fields.
+        result.setdefault("source_api", "purchase_alarm_sale_channel_detail")
+        result.setdefault("quality", "complete_popup")
+        result.setdefault("coverage", "all_returned_records")
+        result.setdefault("complete", True)
+        result.setdefault("is_complete_popup", True)
+    result["stale"] = (datetime.now(timezone.utc) - captured).total_seconds() > 900
+    result["snapshot_version"] = result.get("completed_at", result["captured_at"])
+    result.setdefault("data_version", result["snapshot_version"])
+    return result
+
+
+@app.get("/v1/bi/shop-directory", tags=["bi"])
+@app.get("/v1/inventory/shop-directory", tags=["inventory"])
+def list_inventory_shop_directory(
+    _: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+    platform: Annotated[list[str] | None, Query()] = None,
+    shop_name: str | None = None,
+) -> dict[str, Any]:
+    """Return the platform/shop tree captured from JST's platform_shop_list."""
+    platforms = list(dict.fromkeys(value for value in (platform or []) if value))
+    if len(platforms) > 100:
+        raise HTTPException(status_code=422, detail="Too many platform filters")
+    try:
+        with closing(connect("inventory")) as connection:
+            exact = connection.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='shop_directory'"
+            ).fetchone()
+            if exact:
+                filters, values = [], []
+                if platforms:
+                    filters.append(f"platform IN ({','.join('?' for _ in platforms)})")
+                    values.extend(platforms)
+                if shop_name:
+                    filters.append("shop_name LIKE ? ESCAPE '\\'")
+                    values.append(like_contains(shop_name))
+                where = f" WHERE {' AND '.join(filters)}" if filters else ""
+                total = connection.execute(
+                    f"SELECT count(*) FROM shop_directory{where}", values,
+                ).fetchone()[0]
+                result = [dict(row) for row in connection.execute(
+                    "SELECT shop_id,shop_name,platform,captured_at FROM shop_directory"
+                    f"{where} ORDER BY platform,shop_name,shop_id LIMIT ? OFFSET ?",
+                    [*values, limit, offset],
+                ).fetchall()]
+                source = "platform_shop_list"
+            else:
+                filters, values = ["shop_id<>''", "coalesce(shop_name,'')<>''", "coalesce(platform,'')<>''"], []
+                if platforms:
+                    filters.append(f"platform IN ({','.join('?' for _ in platforms)})")
+                    values.extend(platforms)
+                if shop_name:
+                    filters.append("shop_name LIKE ? ESCAPE '\\'")
+                    values.append(like_contains(shop_name))
+                where = f" WHERE {' AND '.join(filters)}"
+                total = connection.execute(
+                    "SELECT count(*) FROM (SELECT shop_id FROM shop_product_sales_analysis"
+                    f"{where} GROUP BY shop_id)", values,
+                ).fetchone()[0]
+                result = [dict(row) for row in connection.execute(
+                    "SELECT shop_id,max(shop_name) AS shop_name,max(platform) AS platform,"
+                    "NULL AS captured_at FROM shop_product_sales_analysis "
+                    f"{where} GROUP BY shop_id "
+                    "ORDER BY platform,shop_name,shop_id LIMIT ? OFFSET ?",
+                    [*values, limit, offset],
+                ).fetchall()]
+                source = "shop_product_sales_analysis_fallback"
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable") from exc
+    return {**page_result(result, limit, offset), "total": total, "source": source}
+
+
+@app.get("/v1/bi/shop-groups", tags=["bi"])
+@app.get("/v1/inventory/shop-groups", tags=["inventory"])
+def list_inventory_shop_groups(
+    _: Auth, limit: PageLimit = 100, offset: PageOffset = 0,
+) -> dict[str, Any]:
+    """Return JST's explicit shop-group membership; never infer it from names."""
+    try:
+        with closing(connect("inventory")) as connection:
+            tables = {row["name"] for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' "
+                "AND name IN ('shop_groups','shop_group_members')"
+            )}
+            if tables != {"shop_groups", "shop_group_members"}:
+                raise HTTPException(status_code=404, detail="Shop groups are not published")
+            total = connection.execute("SELECT count(*) FROM shop_groups").fetchone()[0]
+            groups = [dict(row) for row in connection.execute(
+                "SELECT group_id,group_name,shop_count,captured_at FROM shop_groups "
+                "ORDER BY group_name,group_id LIMIT ? OFFSET ?", [limit, offset],
+            ).fetchall()]
+            for group in groups:
+                group["shop_ids"] = [row["shop_id"] for row in connection.execute(
+                    "SELECT shop_id FROM shop_group_members WHERE group_id=? ORDER BY shop_id",
+                    [group["group_id"]],
+                ).fetchall()]
+                if len(group["shop_ids"]) != group["shop_count"]:
+                    raise HTTPException(status_code=503, detail="Shop group membership is incomplete")
+    except HTTPException:
+        raise
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable") from exc
+    return {**page_result(groups, limit, offset), "total": total,
+            "source": "query_shop_group_config"}
+
+
+@app.get("/v1/bi/inventory-products", tags=["bi"])
+def bi_inventory_products(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    view_type: str = "sku",
+    platform: Annotated[list[str] | None, Query()] = None,
+    shop_id: Annotated[list[str] | None, Query()] = None,
+    shop_group_id: Annotated[list[str] | None, Query()] = None,
+    stockout_only: bool = False,
+) -> dict[str, Any]:
+    """Filter inventory by platform, JST shop group and/or shop order relations."""
+    if view_type not in ("spu", "sku"):
+        raise HTTPException(status_code=422, detail="view_type must be spu or sku")
+    platforms = list(dict.fromkeys(value for value in (platform or []) if value))
+    shop_ids = list(dict.fromkeys(value for value in (shop_id or []) if value))
+    shop_group_ids = list(dict.fromkeys(value for value in (shop_group_id or []) if value))
+    if not platforms and not shop_ids and not shop_group_ids:
+        raise HTTPException(status_code=422, detail="Provide platform, shop_group_id or shop_id")
+    if len(platforms) + len(shop_ids) + len(shop_group_ids) > 200:
+        raise HTTPException(status_code=422, detail="Too many platform/shop-group/shop filters")
+    if not paid_orders_available():
+        raise HTTPException(status_code=404, detail="Paid-order warehouse is not published")
+
+    order_filters: list[str] = []
+    order_values: list[Any] = []
+    if platforms:
+        order_filters.append(f"o.platform IN ({','.join('?' for _ in platforms)})")
+        order_values.extend(platforms)
+    if shop_ids:
+        order_filters.append(f"o.shop_id IN ({','.join('?' for _ in shop_ids)})")
+        order_values.extend(shop_ids)
+    if shop_group_ids:
+        order_filters.append("o.shop_id IN (SELECT shop_id FROM shop_group_members "
+                             f"WHERE group_id IN ({','.join('?' for _ in shop_group_ids)}))")
+        order_values.extend(shop_group_ids)
+    order_where = " AND ".join(order_filters)
+
+    try:
+        with closing(connect("inventory")) as connection:
+            if shop_group_ids:
+                found_groups = connection.execute(
+                    f"SELECT count(*) FROM shop_groups WHERE group_id IN ({','.join('?' for _ in shop_group_ids)})",
+                    shop_group_ids,
+                ).fetchone()[0]
+                if found_groups != len(shop_group_ids):
+                    raise HTTPException(status_code=422, detail="Unknown shop_group_id")
+            paid_source = PAID_ORDERS_ODS_PATH if PAID_ORDERS_ODS_PATH.is_file() else DB_PATHS["paid_orders"]
+            paid_uri = f"file:{quote(str(paid_source))}?mode=ro"
+            connection.execute("ATTACH DATABASE ? AS paid", [paid_uri])
+            run = connection.execute(
+                "SELECT batch_id,business_date,start_date,end_date,captured_at,published_at,quality "
+                "FROM paid.warehouse_runs ORDER BY published_at DESC LIMIT 1"
+            ).fetchone()
+            if run is None:
+                raise HTTPException(status_code=404, detail="Paid-order warehouse is empty")
+            inventory_run = connection.execute(
+                "SELECT completed_at FROM export_info ORDER BY id DESC LIMIT 1"
+            ).fetchone()
+
+            if view_type == "sku":
+                columns = SKU_COLUMNS
+                source_table = "sku_inventory i"
+                relation = (
+                    "i.sku_id IN (SELECT o.sku_id FROM paid.paid_order_items_raw o "
+                    f"WHERE {order_where})"
+                )
+            else:
+                columns = SPU_COLUMNS
+                source_table = "spu_inventory i"
+                relation = (
+                    "i.spu_id IN (SELECT k.spu_id FROM sku_inventory k "
+                    "WHERE k.sku_id IN (SELECT o.sku_id FROM paid.paid_order_items_raw o "
+                    f"WHERE {order_where}))"
+                )
+            inventory_filters = [relation]
+            if stockout_only:
+                inventory_filters.append("i.stockout_qty > 0")
+            where = " AND ".join(inventory_filters)
+            total = connection.execute(
+                f"SELECT count(*) FROM {source_table} WHERE {where}", order_values,
+            ).fetchone()[0]
+            selected = ",".join(f'i."{column}"' for column in columns)
+            items = [dict(row) for row in connection.execute(
+                f"SELECT {selected} FROM {source_table} WHERE {where} "
+                "ORDER BY i.advice_purchase_qty DESC,i.spu_id"
+                + (",i.sku_id" if view_type == "sku" else "")
+                + " LIMIT ? OFFSET ?",
+                [*order_values, limit, offset],
+            ).fetchall()]
+    except HTTPException:
+        raise
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable") from exc
+
+    return {
+        **page_result(items, limit, offset),
+        "total": total,
+        "view_type": view_type,
+        "filters": {"platform": platforms, "shop_group_id": shop_group_ids, "shop_id": shop_ids,
+                    "stockout_only": stockout_only},
+        "source": "paid_order_excel_exports",
+        "quality": "order_derived_scope",
+        "relationship_start_date": run["start_date"],
+        "relationship_end_date": run["end_date"],
+        "captured_at": run["captured_at"],
+        "data_version": warehouse_data_version(run),
+        "inventory_captured_at": inventory_run["completed_at"] if inventory_run else None,
+    }
+
+
+@app.get("/v1/bi/inventory-product-scope", tags=["bi"])
+def bi_inventory_product_scope(
+    _: Auth,
+    platform: Annotated[list[str] | None, Query()] = None,
+    shop_id: Annotated[list[str] | None, Query()] = None,
+    shop_group_id: Annotated[list[str] | None, Query()] = None,
+) -> dict[str, Any]:
+    """Return SKU/SPU identities for a platform, JST group and/or shop filter."""
+    platforms = list(dict.fromkeys(value for value in (platform or []) if value))
+    shop_ids = list(dict.fromkeys(value for value in (shop_id or []) if value))
+    shop_group_ids = list(dict.fromkeys(value for value in (shop_group_id or []) if value))
+    if not platforms and not shop_ids and not shop_group_ids:
+        raise HTTPException(status_code=422, detail="Provide platform, shop_group_id or shop_id")
+    if len(platforms) + len(shop_ids) + len(shop_group_ids) > 200:
+        raise HTTPException(status_code=422, detail="Too many platform/shop-group/shop filters")
+    if not paid_orders_available():
+        raise HTTPException(status_code=404, detail="Paid-order warehouse is not published")
+
+    order_filters: list[str] = []
+    order_values: list[Any] = []
+    if platforms:
+        order_filters.append(f"o.platform IN ({','.join('?' for _ in platforms)})")
+        order_values.extend(platforms)
+    if shop_ids:
+        order_filters.append(f"o.shop_id IN ({','.join('?' for _ in shop_ids)})")
+        order_values.extend(shop_ids)
+    if shop_group_ids:
+        order_filters.append("o.shop_id IN (SELECT shop_id FROM shop_group_members "
+                             f"WHERE group_id IN ({','.join('?' for _ in shop_group_ids)}))")
+        order_values.extend(shop_group_ids)
+    order_where = " AND ".join(order_filters)
+
+    try:
+        with closing(connect("inventory")) as connection:
+            if shop_group_ids:
+                found_groups = connection.execute(
+                    f"SELECT count(*) FROM shop_groups WHERE group_id IN ({','.join('?' for _ in shop_group_ids)})",
+                    shop_group_ids,
+                ).fetchone()[0]
+                if found_groups != len(shop_group_ids):
+                    raise HTTPException(status_code=422, detail="Unknown shop_group_id")
+            paid_source = PAID_ORDERS_ODS_PATH if PAID_ORDERS_ODS_PATH.is_file() else DB_PATHS["paid_orders"]
+            paid_uri = f"file:{quote(str(paid_source))}?mode=ro"
+            connection.execute("ATTACH DATABASE ? AS paid", [paid_uri])
+            run = connection.execute(
+                "SELECT batch_id,business_date,start_date,end_date,captured_at,published_at,quality "
+                "FROM paid.warehouse_runs ORDER BY published_at DESC LIMIT 1"
+            ).fetchone()
+            if run is None:
+                raise HTTPException(status_code=404, detail="Paid-order warehouse is empty")
+            inventory_run = connection.execute(
+                "SELECT completed_at FROM export_info ORDER BY id DESC LIMIT 1"
+            ).fetchone()
+            items = [dict(row) for row in connection.execute(
+                "SELECT i.spu_id,i.sku_id FROM sku_inventory i "
+                "WHERE i.sku_id IN (SELECT o.sku_id FROM paid.paid_order_items_raw o "
+                f"WHERE {order_where}) ORDER BY i.spu_id,i.sku_id",
+                order_values,
+            ).fetchall()]
+    except HTTPException:
+        raise
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable") from exc
+
+    return {
+        "items": items,
+        "total": len(items),
+        "spu_total": len({item["spu_id"] for item in items}),
+        "filters": {"platform": platforms, "shop_group_id": shop_group_ids, "shop_id": shop_ids},
+        "source": "paid_order_excel_exports",
+        "quality": "order_derived_scope",
+        "relationship_start_date": run["start_date"],
+        "relationship_end_date": run["end_date"],
+        "captured_at": run["captured_at"],
+        "data_version": warehouse_data_version(run),
+        "inventory_captured_at": inventory_run["completed_at"] if inventory_run else None,
+    }
+
+
+@app.get("/v1/bi/product-scope", tags=["bi"])
+@app.get("/v1/inventory/product-scope", tags=["inventory"])
+def list_inventory_product_scope(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    platform: Annotated[list[str] | None, Query()] = None,
+    shop_id: Annotated[list[str] | None, Query()] = None,
+) -> dict[str, Any]:
+    """Return SPUs related to any selected platform or shop in sales analysis."""
+    platforms = list(dict.fromkeys(value for value in (platform or []) if value))
+    shop_ids = list(dict.fromkeys(value for value in (shop_id or []) if value))
+    if not platforms and not shop_ids:
+        raise HTTPException(status_code=422, detail="Provide platform or shop_id")
+    if len(platforms) + len(shop_ids) > 200:
+        raise HTTPException(status_code=422, detail="Too many platform/shop filters")
+    selects: list[str] = []
+    values: list[Any] = []
+    if platforms:
+        selects.append(
+            "SELECT spu_id FROM platform_product_sales_analysis "
+            f"WHERE platform IN ({','.join('?' for _ in platforms)})"
+        )
+        values.extend(platforms)
+    if shop_ids:
+        selects.append(
+            "SELECT spu_id FROM shop_product_sales_analysis "
+            f"WHERE shop_id IN ({','.join('?' for _ in shop_ids)})"
+        )
+        values.extend(shop_ids)
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT spu_id FROM ({' UNION '.join(selects)}) "
+        "WHERE spu_id<>'' ORDER BY spu_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/shop-sales", tags=["inventory"])
+def list_shop_product_sales(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    spu_id: str | None = None,
+    shop_id: str | None = None,
+    shop_name: str | None = None,
+    platform: str | None = None,
+) -> dict[str, Any]:
+    if not any((spu_id, shop_id)):
+        raise HTTPException(status_code=422, detail="Provide spu_id or shop_id")
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "spu_id", spu_id)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "shop_name", shop_name)
+    add_filter(filters, values, "platform", platform)
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(SHOP_PRODUCT_SALES_COLUMNS)} "
+        f"FROM shop_product_sales_analysis WHERE {' AND '.join(filters)} "
+        "ORDER BY sales_qty DESC, spu_id, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/platform-sales/{spu_id}/{platform}", tags=["inventory"])
+def get_platform_product_sales(spu_id: str, platform: str, _: Auth) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(PLATFORM_PRODUCT_SALES_COLUMNS)} "
+        "FROM platform_product_sales_analysis WHERE spu_id = ? AND platform = ?",
+        [spu_id, platform],
+    )
+
+
+@app.get("/v1/inventory/platform-sales", tags=["inventory"])
+def list_platform_product_sales(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    spu_id: str | None = None,
+    platform: str | None = None,
+) -> dict[str, Any]:
+    if not any((spu_id, platform)):
+        raise HTTPException(status_code=422, detail="Provide spu_id or platform")
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "spu_id", spu_id)
+    add_filter(filters, values, "platform", platform)
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(PLATFORM_PRODUCT_SALES_COLUMNS)} "
+        f"FROM platform_product_sales_analysis WHERE {' AND '.join(filters)} "
+        "ORDER BY sales_qty DESC, spu_id, platform LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get(
+    "/v1/inventory/link-sales/{spu_id}/{shop_id}/{shop_spu_id}",
+    tags=["inventory"],
+)
+def get_link_product_sales(
+    spu_id: str, shop_id: str, shop_spu_id: str, _: Auth,
+) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(LINK_PRODUCT_SALES_COLUMNS)} "
+        "FROM link_product_sales_analysis "
+        "WHERE spu_id = ? AND shop_id = ? AND shop_spu_id = ?",
+        [spu_id, shop_id, shop_spu_id],
+    )
+
+
+@app.get("/v1/inventory/link-sales", tags=["inventory"])
+def list_link_product_sales(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    spu_id: str | None = None,
+    shop_id: str | None = None,
+    shop_spu_id: str | None = None,
+    platform: str | None = None,
+) -> dict[str, Any]:
+    if not any((spu_id, shop_id, shop_spu_id)):
+        raise HTTPException(
+            status_code=422,
+            detail="Provide spu_id, shop_id, or shop_spu_id",
+        )
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "spu_id", spu_id)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "shop_spu_id", shop_spu_id)
+    add_filter(filters, values, "platform", platform)
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(LINK_PRODUCT_SALES_COLUMNS)} "
+        f"FROM link_product_sales_analysis WHERE {' AND '.join(filters)} "
+        "ORDER BY sales_qty DESC, spu_id, shop_id, shop_spu_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/product-daily-sales/{spu_id}/{biz_date}", tags=["inventory"])
+def get_product_daily_sales(spu_id: str, biz_date: date, _: Auth) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(PRODUCT_DAILY_SALES_COLUMNS)} "
+        "FROM product_daily_sales_analysis WHERE spu_id = ? AND biz_date = ?",
+        [spu_id, biz_date.isoformat()],
+    )
+
+
+@app.get("/v1/inventory/product-daily-sales", tags=["inventory"])
+def list_product_daily_sales(
+    _: Auth,
+    spu_id: str,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    date_from: date | None = None,
+    date_to: date | None = None,
+) -> dict[str, Any]:
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(status_code=422, detail="date_from must not be later than date_to")
+    filters = ['"spu_id" = ?']
+    values: list[Any] = [spu_id]
+    if date_from:
+        filters.append("biz_date >= ?")
+        values.append(date_from.isoformat())
+    if date_to:
+        filters.append("biz_date <= ?")
+        values.append(date_to.isoformat())
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(PRODUCT_DAILY_SALES_COLUMNS)} "
+        f"FROM product_daily_sales_analysis WHERE {' AND '.join(filters)} "
+        "ORDER BY biz_date DESC LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/shop-daily-sales/{spu_id}/{shop_id}/{biz_date}", tags=["inventory"])
+def get_shop_daily_sales(
+    spu_id: str, shop_id: str, biz_date: date, _: Auth,
+) -> dict[str, Any]:
+    return one(
+        "inventory",
+        f"SELECT {','.join(SHOP_DAILY_SALES_COLUMNS)} "
+        "FROM shop_daily_sales_analysis "
+        "WHERE spu_id = ? AND shop_id = ? AND biz_date = ?",
+        [spu_id, shop_id, biz_date.isoformat()],
+    )
+
+
+@app.get("/v1/inventory/shop-daily-sales", tags=["inventory"])
+def list_shop_daily_sales(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    spu_id: str | None = None,
+    shop_id: str | None = None,
+    date_from: date | None = None,
+    date_to: date | None = None,
+) -> dict[str, Any]:
+    if not any((spu_id, shop_id)):
+        raise HTTPException(status_code=422, detail="Provide spu_id or shop_id")
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(status_code=422, detail="date_from must not be later than date_to")
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "spu_id", spu_id)
+    add_filter(filters, values, "shop_id", shop_id)
+    if date_from:
+        filters.append("biz_date >= ?")
+        values.append(date_from.isoformat())
+    if date_to:
+        filters.append("biz_date <= ?")
+        values.append(date_to.isoformat())
+    values.extend((limit, offset))
+    result = rows(
+        "inventory",
+        f"SELECT {','.join(SHOP_DAILY_SALES_COLUMNS)} "
+        f"FROM shop_daily_sales_analysis WHERE {' AND '.join(filters)} "
+        "ORDER BY biz_date DESC, sales_qty DESC, spu_id, shop_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)
+
+
+@app.get("/v1/inventory/skus", tags=["inventory"])
+def list_skus(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    spu_id: str | None = None,
+    sku_id: str | None = None,
+    category: str | None = None,
+    brand_name: str | None = None,
+    stockout_only: bool = False,
+) -> dict[str, Any]:
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "spu_id", spu_id)
+    add_filter(filters, values, "sku_id", sku_id)
+    add_filter(filters, values, "category", category)
+    add_filter(filters, values, "brand_name", brand_name)
+    if stockout_only:
+        filters.append("stockout_qty > 0")
+    where = f" WHERE {' AND '.join(filters)}" if filters else ""
+    values.extend((limit, offset))
+    result = rows(
+        inventory_database(),
+        f"SELECT {','.join(SKU_COLUMNS)} FROM sku_inventory{where} "
+        "ORDER BY advice_purchase_qty DESC, spu_id, sku_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(result, limit, offset), **_inventory_snapshot_metadata()}
+
+
+@app.get("/v1/inventory/spus/{spu_id}", tags=["inventory"])
+def get_spu(spu_id: str, _: Auth) -> dict[str, Any]:
+    database = inventory_database()
+    return {
+        **one(
+            database,
+            f"SELECT {','.join(SPU_COLUMNS)} FROM spu_inventory WHERE spu_id = ?",
+            [spu_id],
+        ),
+        **_inventory_snapshot_metadata(database),
+    }
+
+
+@app.get("/v1/inventory/spus", tags=["inventory"])
+def list_spus(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    category: str | None = None,
+    brand_name: str | None = None,
+    stockout_only: bool = False,
+) -> dict[str, Any]:
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "category", category)
+    add_filter(filters, values, "brand_name", brand_name)
+    if stockout_only:
+        filters.append("stockout_qty > 0")
+    where = f" WHERE {' AND '.join(filters)}" if filters else ""
+    values.extend((limit, offset))
+    result = rows(
+        spu_database(),
+        f"SELECT {','.join(SPU_COLUMNS)} FROM spu_inventory{where} "
+        "ORDER BY advice_purchase_qty DESC, spu_id LIMIT ? OFFSET ?",
+        values,
+    )
+    return {**page_result(result, limit, offset), **_inventory_snapshot_metadata()}
+
+
+@app.get("/v1/sales/{report_date}/{shop_id}", tags=["sales"])
+def get_sale(report_date: date, shop_id: str, _: Auth) -> dict[str, Any]:
+    return one(
+        "sales",
+        f"SELECT {','.join(SALES_COLUMNS)} FROM sales_performance WHERE report_date = ? AND shop_id = ?",
+        [report_date.isoformat(), shop_id],
+    )
+
+
+@app.get("/v1/sales", tags=["sales"])
+def list_sales(
+    _: Auth,
+    limit: PageLimit = 100,
+    offset: PageOffset = 0,
+    report_date: date | None = None,
+    date_from: date | None = None,
+    date_to: date | None = None,
+    shop_id: str | None = None,
+    platform: str | None = None,
+    owner_name: str | None = None,
+) -> dict[str, Any]:
+    if report_date and (date_from or date_to):
+        raise HTTPException(status_code=422, detail="Use report_date or a date range, not both")
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(status_code=422, detail="date_from must not be later than date_to")
+    filters: list[str] = []
+    values: list[Any] = []
+    add_filter(filters, values, "report_date", report_date.isoformat() if report_date else None)
+    add_filter(filters, values, "shop_id", shop_id)
+    add_filter(filters, values, "platform", platform)
+    add_filter(filters, values, "owner_name", owner_name)
+    if date_from:
+        filters.append("report_date >= ?")
+        values.append(date_from.isoformat())
+    if date_to:
+        filters.append("report_date <= ?")
+        values.append(date_to.isoformat())
+    where = f" WHERE {' AND '.join(filters)}" if filters else ""
+    values.extend((limit, offset))
+    result = rows(
+        "sales",
+        f"SELECT {','.join(SALES_COLUMNS)} FROM sales_performance{where} "
+        "ORDER BY report_date DESC, net_sales_income DESC LIMIT ? OFFSET ?",
+        values,
+    )
+    return page_result(result, limit, offset)

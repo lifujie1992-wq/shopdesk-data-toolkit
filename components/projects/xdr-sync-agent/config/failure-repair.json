@@ -1,0 +1,39 @@
+{
+  "enabled": true,
+  "model": "gpt-6.1-sol",
+  "codex": "~/.local/node-v24.20.0-darwin-arm64/bin/codex",
+  "inventory": "~/projects/about/data/inventory.json",
+  "workerStatuses": ["~/Library/Application Support/xdr-sync-agent/status.json", "~/Library/Application Support/xdr-sync-agent-profit-facts/status.json"],
+  "maxAttempts": 2,
+  "timeoutSeconds": 1200,
+  "codexTimeoutSeconds": 420,
+  "cooldownSeconds": 21600,
+  "projects": {
+    "xdr": { "root": "~/projects/xdr-sync-agent", "autoApply": true, "allowPrefixes": ["src/", "bin/", "scripts/", "shared/", "test/"], "tests": [["/bin/bash", "-c", "exec \"$1\" --test test/*.test.js scripts/tests/*.test.mjs", "validation", "{node}"]] },
+    "monthly": { "root": "~/projects/douyin-settle-recon", "autoApply": true, "allowPrefixes": ["src/", "tools/", "shopdesk/", "tests/"], "validationAssets": ["doc/【抖音】月度账单处理模版.xlsx"], "protectedPaths": ["src/douyin_settle_recon/model.py", "src/douyin_settle_recon/rules.py", "src/douyin_settle_recon/export.py", "src/douyin_settle_recon/retention.py"], "tests": [["{root}/.venv/bin/python", "-m", "pytest", "-q", "tests/test_monthly.py", "tests/test_collect_wallet.py", "tests/test_collect_tax_month.py", "tests/test_shopdesk_pool.py"]] },
+    "invoice": { "root": "~/projects/invoice-mac-agent", "autoApply": true, "allowPrefixes": ["lib/", "src/", "test/", "agent.mjs", "job-runner.mjs", "latest-shops.mjs", "shopdesk-invoice-driver.mjs", "worker-round.mjs", "capture-cli.mjs", "capture.mjs"], "tests": [["{node}", "--test", "test/job-runner.test.mjs", "test/job-safety.test.mjs", "test/latest-shops.test.mjs", "test/capture-source.test.mjs", "test/capture-subjects.test.mjs", "test/capture-runner.test.mjs", "test/capture-pack.test.mjs"]] },
+    "feige": { "root": "~/projects/feige-customer-daily", "autoApply": true, "allowPrefixes": ["src/", "test/", "collect.mjs", "lib/"], "tests": [["{node}", "--test"]] },
+    "commission": { "root": "~/projects/douyin-commission-rates", "autoApply": true, "allowPrefixes": ["src/", "tests/"], "tests": [["{root}/.venv/bin/python", "-m", "pytest", "-q", "tests"]] },
+    "aftersale_counts": { "root": "~/projects/shopdesk-aftersale", "autoApply": false, "allowPrefixes": ["bin/", "src/", "tests/"], "tests": [] },
+    "inventory": { "root": "~/jushuitan-inventory-warning", "autoApply": true, "allowPrefixes": ["src/", "bin/", "test/", "lib/"], "tests": [["{node}", "--test"]] },
+    "orders": { "root": "~/jushuitan-order-details", "autoApply": true, "allowPrefixes": ["src/", "bin/", "test/", "lib/"], "tests": [["{node}", "--test"]] },
+    "order_page": { "root": "~/jushuitan-order-page", "autoApply": true, "allowPrefixes": ["src/", "bin/", "test/", "lib/"], "tests": [["{node}", "--test"]] },
+    "sales": { "root": "~/jushuitan-sales-performance", "autoApply": true, "allowPrefixes": ["src/", "bin/", "test/", "lib/"], "tests": [["{node}", "--test"]] },
+    "aftersales": { "root": "~/jushuitan-aftersales", "autoApply": true, "allowPrefixes": ["src/", "bin/", "test/", "lib/", "export-refund-daily.mjs"], "tests": [["{node}", "--test"]] },
+    "doudian": { "root": "~/doudian-daily", "autoApply": false, "allowPrefixes": ["src/"], "tests": [] }
+  },
+  "tasks": [
+    { "match": "^local\\.douyin-settle-recon\\.monthly$", "project": "monthly" },
+    { "match": "^local\\.invoice-", "project": "invoice" },
+    { "match": "^com\\.xdr\\.feige-customer-daily$", "project": "feige" },
+    { "match": "^com\\.xdr\\.douyin-commission-rates$", "project": "commission" },
+    { "match": "^local\\.shopdesk\\.aftersale-", "project": "aftersale_counts" },
+    { "match": "^com\\.xdr\\.refund-daily$|^com\\.xdr\\.jst-aftersales-sync$", "project": "aftersales" },
+    { "match": "^sync_orders$", "project": "orders" },
+    { "match": "^sync_(paid_orders|unshipped_orders)$", "project": "order_page" },
+    { "match": "^(sync_sales|finalize_sales)$", "project": "sales" },
+    { "match": "^sync_(inventory|hourly|spu_live|shop_products|profit_analysis)$", "project": "inventory" },
+    { "match": "^sync_doudian|^com\\.lee\\.|^com\\.xdr\\.jst-purple-orders-sync$", "project": "doudian" },
+    { "match": "^com\\.xdr\\.(sync-agent|jst-auth-refresh)|^sync_", "project": "xdr" }
+  ]
+}

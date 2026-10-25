@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>local.invoice-capture-sync</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/zhaoxiaozhong/.local/node-v24.20.0-darwin-arm64/bin/node</string>
+    <string>/Users/zhaoxiaozhong/projects/invoice-mac-agent/capture-cli.mjs</string>
+    <string>--once</string>
+    <string>--complete</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/zhaoxiaozhong/projects/invoice-mac-agent</string>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>15</integer></dict>
+  <key>StandardOutPath</key><string>/Users/zhaoxiaozhong/.local/share/invoice-mac-agent/logs/capture-launchd.out.log</string>
+  <key>StandardErrorPath</key><string>/Users/zhaoxiaozhong/.local/share/invoice-mac-agent/logs/capture-launchd.err.log</string>
+</dict>
+</plist>

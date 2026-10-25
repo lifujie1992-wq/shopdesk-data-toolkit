@@ -1,0 +1,19 @@
+{
+  "shop_id": "REPLACE_WITH_CLOUD_SHOP_ID",
+  "shop_name": "Y-兹伊翰官方旗舰店",
+  "local_run_id": "20261018T152406Z-0f2ebd52",
+  "reconciliation_date": "2026-10-18",
+  "reconciliation_month": "2026-08",
+  "reconciliation_status": "pending",
+  "report": {
+    "filename": "202608【抖音】Y-兹伊翰官方旗舰店.xlsx",
+    "size_bytes": 31824648,
+    "sha256": "f44636e49818ddab7ce6781bc0f8b1b9608eefe87645dd86a7dcb6488e1f8930"
+  },
+  "upload": {
+    "filename": "202608【抖音】Y-兹伊翰官方旗舰店.xlsx.gz",
+    "compression": "gzip",
+    "size_bytes": 28243412,
+    "sha256": "cfb6eef6e41252a9d57debb909f25173ce6175da205aa5ae9c52c54652deaa9f"
+  }
+}

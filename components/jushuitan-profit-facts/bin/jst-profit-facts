@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""xdr-sync-agent adapter for the local profit-facts normalizer.
+
+This adapter only normalizes already-collected local snapshots. It does not
+open a browser or change JST data. Fresh source collection remains a separate
+step until the six source windows are scheduled and verified.
+"""
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILDER = ROOT / "build_facts.py"
+HOME = Path.home()
+DEFAULTS = {
+    "orders": HOME / "Library/Application Support/xdr-sync-agent/baseline/jst-order-details.sqlite",
+    "aftersales": HOME / "jst-refund-export.sqlite",
+    "inventory": HOME / "jst-inventory-full-second.sqlite",
+    "purple": HOME / "jst-purple-orders.sqlite",
+    "sales": HOME / "jst-sales-performance.sqlite",
+}
+
+
+def emit(value):
+    print(json.dumps(value, ensure_ascii=False))
+
+
+def main():
+    if len(sys.argv) < 2 or sys.argv[1] in {"-h", "--help"}:
+        print("usage: jst-profit-facts {login-status|export-sqlite} ...")
+        return 0
+    command = sys.argv[1]
+    if command == "login-status":
+        missing = [str(p) for p in (DEFAULTS["orders"], DEFAULTS["aftersales"]) if not p.exists()]
+        data = {"mode": "local-snapshot-normalizer", "missing": missing}
+        emit({"ok": not missing, "data": data, **({} if not missing else {"error": "source_snapshot_missing"})})
+        return 0 if not missing else 1
+    if command != "export-sqlite":
+        emit({"ok": False, "error": f"unknown_command:{command}"})
+        return 2
+
+    output = None
+    merge = None
+    overrides = {}
+    i = 2
+    while i < len(sys.argv):
+        arg = sys.argv[i]
+        if arg == "--output":
+            output = Path(sys.argv[i + 1]).expanduser(); i += 2
+        elif arg == "--merge-existing":
+            merge = Path(sys.argv[i + 1]).expanduser(); i += 2
+        elif arg in {"--orders", "--aftersales", "--inventory", "--purple", "--sales"}:
+            overrides[arg[2:]] = Path(sys.argv[i + 1]).expanduser(); i += 2
+        else:
+            print(f"unknown option: {arg}", file=sys.stderr)
+            return 2
+    if output is None:
+        emit({"ok": False, "error": "missing_output"})
+        return 2
+
+    paths = {**DEFAULTS, **overrides}
+    cmd = [sys.executable, str(BUILDER),
+           "--orders", str(paths["orders"]),
+           "--aftersales", str(paths["aftersales"]),
+           "--output", str(output)]
+    for key in ("inventory", "purple", "sales"):
+        if paths[key].exists():
+            cmd += [f"--{key}", str(paths[key])]
+    if merge is not None:
+        cmd += ["--merge-existing", str(merge)]
+    result = subprocess.run(cmd, text=True, capture_output=True)
+    if result.stderr:
+        print(result.stderr, file=sys.stderr, end="")
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
+    if result.returncode == 0 and lines:
+        try:
+            value = json.loads(lines[-1])
+            emit({"ok": value.get("ok") is True, "data": value})
+            return 0 if value.get("ok") is True else 1
+        except json.JSONDecodeError:
+            pass
+    emit({"ok": False, "error": "normalizer_failed", "data": {"stdout": result.stdout[-2000:]}})
+    return result.returncode or 1
+
+
+if __name__ == "__main__":
+    main()

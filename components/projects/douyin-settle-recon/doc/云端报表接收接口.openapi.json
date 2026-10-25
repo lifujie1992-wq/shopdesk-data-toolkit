@@ -1,0 +1,441 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "抖音核对报表数据同步接口",
+    "version": "1.4.0",
+    "description": "仅定义一个数据同步接口：上传核对日期、核对月份、店铺信息和 xlsx.gz 附件。云端校验、解压并持久保存后返回同步回执。接口待实现。"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api/douyin-recon/v1",
+      "variables": {
+        "host": {
+          "default": "api.example.com",
+          "description": "替换为真实云端域名"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "InvoiceAccountId": [],
+      "InvoiceWorkerToken": []
+    }
+  ],
+  "paths": {
+    "/reports": {
+      "post": {
+        "operationId": "uploadDouyinReconReport",
+        "summary": "同步核对日期、月份与 gzip 报表附件",
+        "description": "一次 multipart 请求包含 metadata JSON 和 file gzip 附件。使用 X-Invoice-Account-Id 与 X-Invoice-Worker-Token 两个请求头共同鉴权，校验账号、Token 绑定及有效性。local_run_id 在该业务域唯一，记录归首次创建账号；其他账号重复提交同一运行返回 404。当前账号相同内容重传复用原记录，不同内容返回 409。校验并解压 gzip，持久保存 Excel 和记录后返回成功，随后清理临时 gzip。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metadata": {
+                    "$ref": "#/components/schemas/UploadMetadata"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "file"
+                ],
+                "additionalProperties": false
+              },
+              "encoding": {
+                "metadata": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/gzip"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "首次归档，duplicate=false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "相同内容已归档，duplicate=true",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_REQUEST：请求结构错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED：任一鉴权头缺失、账号未注册、Token 无效或与账号不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SHOP_FORBIDDEN：无店铺权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "RUN_CONTENT_CONFLICT：同一运行的业务字段或原 Excel 内容改变",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "FILE_TOO_LARGE：超过配置限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "INVALID_METADATA、FILE_HASH_MISMATCH、INVALID_GZIP 或 INVALID_EXCEL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED：按 Retry-After 重试",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "建议等待时间"
+              }
+            }
+          },
+          "500": {
+            "description": "STORAGE_UNAVAILABLE：持久保存失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "STORAGE_UNAVAILABLE：临时不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "UNSUPPORTED_FILE_TYPE：拒绝直接上传原始 xlsx 或其他附件，必须传 xlsx.gz",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RUN_NOT_FOUND：运行不存在或不可访问；已有运行不属于当前账号时返回，不暴露原记录及回执",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "InvoiceAccountId": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Invoice-Account-Id",
+        "description": "管理员注册的账号 ID。必须与 InvoiceWorkerToken 同时提供，且 Token 属于该账号。账号为同步记录的所有者。"
+      },
+      "InvoiceWorkerToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Invoice-Worker-Token",
+        "description": "该账号当前有效的 Mac Agent Token，沿用 Mac Worker 独立凭据。必须与 InvoiceAccountId 同时提供；不使用浏览器 Cookie 或 Authorization Bearer。"
+      }
+    },
+    "schemas": {
+      "ReportFile": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "size_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "filename",
+          "size_bytes",
+          "sha256"
+        ],
+        "additionalProperties": false,
+        "description": "本地原 Excel 的元数据，用于校验解压结果；不作为第二个附件上传。"
+      },
+      "UploadFile": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^(?:\\d{4}-(?:0[1-9]|1[0-2])【抖音】Y-.+|\\d{6}【抖音】.+)\\.xlsx\\.gz$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "compression": {
+            "type": "string",
+            "enum": [
+              "gzip"
+            ]
+          }
+        },
+        "required": [
+          "filename",
+          "size_bytes",
+          "sha256",
+          "compression"
+        ],
+        "additionalProperties": false,
+        "description": "实际传输的 gzip 附件信息。compression 固定 gzip，解压后必须与 report 声明的 Excel 大小和哈希一致。"
+      },
+      "UploadMetadata": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "douyin",
+              "taobao",
+              "xiaohongshu"
+            ],
+            "default": "douyin",
+            "description": "所属平台：抖音、淘宝、小红书。新客户端必须主动填写；兼容旧客户端省略时按 douyin 处理。店铺归属键为 (platform, shop_id)。"
+          },
+          "shop_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "来源平台提供的稳定店铺 ID，以字符串传输；与 platform 组合唯一识别店铺，不使用店名或本机登录 UUID 作为唯一键。"
+          },
+          "shop_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "本次上传首次入队前从来源平台获取的最新店名快照；允许改名，不添加来源前缀；同一 local_run_id 的重试保持原快照。"
+          },
+          "local_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "reconciliation_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-10-18"
+          },
+          "reconciliation_month": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+            "example": "2026-08"
+          },
+          "reconciliation_status": {
+            "type": "string",
+            "enum": [
+              "matched",
+              "different",
+              "pending"
+            ],
+            "default": "pending"
+          },
+          "report": {
+            "$ref": "#/components/schemas/ReportFile"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/UploadFile"
+          }
+        },
+        "required": [
+          "shop_id",
+          "local_run_id",
+          "reconciliation_date",
+          "reconciliation_month",
+          "report",
+          "upload"
+        ],
+        "additionalProperties": false,
+        "example": {
+          "shop_id": "87755028",
+          "shop_name": "兹伊翰官方旗舰店",
+          "local_run_id": "20261018T152406Z-0f2ebd52",
+          "reconciliation_date": "2026-10-18",
+          "reconciliation_month": "2026-08",
+          "reconciliation_status": "pending",
+          "report": {
+            "filename": "202608【抖音】Y-兹伊翰官方旗舰店.xlsx",
+            "size_bytes": 31824648,
+            "sha256": "f44636e49818ddab7ce6781bc0f8b1b9608eefe87645dd86a7dcb6488e1f8930"
+          },
+          "upload": {
+            "filename": "202608【抖音】Y-兹伊翰官方旗舰店.xlsx.gz",
+            "compression": "gzip",
+            "size_bytes": 28243412,
+            "sha256": "cfb6eef6e41252a9d57debb909f25173ce6175da205aa5ae9c52c54652deaa9f"
+          },
+          "platform": "douyin"
+        },
+        "description": "核对日期、核对月份、店铺和文件元数据。local_run_id 为该业务域唯一运行标识，归已验证请求头中的首次创建账号所有；重复同步先验证账号归属。"
+      },
+      "SyncResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "OK"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "report_id": {
+                "type": "string"
+              },
+              "local_run_id": {
+                "type": "string"
+              },
+              "stored": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ]
+              },
+              "duplicate": {
+                "type": "boolean"
+              },
+              "excel_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "report_id",
+              "local_run_id",
+              "stored",
+              "duplicate",
+              "excel_sha256"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "details"
+        ]
+      }
+    }
+  }
+}

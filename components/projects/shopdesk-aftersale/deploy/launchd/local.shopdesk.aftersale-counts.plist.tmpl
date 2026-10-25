@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.shopdesk.aftersale-counts</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>__PYTHON__</string>
+		<string>__ROOT__/bin/scrape_counts.py</string>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>__ROOT__</string>
+	<key>RunAtLoad</key>
+	<false/>
+	<key>ThrottleInterval</key>
+	<integer>60</integer>
+	<key>StandardOutPath</key>
+	<string>__ROOT__/logs/launchd.out.log</string>
+	<key>StandardErrorPath</key>
+	<string>__ROOT__/logs/launchd.err.log</string>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>LANG</key>
+		<string>zh_CN.UTF-8</string>
+	</dict>
+	<key>StartCalendarInterval</key>
+	<array>
+		<dict>
+			<key>Minute</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>Minute</key>
+			<integer>32</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

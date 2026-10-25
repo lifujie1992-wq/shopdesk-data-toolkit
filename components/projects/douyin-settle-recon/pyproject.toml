@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "douyin-settle-recon"
+version = "0.1.0"
+description = "ShopDesk Douyin finance collection, typed source tables and Excel reports"
+requires-python = ">=3.11"
+dependencies = ["openpyxl>=3.1.5,<4", "XlsxWriter>=3.2,<4", "Pillow>=11,<13"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+recon = "douyin_settle_recon.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/douyin_settle_recon"]

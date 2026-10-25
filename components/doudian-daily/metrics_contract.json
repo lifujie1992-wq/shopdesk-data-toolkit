@@ -1,0 +1,1320 @@
+{
+ "version": 1,
+ "description": "抖店指标字段契约。每个字段声明：口径状态、实际统计周期、来源接口、响应路径、单位、注意事项。status 取值：exact(接口直接返回且口径一致) / derived(由接口值推算) / candidate_not_exact(有值但口径需确认) / source_no_data(平台无数据) / as_of(实时快照) / constant(固定值)。",
+ "statusLegend": {
+  "exact": "接口直接返回，口径与字段一致",
+  "derived": "由接口值计算/推算得出",
+  "candidate_not_exact": "接口有值但口径与目标字段不完全一致",
+  "source_no_data": "平台返回无数据标记（-9999 或 \"-\"）",
+  "as_of": "实时/快照口径，非固定统计周期",
+  "constant": "固定值"
+ },
+ "periodPresets": {
+  "realtime": "当日实时（截至采集时刻）",
+  "snapshot": "当前快照（截至采集时刻）",
+  "rolling30d": "近30天",
+  "rolling7d": "近7天"
+ },
+ "fields": {
+  "sales": {
+   "label": "成交金额",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "data.lay_out_data[].cards[].operating_data_card_v4_data.compass_list[title=成交金额].val",
+   "unit": "元",
+   "note": "实时口径，非日结"
+  },
+  "orders": {
+   "label": "成交订单数",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=成交订单数].val",
+   "unit": "笔",
+   "note": "实时口径"
+  },
+  "aov": {
+   "label": "客单价",
+   "group": "经营实时",
+   "status": "derived",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "成交金额 / 成交订单数",
+   "unit": "元",
+   "note": "页面直接给出，非本模块计算"
+  },
+  "pay_amt": {
+   "label": "用户支付金额",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=用户支付金额].val",
+   "unit": "元",
+   "note": ""
+  },
+  "settle_amt": {
+   "label": "结算金额",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=结算金额].val",
+   "unit": "元",
+   "note": ""
+  },
+  "refund_pay": {
+   "label": "退款金额(支付时间)",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=退款金额(支付时间)].val",
+   "unit": "元",
+   "note": "按支付时间口径"
+  },
+  "refund7": {
+   "label": "7日退款金额",
+   "group": "退款诊断",
+   "status": "exact",
+   "period": "近7天",
+   "source": "/pc/api/home/homepage",
+   "path": "cards[].custom_data.pc_refund_diagnose_data.general_index",
+   "unit": "元",
+   "note": "退款诊断卡"
+  },
+  "refund_orders": {
+   "label": "退款订单数",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=退款订单数(退款时间)].val",
+   "unit": "笔",
+   "note": "按退款时间口径"
+  },
+  "exposure_uv": {
+   "label": "商品曝光人数",
+   "group": "流量",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=商品曝光人数].val",
+   "unit": "人",
+   "note": ""
+  },
+  "click_uv": {
+   "label": "商品点击人数",
+   "group": "流量",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=商品点击人数].val",
+   "unit": "人",
+   "note": ""
+  },
+  "buyer_uv": {
+   "label": "成交人数",
+   "group": "流量",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...compass_list[title=成交人数].val",
+   "unit": "人",
+   "note": ""
+  },
+  "ctr": {
+   "label": "曝光点击率",
+   "group": "流量",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...[title=商品曝光-点击转化率(人数)].val",
+   "unit": "%",
+   "note": ""
+  },
+  "cvr": {
+   "label": "点击成交率",
+   "group": "流量",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...[title=商品点击-成交转化率(人数)].val",
+   "unit": "%",
+   "note": ""
+  },
+  "ad_cost": {
+   "label": "投放消耗(店铺被投)",
+   "group": "投放",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...[title=投放消耗（店铺被投）].val",
+   "unit": "元",
+   "note": ""
+  },
+  "ad_ratio": {
+   "label": "投放费比",
+   "group": "投放",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...[title=投放费比].val",
+   "unit": "%",
+   "note": ""
+  },
+  "spend": {
+   "label": "支出金额",
+   "group": "投放",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "...[title=支出金额].val",
+   "unit": "元",
+   "note": ""
+  },
+  "todo_stockup": {
+   "label": "待发货",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=待发货].val",
+   "unit": "单",
+   "note": ""
+  },
+  "todo_aftersale": {
+   "label": "待处理售后",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=待处理售后].val",
+   "unit": "单",
+   "note": ""
+  },
+  "todo_exception": {
+   "label": "异常包裹",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=异常包裹].val",
+   "unit": "个",
+   "note": ""
+  },
+  "todo_ticket": {
+   "label": "服务工单",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=服务工单].val",
+   "unit": "单",
+   "note": ""
+  },
+  "exp_total": {
+   "label": "体验分总分",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getOverviewByVersion",
+   "path": "data.experience_score.value",
+   "unit": "",
+   "note": ""
+  },
+  "exp_goods": {
+   "label": "体验分-商品",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getOverviewByVersion",
+   "path": "data.goods_score.value",
+   "unit": "",
+   "note": ""
+  },
+  "exp_logistics": {
+   "label": "体验分-物流",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getOverviewByVersion",
+   "path": "data.logistics_score.value",
+   "unit": "",
+   "note": ""
+  },
+  "exp_service": {
+   "label": "体验分-服务",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getOverviewByVersion",
+   "path": "data.service_score.value",
+   "unit": "",
+   "note": ""
+  },
+  "exp_category": {
+   "label": "体验分适用类目",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_category",
+   "unit": "",
+   "note": "分档阈值按类目取值"
+  },
+  "exp_window": {
+   "label": "体验分统计窗口",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.begin_date~data.current_date",
+   "unit": "",
+   "note": ""
+  },
+  "m_quality_return": {
+   "label": "商品品质退货率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=商品品质退货率].value.value_figure",
+   "unit": "%",
+   "note": "体验分项原始表现值"
+  },
+  "s_quality_return": {
+   "label": "商品品质退货率（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "%",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_collect_ontime": {
+   "label": "揽收时效达成率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=揽收时效达成率].value.value_figure",
+   "unit": "%",
+   "note": "体验分项原始表现值"
+  },
+  "s_collect_ontime": {
+   "label": "揽收时效达成率（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "%",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_delivery_ontime": {
+   "label": "运单配送时效达成率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=运单配送时效达成率].value.value_figure",
+   "unit": "%",
+   "note": "体验分项原始表现值"
+  },
+  "s_delivery_ontime": {
+   "label": "运单配送时效达成率（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "%",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_feige_response": {
+   "label": "飞鸽平均响应时长",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=飞鸽平均响应时长].value.value_figure",
+   "unit": "秒",
+   "note": "体验分项原始表现值"
+  },
+  "s_feige_response": {
+   "label": "飞鸽平均响应时长（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "秒",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_aftersale_audit": {
+   "label": "售后平均审核时长",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=售后平均审核时长].value.value_figure",
+   "unit": "小时",
+   "note": "体验分项原始表现值"
+  },
+  "s_aftersale_audit": {
+   "label": "售后平均审核时长（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "小时",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_feige_dissatisfy": {
+   "label": "飞鸽会话不满意率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=飞鸽会话不满意率].value.value_figure",
+   "unit": "%",
+   "note": "体验分项原始表现值"
+  },
+  "s_feige_dissatisfy": {
+   "label": "飞鸽会话不满意率（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "%",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_platform_help": {
+   "label": "平台求助率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=平台求助率].value.value_figure",
+   "unit": "%",
+   "note": "体验分项原始表现值"
+  },
+  "s_platform_help": {
+   "label": "平台求助率（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "%",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_goods_rating": {
+   "label": "商品综合评分",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=商品综合评分].value.value_figure",
+   "unit": "分",
+   "note": "体验分项原始表现值"
+  },
+  "s_goods_rating": {
+   "label": "商品综合评分（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "分",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_logistics_return": {
+   "label": "发货物流品退率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=发货物流品退率].value.value_figure",
+   "unit": "%",
+   "note": "体验分项原始表现值"
+  },
+  "s_logistics_return": {
+   "label": "发货物流品退率（得分）",
+   "group": "体验分项(得分)",
+   "status": "derived",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "standard_conf_info_map[类目] 阈值分段线性插值",
+   "unit": "%",
+   "note": "平台不下发该得分，由本模块按平台分档阈值(100/90/80/70/60)插值推算，与页面显示可能有小幅差异"
+  },
+  "m_collect_duration": {
+   "label": "揽收时长平均得分",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=揽收时长平均得分].value.value_figure",
+   "unit": "分",
+   "note": "平台自身的“得分”字段（无对应阈值表）"
+  },
+  "comment_good_rate": {
+   "label": "好评率",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.positive_comment_rate.last_30days_value",
+   "unit": "%",
+   "note": "近30天口径"
+  },
+  "comment_bad_rate": {
+   "label": "差评率",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.negative_comment_rate.last_30days_value",
+   "unit": "%",
+   "note": "近30天口径"
+  },
+  "comment_good_count": {
+   "label": "好评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.positive_commnet_count",
+   "unit": "条",
+   "note": "接口字段名有拼写错误 commnet"
+  },
+  "comment_neutral_count": {
+   "label": "中评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.neutral_comment_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_bad_count": {
+   "label": "差评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.negative_comment_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_neutral_rate": {
+   "label": "中评率",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.neutral_comment_rate.last_30days_value",
+   "unit": "%",
+   "note": ""
+  },
+  "comment_order_rate": {
+   "label": "近30天订单评价率",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.order_comment_rate.last_30days_value",
+   "unit": "%",
+   "note": ""
+  },
+  "comment_detailed_rate": {
+   "label": "近30天详实评价率",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.detailed_comment_rate.last_30days_value",
+   "unit": "%",
+   "note": "文字>=10字且有图/视频"
+  },
+  "comment_new_30d": {
+   "label": "近30天新增评价数",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.new_order_comment_30d.last_30days_value",
+   "unit": "条",
+   "note": "不含追评/屏蔽/申诉剔除"
+  },
+  "comment_good_30d": {
+   "label": "近30天好评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.positive_commnet_count_30d",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_bad_30d": {
+   "label": "近30天差评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.negative_comment_count_30d",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_in_score_30d": {
+   "label": "评价计入体验分量",
+   "group": "评价",
+   "status": "candidate_not_exact",
+   "period": "近30天",
+   "source": "/product/tcomment/statistics",
+   "path": "data.positive_commnet_in_ecology_score_count_30d",
+   "unit": "条",
+   "note": "接口可能返回 \"-\" 表示不适用"
+  },
+  "comment_with_photo": {
+   "label": "有图评价数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.has_photo_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_with_video": {
+   "label": "有视频评价数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.has_video_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_with_content": {
+   "label": "有内容评价数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.has_content_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_unreply": {
+   "label": "未回复评价数",
+   "group": "评价",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tcomment/statistics",
+   "path": "data.unreply_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_bad_to_reply": {
+   "label": "待回复差评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tcomment/statistics",
+   "path": "data.bad_to_reply_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_worst": {
+   "label": "极差评数",
+   "group": "评价",
+   "status": "exact",
+   "period": "累计",
+   "source": "/product/tcomment/statistics",
+   "path": "data.worst_count",
+   "unit": "条",
+   "note": ""
+  },
+  "comment_latest_date": {
+   "label": "评价统计截至",
+   "group": "评价",
+   "status": "exact",
+   "period": "-",
+   "source": "/product/tcomment/statistics",
+   "path": "data.latestDate",
+   "unit": "",
+   "note": "YYYYMMDD"
+  },
+  "order_stock_up": {
+   "label": "订单-待发货",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.stock_up",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_ship_delay": {
+   "label": "订单-延迟发货",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.ship_delay",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_exp_ship": {
+   "label": "订单-超时未发",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.exp_ship",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_in_aftersale": {
+   "label": "订单-售后中",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.in_aftersale",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_on_delivery": {
+   "label": "订单-配送中",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.on_delivery",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_received": {
+   "label": "订单-已收货",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.received",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_closed": {
+   "label": "订单-已关闭",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.closed",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_all": {
+   "label": "订单-全部订单",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.all",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "order_unpaid": {
+   "label": "订单-待支付",
+   "group": "订单计数",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/api/order/tabcnt",
+   "path": "data.unpaid",
+   "unit": "单",
+   "note": "平台按订单数计，不是件数"
+  },
+  "product_onsale": {
+   "label": "在售商品数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/aggsProductCount",
+   "path": "data.onsale",
+   "unit": "个",
+   "note": ""
+  },
+  "product_draft": {
+   "label": "草稿商品数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/aggsProductCount",
+   "path": "data.draft",
+   "unit": "个",
+   "note": ""
+  },
+  "product_audit": {
+   "label": "审核中商品数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/aggsProductCount",
+   "path": "data.audit",
+   "unit": "个",
+   "note": ""
+  },
+  "product_total": {
+   "label": "商品总数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/list?tab=all",
+   "path": "total",
+   "unit": "个",
+   "note": "全部商品（含已下架）"
+  },
+  "product_offline_total": {
+   "label": "已下架商品数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/list?tab=offline&is_offline=1",
+   "path": "total",
+   "unit": "个",
+   "note": ""
+  },
+  "listed_today": {
+   "label": "今日上架数",
+   "group": "商品流转",
+   "status": "exact",
+   "period": "当日",
+   "source": "/product/tproduct/list?order_field=publish_time",
+   "path": "total按 publish_time 分日统计",
+   "unit": "个",
+   "note": ""
+  },
+  "offline_today": {
+   "label": "今日下架数",
+   "group": "商品流转",
+   "status": "exact",
+   "period": "当日",
+   "source": "/product/tproduct/list?tab=offline&order_field=offline_time",
+   "path": "total按 offline_time 分日统计",
+   "unit": "个",
+   "note": ""
+  },
+  "listed_7d": {
+   "label": "近7天上架数",
+   "group": "商品流转",
+   "status": "exact",
+   "period": "近7天",
+   "source": "/product/tproduct/list",
+   "path": "publish_time 分日汇总",
+   "unit": "个",
+   "note": ""
+  },
+  "offline_7d": {
+   "label": "近7天下架数",
+   "group": "商品流转",
+   "status": "exact",
+   "period": "近7天",
+   "source": "/product/tproduct/list",
+   "path": "offline_time 分日汇总",
+   "unit": "个",
+   "note": ""
+  },
+  "listed_daily_7d": {
+   "label": "近7天每日上架",
+   "group": "商品流转",
+   "status": "exact",
+   "period": "近7天",
+   "source": "/product/tproduct/list",
+   "path": "publish_time 分日汇总",
+   "unit": "",
+   "note": "格式 日期:数量,日期:数量"
+  },
+  "offline_daily_7d": {
+   "label": "近7天每日下架",
+   "group": "商品流转",
+   "status": "exact",
+   "period": "近7天",
+   "source": "/product/tproduct/list",
+   "path": "offline_time 分日汇总",
+   "unit": "",
+   "note": "格式 日期:数量,日期:数量"
+  },
+  "aftersale_total": {
+   "label": "近30天售后单数",
+   "group": "售后",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/after_sale/pc/list",
+   "path": "total（按售后申请时间）",
+   "unit": "单",
+   "note": "含全部售后状态"
+  },
+  "package_total": {
+   "label": "近30天包裹数",
+   "group": "物流",
+   "status": "exact",
+   "period": "近30天",
+   "source": "/shopuser/power/getPackageList?deliveryTimeStart/End",
+   "path": "data.total",
+   "unit": "个",
+   "note": "按发货时间筛选"
+  },
+  "package_exception_sampled": {
+   "label": "异常包裹数(抽样)",
+   "group": "物流",
+   "status": "candidate_not_exact",
+   "period": "近30天",
+   "source": "/shopuser/power/getPackageList",
+   "path": "首页10条中含 exceptionList 的条数",
+   "unit": "个",
+   "note": "仅首页10条抽样，非全量"
+  },
+  "stock_sold_out": {
+   "label": "店铺缺货件数",
+   "group": "库存",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/stock/manage/list (POST)",
+   "path": "sold_out_cnt",
+   "unit": "个",
+   "note": ""
+  },
+  "stock_alarm": {
+   "label": "缺货预警数",
+   "group": "库存",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/stock/manage/list (POST)",
+   "path": "stock_alarm_cnt",
+   "unit": "个",
+   "note": ""
+  },
+  "stock_advised_increase": {
+   "label": "建议补货件数",
+   "group": "库存",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/stock/manage/list (POST)",
+   "path": "advised_increase_spot_cnt",
+   "unit": "个",
+   "note": ""
+  },
+  "stock_sku_total": {
+   "label": "库存SKU总数",
+   "group": "库存",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/stock/manage/list (POST)",
+   "path": "total",
+   "unit": "个",
+   "note": ""
+  },
+  "captured_at": {
+   "label": "采集时间",
+   "group": "元数据",
+   "status": "exact",
+   "period": "采集时刻",
+   "source": "-",
+   "path": "-",
+   "unit": "",
+   "note": ""
+  },
+  "steps_ok": {
+   "label": "采集完整性",
+   "group": "元数据",
+   "status": "exact",
+   "period": "本次",
+   "source": "-",
+   "path": "-",
+   "unit": "",
+   "note": "成功步骤数/总步骤数"
+  },
+  "step_status": {
+   "label": "分步状态",
+   "group": "元数据",
+   "status": "exact",
+   "period": "本次",
+   "source": "-",
+   "path": "-",
+   "unit": "",
+   "note": "JSON：每步 ok/error 与耗时"
+  },
+  "notes": {
+   "label": "失败明细",
+   "group": "元数据",
+   "status": "exact",
+   "period": "本次",
+   "source": "-",
+   "path": "-",
+   "unit": "",
+   "note": ""
+  },
+  "todo_unpaid": {
+   "label": "待支付",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=待支付].val",
+   "unit": "单",
+   "note": ""
+  },
+  "todo_risk": {
+   "label": "待整改风险点",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=待整改风险点].val",
+   "unit": "个",
+   "note": ""
+  },
+  "todo_violation": {
+   "label": "待处理违规",
+   "group": "待办",
+   "status": "as_of",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/pc/api/home/homepage",
+   "path": "todo_list_card_data.todo_list[title=待处理违规].val",
+   "unit": "个",
+   "note": ""
+  },
+  "exp_has_data": {
+   "label": "体验分有数据",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getOverviewByVersion",
+   "path": "data.has_data",
+   "unit": "",
+   "note": "false 表示该店尚未产生体验分"
+  },
+  "exp_update_time": {
+   "label": "体验分更新时间戳",
+   "group": "体验分",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getOverviewByVersion",
+   "path": "data.update_time",
+   "unit": "",
+   "note": "秒级时间戳"
+  },
+  "m_aftersale_ontime": {
+   "label": "售后处理时长达成率",
+   "group": "体验分项(表现值)",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=售后处理时长达成率].value.value_figure",
+   "unit": "%",
+   "note": ""
+  },
+  "m_fake_trade": {
+   "label": "虚假交易刷体验分(违规扣分)",
+   "group": "体验分项",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=虚假交易刷体验分].value.value_figure",
+   "unit": "分",
+   "note": "违规扣分项"
+  },
+  "m_affect_experience": {
+   "label": "影响消费者体验(违规扣分)",
+   "group": "体验分项",
+   "status": "exact",
+   "period": "体验分统计窗口（近30天，见 exp_window）",
+   "source": "/governance/shop/experiencescore/getAnalysisScore",
+   "path": "data.shop_analysis[title=影响消费者体验].value.value_figure",
+   "unit": "分",
+   "note": "违规扣分项"
+  },
+  "product_forbidden": {
+   "label": "禁售商品数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/aggsProductCount",
+   "path": "data.forbidden",
+   "unit": "个",
+   "note": ""
+  },
+  "product_unpass": {
+   "label": "审核未通过商品数",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/aggsProductCount",
+   "path": "data.unpass",
+   "unit": "个",
+   "note": ""
+  },
+  "product_onsale_cnt": {
+   "label": "在售商品数(列表口径)",
+   "group": "商品",
+   "status": "exact",
+   "period": "当前快照（截至采集时刻）",
+   "source": "/product/tproduct/list?tab=onSale",
+   "path": "total",
+   "unit": "个",
+   "note": "与 aggsProductCount 可能略有差异"
+  },
+  "aftersale_window_days": {
+   "label": "售后统计窗口天数",
+   "group": "售后",
+   "status": "constant",
+   "period": "-",
+   "source": "/after_sale/pc/list",
+   "path": "period(30)",
+   "unit": "天",
+   "note": "固定30天"
+  },
+  "visit_uv": {
+   "label": "总访客数(店铺页访客数)",
+   "group": "流量/渠道",
+   "status": "candidate_not_exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/core_index_v3",
+   "path": "data.module_data.homepage_core_index.compass_general_multi_index_card_value.data[0].product_show_ucnt.index_value.value",
+   "unit": "人",
+   "note": "罗盘“商品曝光人数”口径（店铺访客数）；与首页 exposure_uv 同源同值"
+  },
+  "sales_live": {
+   "label": "直播销量(成交订单量)",
+   "group": "流量/渠道",
+   "status": "candidate_not_exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/pie_chart_v3",
+   "path": "data.module_data.trade_core_index_pie_and_bar.compass_general_multi_index_card_value.data[0][self_employed#live#pay_cnt] + [bring_goods#live#pay_cnt]",
+   "unit": "笔",
+   "note": "自营直播+达人(合作)直播 成交订单量之和；罗盘无“件数”口径，暂以订单量近似"
+  },
+  "sales_video": {
+   "label": "短视频销量(成交订单量)",
+   "group": "流量/渠道",
+   "status": "candidate_not_exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/pie_chart_v3",
+   "path": "data.module_data.trade_core_index_pie_and_bar.compass_general_multi_index_card_value.data[0][self_employed#video#pay_cnt] + [bring_goods#video#pay_cnt]",
+   "unit": "笔",
+   "note": "自营短视频+达人(合作)短视频 成交订单量之和"
+  },
+  "sales_product_card": {
+   "label": "商品卡销量(成交订单量)",
+   "group": "流量/渠道",
+   "status": "candidate_not_exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/pie_chart_v3",
+   "path": "data.module_data.trade_core_index_pie_and_bar.compass_general_multi_index_card_value.data[0][self_employed#product_card#pay_cnt] + [bring_goods#product_card#pay_cnt]",
+   "unit": "笔",
+   "note": "自营商品卡+达人(合作)商品卡 成交订单量之和"
+  },
+  "sales_artc_video": {
+   "label": "图文销量(成交订单量)",
+   "group": "流量/渠道",
+   "status": "candidate_not_exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/pie_chart_v3",
+   "path": "data.module_data.trade_core_index_pie_and_bar.compass_general_multi_index_card_value.data[0][self_employed#artc_video#pay_cnt] + [bring_goods#artc_video#pay_cnt]",
+   "unit": "笔",
+   "note": "自营图文+达人(合作)图文 成交订单量之和"
+  },
+  "sales_talent": {
+   "label": "达人带货销量(成交订单量)",
+   "group": "流量/渠道",
+   "status": "candidate_not_exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/pie_chart_v3",
+   "path": "data.module_data.trade_core_index_pie_and_bar.compass_general_multi_index_card_value.data[0][bring_goods#total].index_value.value",
+   "unit": "笔",
+   "note": "合作(达人)渠道成交订单量合计，即“达人带货”"
+  },
+  "compass_pay_cnt": {
+   "label": "全店成交订单数(罗盘口径)",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/core_index_v3",
+   "path": "...homepage_core_index...data[0].pay_cnt.index_value.value",
+   "unit": "笔",
+   "note": "用于计算推广订单占比的分母；与首页 orders 同口径"
+  },
+  "compass_pay_amt": {
+   "label": "全店成交金额(罗盘口径)",
+   "group": "经营实时",
+   "status": "as_of",
+   "period": "当日实时（截至采集时刻）",
+   "source": "/compass_api/shop/common/trade/core_index_v3",
+   "path": "...homepage_core_index...data[0].pay_amt.index_value.value",
+   "unit": "元",
+   "note": ""
+  },
+  "promo_cost": {
+   "label": "推广成本(标准投放消耗)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.stat_cost（DataSetKey=home_cost_common_prom）",
+   "unit": "元",
+   "note": "千川标准投放消耗，接口直接返回，非推算"
+  },
+  "promo_cost_total": {
+   "label": "推广成本(账户整体消耗)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.stat_cost（DataSetKey=overall_home_cost_total_prom）",
+   "unit": "元",
+   "note": "千川账户整体消耗（含标准/全域/乘方/品牌）"
+  },
+  "promo_cost_uni": {
+   "label": "推广成本(全域投放消耗)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.stat_cost（DataSetKey=home_stat_cost_overall_prom）",
+   "unit": "元",
+   "note": "千川全域投放消耗"
+  },
+  "promo_roi": {
+   "label": "推广ROI(直接支付ROI)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.prepay_and_pay_order_roi（home_cost_common_prom）",
+   "unit": "比值",
+   "note": "千川标准投放直接支付ROI；用展示值 ValueStr 解析"
+  },
+  "promo_net_orders": {
+   "label": "推广净成交量(直接成交订单数)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.pay_order_count（home_cost_common_prom）",
+   "unit": "笔",
+   "note": "千川标准投放直接成交订单数"
+  },
+  "promo_order_cost": {
+   "label": "推广订单成本(转化成本)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.ecp_cpa_platform（home_cost_common_prom）",
+   "unit": "元/笔",
+   "note": "千川转化成本，平台直接返回（非 stat_cost/订单数 推算）"
+  },
+  "promo_pay_amt": {
+   "label": "推广成交金额",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.pay_order_amount（home_cost_common_prom）",
+   "unit": "元",
+   "note": "千川标准投放直接成交金额"
+  },
+  "promo_order_ratio": {
+   "label": "推广订单占比",
+   "group": "推广/千川",
+   "status": "derived",
+   "period": "当日实时(千川) / 当日实时(全店)",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "pay_order_count / 罗盘 pay_cnt",
+   "unit": "%",
+   "note": "千川标准投放成交订单数 ÷ 罗盘全店成交订单数"
+  },
+  "promo_uni_roi": {
+   "label": "推广ROI(全域直接支付ROI)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.prepay_and_pay_order_roi（home_stat_cost_overall_prom）",
+   "unit": "比值",
+   "note": "千川全域投放直接支付ROI"
+  },
+  "promo_uni_orders": {
+   "label": "推广净成交量(全域直接成交订单数)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.pay_order_count（home_stat_cost_overall_prom）",
+   "unit": "笔",
+   "note": "千川全域投放直接成交订单数"
+  },
+  "promo_uni_order_cost": {
+   "label": "推广订单成本(全域转化成本)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.ecp_cpa_platform（home_stat_cost_overall_prom）",
+   "unit": "元/笔",
+   "note": "千川全域投放转化成本"
+  },
+  "promo_uni_pay_amt": {
+   "label": "推广成交金额(全域)",
+   "group": "推广/千川",
+   "status": "exact",
+   "period": "当日实时（截至采集时刻）",
+   "source": "千川 POST /ad/api/data/v1/common/statQuery",
+   "path": "data.StatsData.Totals.pay_order_amount（home_stat_cost_overall_prom）",
+   "unit": "元",
+   "note": "千川全域投放直接成交金额"
+  },
+  "brush_orders": {
+   "label": "刷单订单数",
+   "group": "刷单(聚水潭)",
+   "status": "exact",
+   "period": "当日（下单日期，截至采集时刻）",
+   "source": "聚水潭 salesTheme 订单接口 apiParams.sellerFlags=[5]",
+   "path": "data[] 按 shop_name 聚合计数",
+   "unit": "单",
+   "note": "聚水潭紫色旗帜(seller_flag=5)=刷单；按下单日期=统计日期统计，含全部订单状态；聚水潭店铺名与抖店店铺名模糊匹配（多操作号/多主体合并计数），未匹配的可在 jst_shop_map.json 配人工映射。聚水潭数据每天上午~9:00刷新：早晨采集时当天值只是凌晨部分，前一日完整数值由采集程序自动次日回填"
+  },
+  "brush_good_reviews": {
+   "label": "刷单出好评数",
+   "group": "刷单(聚水潭)",
+   "status": "exact",
+   "period": "当日（评价时间，截至采集时刻）",
+   "source": "抖店 /product/tcomment/commentList × 聚水潭紫旗订单号",
+   "path": "data[] 中 order_id ∈ 紫旗集合 且 rank>=4/好评",
+   "unit": "条",
+   "note": "当日新增评价中，属于聚水潭紫色旗帜订单（近14天下单）的好评数量；刷单订单的评价会滞后1-3天，数值随时间累积"
+  },
+  "brush_count_reviews": {
+   "label": "刷单计入评价数",
+   "group": "刷单(聚水潭)",
+   "status": "exact",
+   "period": "当日（评价时间，截至采集时刻）",
+   "source": "抖店 commentList excluded_by_exp_score=False",
+   "path": "data[] 中 order_id ∈ 紫旗集合 且 excluded_by_exp_score=False",
+   "unit": "条",
+   "note": "当日新增评价中，属于刷单订单且被平台计入评价/体验分的数量；被平台识别为异常的评价会排除（excluded_by_exp_score=True）"
+  }
+ }
+}

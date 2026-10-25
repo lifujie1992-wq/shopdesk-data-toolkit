@@ -1,0 +1,9 @@
+{
+  "name": "xdr-sync-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "bin": { "xdr-sync-agent": "./bin/xdr-sync-agent.js" },
+  "scripts": { "test": "node --test test/*.test.js scripts/tests/*.test.mjs" },
+  "engines": { "node": ">=22" }
+}

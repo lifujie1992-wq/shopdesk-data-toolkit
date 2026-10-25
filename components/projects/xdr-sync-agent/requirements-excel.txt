@@ -1,0 +1,3 @@
+# Rust-backed XLSX reader used by scripts/import-paid-order-exports.py.
+fastexcel[polars]==0.16.0; python_version < "3.10"
+fastexcel[polars]>=0.17,<0.18; python_version >= "3.10"

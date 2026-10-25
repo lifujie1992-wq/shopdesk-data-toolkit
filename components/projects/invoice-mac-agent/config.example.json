@@ -1,0 +1,17 @@
+{
+  "workbenchBaseUrl": "https://erp.xiangduoer.com",
+  "accountId": "replace-with-worker-account-id",
+  "workerToken": "replace-with-worker-token",
+  "submitMode": "dry-run",
+  "pollIntervalMs": 60000,
+  "maxJobs": 3,
+  "maxJobsPerRun": 20,
+  "maxRunMs": 480000,
+  "retryBackoffMs": 300000,
+  "maxRetryBackoffMs": 1800000,
+  "captureEnabled": false,
+  "captureRetentionDays": 7,
+  "captureSourceMachine": "mac-invoice-agent",
+  "captureUploadAllFailedBatch": true,
+  "captureRequestTimeoutMs": 30000
+}
