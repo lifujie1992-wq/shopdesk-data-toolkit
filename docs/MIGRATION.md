@@ -5,7 +5,7 @@
 目标是 macOS。建议 Node.js 24（内置 SQLite）、Python 3.12、uv、SSH，以及已安装的店铺工作台。完整 App、登录会话和密钥不在 Git 中。
 
 ```sh
-git clone <本仓库地址> shopdesk-data-toolkit
+git clone https://github.com/lifujie1992-wq/shopdesk-data-toolkit.git
 cd shopdesk-data-toolkit
 python3 tools/toolkit.py verify
 python3 tools/toolkit.py prepare          # 预览，任何同名目录/命令都阻止迁移
