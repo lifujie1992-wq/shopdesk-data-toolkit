@@ -13,7 +13,8 @@
     "new": "node tools/new.js",
     "audit": "node tools/audit.js",
     "parity": "node tools/parity.js",
-    "doctor": "node sources/jst/bin/jst.js doctor"
+    "doctor": "node sources/jst/bin/jst.js doctor",
+    "schedule": "node tools/schedule.js"
   },
   "engines": {
     "node": ">=22"

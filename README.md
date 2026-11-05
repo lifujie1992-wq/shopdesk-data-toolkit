@@ -30,6 +30,7 @@
 - [`docs/MIGRATION.md`](docs/MIGRATION.md) —— 分阶段迁移、对拍标准、回滚方案
 - [`docs/INCIDENTS.md`](docs/INCIDENTS.md) —— 2026-11-06 三个定时任务故障的根因与修复
 - [`docs/AUTO-REPAIR.md`](docs/AUTO-REPAIR.md) —— 失败自动修复链路（agent-autoloop），以及「一直报警」的真因
+- [`docs/SCHEDULES.md`](docs/SCHEDULES.md) —— 定时任务管理器（声明式清单 → plist）
 
 ## 状态
 
@@ -50,6 +51,17 @@
 聚水潭（Node）侧已全部搬入，**126 个单元测试全部通过**。
 
 **整个迁移期旧命令始终可用**，26 个 launchd 任务不需要动。
+
+## 定时任务
+
+```bash
+npm run schedule -- list                  # 26 条任务清单
+npm run schedule -- plan                  # 清单 vs 系统实际状态，差在哪
+npm run schedule -- install --all         # 统一成 com.shopdesk.*（会先停旧 label）
+```
+
+plist 不再手写，事实来源是 [`schedules/tasks.json`](schedules/tasks.json)。
+详见 [`docs/SCHEDULES.md`](docs/SCHEDULES.md)。
 
 ## 新增脚本
 

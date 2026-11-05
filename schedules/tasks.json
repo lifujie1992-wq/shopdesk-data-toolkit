@@ -1,0 +1,620 @@
+{
+  "version": 1,
+  "prefix": "com.shopdesk",
+  "tasks": [
+    {
+      "name": "aftersale-counts",
+      "label": "com.shopdesk.aftersale-counts",
+      "legacyLabel": "local.shopdesk.aftersale-counts",
+      "description": "抖店待商家审核售后数量（41 店）",
+      "command": [
+        "/usr/bin/python3",
+        "~/projects/shopdesk-aftersale/bin/scrape_counts.py"
+      ],
+      "cwd": "~/projects/shopdesk-aftersale",
+      "env": {
+        "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+        "LANG": "zh_CN.UTF-8"
+      },
+      "calendar": [
+        {
+          "minute": 2
+        },
+        {
+          "minute": 32
+        }
+      ],
+      "throttleInterval": 60,
+      "log": "~/projects/shopdesk-aftersale/logs/launchd.out.log",
+      "errorLog": "~/projects/shopdesk-aftersale/logs/launchd.err.log",
+      "enabled": true
+    },
+    {
+      "name": "aftersale-push",
+      "label": "com.shopdesk.aftersale-push",
+      "legacyLabel": "local.shopdesk.aftersale-push",
+      "description": "售后计数上云推送",
+      "command": [
+        "/usr/bin/python3",
+        "~/projects/shopdesk-aftersale/bin/push.py",
+        "--once"
+      ],
+      "cwd": "~/projects/shopdesk-aftersale",
+      "env": {
+        "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+        "LANG": "zh_CN.UTF-8"
+      },
+      "interval": 300,
+      "runAtLoad": true,
+      "throttleInterval": 60,
+      "log": "~/projects/shopdesk-aftersale/logs/launchd-push.out.log",
+      "errorLog": "~/projects/shopdesk-aftersale/logs/launchd-push.err.log",
+      "enabled": true
+    },
+    {
+      "name": "appeal",
+      "label": "com.shopdesk.appeal",
+      "legacyLabel": "local.shopdesk.appeal",
+      "description": "申诉扫描",
+      "command": [
+        "/bin/bash",
+        "~/Library/Application Support/shopdesk/daily-appeal.sh"
+      ],
+      "calendar": [
+        {
+          "hour": 6,
+          "minute": 35
+        }
+      ],
+      "log": "/tmp/shopdesk-appeal.out.log",
+      "errorLog": "/tmp/shopdesk-appeal.err.log",
+      "enabled": true
+    },
+    {
+      "name": "appeal-submit",
+      "label": "com.shopdesk.appeal-submit",
+      "legacyLabel": "local.shopdesk.appeal-submit",
+      "description": "申诉提交（队列消费）",
+      "command": [
+        "/bin/bash",
+        "~/Library/Application Support/shopdesk/submit-confirmed.sh"
+      ],
+      "calendar": [
+        {
+          "minute": 17
+        },
+        {
+          "minute": 47
+        }
+      ],
+      "log": "/tmp/shopdesk-appeal-submit.out.log",
+      "errorLog": "/tmp/shopdesk-appeal-submit.err.log",
+      "enabled": true
+    },
+    {
+      "name": "autodeploy",
+      "label": "com.shopdesk.autodeploy",
+      "legacyLabel": "local.shopdesk.autodeploy",
+      "description": "店铺工作台自动部署",
+      "command": [
+        "/bin/bash",
+        "~/shopdesk-workbench-src/autodeploy.sh"
+      ],
+      "interval": 300,
+      "log": "/tmp/shopdesk-autodeploy.out.log",
+      "errorLog": "/tmp/shopdesk-autodeploy.err.log",
+      "enabled": true
+    },
+    {
+      "name": "badreviews-mysql",
+      "label": "com.shopdesk.badreviews-mysql",
+      "legacyLabel": "com.lee.badreviews-mysql",
+      "description": "中差评抓取并写入 MySQL",
+      "command": [
+        "/usr/bin/python3",
+        "~/doudian-daily/badreviews_to_mysql.py"
+      ],
+      "cwd": "~/doudian-daily",
+      "calendar": [
+        {
+          "hour": 9,
+          "minute": 15
+        }
+      ],
+      "log": "~/doudian-daily/data/badreviews-cron.log",
+      "errorLog": "~/doudian-daily/data/badreviews-cron.err.log",
+      "enabled": true
+    },
+    {
+      "name": "doudian-daily",
+      "label": "com.shopdesk.doudian-daily",
+      "legacyLabel": "com.lee.doudian-daily",
+      "description": "抖店经营指标采集（11 步 / 107 字段）",
+      "command": [
+        "/usr/bin/python3",
+        "~/doudian-daily/daily_collect.py"
+      ],
+      "cwd": "~/doudian-daily",
+      "calendar": [
+        {
+          "hour": 8,
+          "minute": 30
+        }
+      ],
+      "log": "~/doudian-daily/data/cron.log",
+      "errorLog": "~/doudian-daily/data/cron.err.log",
+      "enabled": true
+    },
+    {
+      "name": "douyin-commission-rates",
+      "label": "com.shopdesk.douyin-commission-rates",
+      "legacyLabel": "com.xdr.douyin-commission-rates",
+      "description": "精选联盟佣金率采集与云端原子发布",
+      "command": [
+        "~/projects/douyin-commission-rates/.venv/bin/python",
+        "-m",
+        "commission_rates.cli",
+        "--db",
+        "~/projects/douyin-commission-rates/data/jst-commission-rates.sqlite",
+        "daily",
+        "--config",
+        "~/projects/douyin-commission-rates/config/daily.json"
+      ],
+      "cwd": "~/projects/douyin-commission-rates",
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "calendar": [
+        {
+          "hour": 5,
+          "minute": 10
+        }
+      ],
+      "processType": "Background",
+      "log": "~/projects/douyin-commission-rates/logs/daily.out.log",
+      "errorLog": "~/projects/douyin-commission-rates/logs/daily.err.log",
+      "enabled": true
+    },
+    {
+      "name": "douyin-settle-recon.monthly",
+      "label": "com.shopdesk.douyin-settle-recon.monthly",
+      "legacyLabel": "local.douyin-settle-recon.monthly",
+      "description": "月度账单下载、核对与上传",
+      "command": [
+        "~/projects/douyin-settle-recon/.venv/bin/python",
+        "-u",
+        "-m",
+        "douyin_settle_recon.cli",
+        "monthly",
+        "--scheduled",
+        "--state-dir",
+        "~/projects/douyin-settle-recon/data/monthly",
+        "--output",
+        "~/projects/douyin-settle-recon/data/runs",
+        "--template",
+        "~/projects/douyin-settle-recon/doc/【抖音】月度账单处理模版.xlsx",
+        "--queue-dir",
+        "~/projects/douyin-settle-recon/data/upload-queue"
+      ],
+      "cwd": "~/projects/douyin-settle-recon",
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "TZ": "Asia/Shanghai",
+        "PATH": "/usr/bin:/bin:/usr/sbin:/sbin"
+      },
+      "calendar": [
+        {
+          "day": 1,
+          "hour": 1,
+          "minute": 0
+        }
+      ],
+      "interval": 3600,
+      "processType": "Background",
+      "log": "~/projects/douyin-settle-recon/data/monthly/logs/launchd.out.log",
+      "errorLog": "~/projects/douyin-settle-recon/data/monthly/logs/launchd.err.log",
+      "enabled": true
+    },
+    {
+      "name": "failure-repair",
+      "label": "com.shopdesk.failure-repair",
+      "legacyLabel": "com.xdr.failure-repair",
+      "description": "故障自动修复（Codex，未登录时空转）",
+      "command": [
+        "~/.local/bin/node",
+        "~/projects/xdr-sync-agent/bin/xdr-failure-repair.js",
+        "--once"
+      ],
+      "cwd": "~/projects/xdr-sync-agent",
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/Users/zhaoxiaozhong/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "TZ": "Asia/Shanghai"
+      },
+      "interval": 60,
+      "runAtLoad": true,
+      "processType": "Background",
+      "log": "~/projects/xdr-sync-agent/var/logs/failure-repair.out.log",
+      "errorLog": "~/projects/xdr-sync-agent/var/logs/failure-repair.err.log",
+      "extra": {
+        "ExitTimeOut": 10
+      },
+      "enabled": true
+    },
+    {
+      "name": "failure-watch",
+      "label": "com.shopdesk.failure-watch",
+      "legacyLabel": "com.xdr.failure-watch",
+      "description": "任务失败巡检（每 10 分钟）",
+      "command": [
+        "~/.local/bin/node",
+        "~/projects/xdr-sync-agent/bin/xdr-failure-watch.js"
+      ],
+      "cwd": "~/projects/xdr-sync-agent",
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "interval": 60,
+      "runAtLoad": true,
+      "processType": "Background",
+      "log": "~/projects/xdr-sync-agent/var/logs/failure-watch.out.log",
+      "errorLog": "~/projects/xdr-sync-agent/var/logs/failure-watch.err.log",
+      "enabled": true
+    },
+    {
+      "name": "feige-customer-daily",
+      "label": "com.shopdesk.feige-customer-daily",
+      "legacyLabel": "com.xdr.feige-customer-daily",
+      "description": "飞鸽客服接待日报",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/projects/feige-customer-daily/collect.mjs"
+      ],
+      "cwd": "~/projects/feige-customer-daily",
+      "env": {
+        "TZ": "Asia/Shanghai"
+      },
+      "calendar": [
+        {
+          "hour": 10,
+          "minute": 30
+        }
+      ],
+      "processType": "Background",
+      "log": "~/projects/feige-customer-daily/logs/launchd.out.log",
+      "errorLog": "~/projects/feige-customer-daily/logs/launchd.err.log",
+      "extra": {
+        "LowPriorityIO": true,
+        "Nice": 5,
+        "Umask": 63
+      },
+      "enabled": true
+    },
+    {
+      "name": "health",
+      "label": "com.shopdesk.health",
+      "legacyLabel": "local.shopdesk.health",
+      "description": "店铺工作台健康检查",
+      "command": [
+        "/bin/bash",
+        "~/Library/Application Support/shopdesk/health-check.sh"
+      ],
+      "calendar": [
+        {
+          "hour": 9,
+          "minute": 5
+        },
+        {
+          "hour": 13,
+          "minute": 5
+        },
+        {
+          "hour": 17,
+          "minute": 5
+        },
+        {
+          "hour": 21,
+          "minute": 5
+        }
+      ],
+      "log": "/tmp/shopdesk-health.out.log",
+      "errorLog": "/tmp/shopdesk-health.err.log",
+      "enabled": true
+    },
+    {
+      "name": "invoice-capture-cleanup",
+      "label": "com.shopdesk.invoice-capture-cleanup",
+      "legacyLabel": "local.invoice-capture-cleanup",
+      "description": "发票捕获残留清理",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/projects/invoice-mac-agent/capture-cleanup-cli.mjs",
+        "--once"
+      ],
+      "cwd": "~/projects/invoice-mac-agent",
+      "calendar": [
+        {
+          "hour": 4,
+          "minute": 10
+        }
+      ],
+      "processType": "Background",
+      "log": "~/.local/share/invoice-mac-agent/logs/capture-cleanup.out.log",
+      "errorLog": "~/.local/share/invoice-mac-agent/logs/capture-cleanup.err.log",
+      "extra": {
+        "Nice": 10,
+        "LowPriorityIO": true
+      },
+      "enabled": true
+    },
+    {
+      "name": "invoice-capture-sync",
+      "label": "com.shopdesk.invoice-capture-sync",
+      "legacyLabel": "local.invoice-capture-sync",
+      "description": "发票采集与 PDF 回传",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/projects/invoice-mac-agent/capture-cli.mjs",
+        "--once",
+        "--complete"
+      ],
+      "cwd": "~/projects/invoice-mac-agent",
+      "calendar": [
+        {
+          "hour": 10,
+          "minute": 15
+        }
+      ],
+      "log": "~/.local/share/invoice-mac-agent/logs/capture-launchd.out.log",
+      "errorLog": "~/.local/share/invoice-mac-agent/logs/capture-launchd.err.log",
+      "enabled": true
+    },
+    {
+      "name": "invoice-mac-agent",
+      "label": "com.shopdesk.invoice-mac-agent",
+      "legacyLabel": "local.invoice-mac-agent",
+      "description": "发票代理（一次性执行）",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/projects/invoice-mac-agent/agent.mjs",
+        "--once"
+      ],
+      "cwd": "~/projects/invoice-mac-agent",
+      "interval": 60,
+      "runAtLoad": true,
+      "log": "~/.local/share/invoice-mac-agent/logs/launchd.out.log",
+      "errorLog": "~/.local/share/invoice-mac-agent/logs/launchd.err.log",
+      "enabled": true
+    },
+    {
+      "name": "jst-aftersales-sync",
+      "label": "com.shopdesk.jst-aftersales-sync",
+      "legacyLabel": "com.xdr.jst-aftersales-sync",
+      "description": "聚水潭售后明细同步（08/12/16 点）",
+      "command": [
+        "/bin/bash",
+        "~/xdr-sync-agent/scripts/sync-jst-aftersales.sh"
+      ],
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "calendar": [
+        {
+          "hour": 8,
+          "minute": 0
+        },
+        {
+          "hour": 12,
+          "minute": 0
+        },
+        {
+          "hour": 16,
+          "minute": 0
+        }
+      ],
+      "processType": "Background",
+      "log": "~/Library/Logs/xdr-sync-agent/aftersales-sync.out.log",
+      "errorLog": "~/Library/Logs/xdr-sync-agent/aftersales-sync.err.log",
+      "enabled": true
+    },
+    {
+      "name": "jst-auth-refresh",
+      "label": "com.shopdesk.jst-auth-refresh",
+      "legacyLabel": "com.xdr.jst-auth-refresh",
+      "description": "聚水潭登录态刷新并回灌 Keychain",
+      "command": [
+        "/bin/bash",
+        "~/xdr-sync-agent/scripts/refresh-jst-auth.sh"
+      ],
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "calendar": [
+        {
+          "hour": 9,
+          "minute": 10
+        },
+        {
+          "hour": 15,
+          "minute": 0
+        },
+        {
+          "hour": 21,
+          "minute": 0
+        }
+      ],
+      "processType": "Background",
+      "log": "~/Library/Logs/xdr-sync-agent/auth-refresh.out.log",
+      "errorLog": "~/Library/Logs/xdr-sync-agent/auth-refresh.err.log",
+      "enabled": true
+    },
+    {
+      "name": "jst-purple-orders-sync",
+      "label": "com.shopdesk.jst-purple-orders-sync",
+      "legacyLabel": "com.xdr.jst-purple-orders-sync",
+      "description": "聚水潭紫旗（刷单）订单同步",
+      "command": [
+        "/bin/bash",
+        "~/xdr-sync-agent/scripts/sync-jst-purple-orders.sh"
+      ],
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "calendar": [
+        {
+          "hour": 9,
+          "minute": 25
+        }
+      ],
+      "processType": "Background",
+      "log": "~/Library/Logs/xdr-sync-agent/purple-orders-sync.out.log",
+      "errorLog": "~/Library/Logs/xdr-sync-agent/purple-orders-sync.err.log",
+      "enabled": true
+    },
+    {
+      "name": "nosleep",
+      "label": "com.shopdesk.nosleep",
+      "legacyLabel": "local.xdr.nosleep",
+      "description": "防止息屏（caffeinate 常驻）",
+      "command": [
+        "/usr/bin/caffeinate",
+        "-i",
+        "-s"
+      ],
+      "keepAlive": true,
+      "runAtLoad": true,
+      "log": "/tmp/xdr-nosleep.log",
+      "enabled": true
+    },
+    {
+      "name": "openbridge-daemon",
+      "label": "com.shopdesk.openbridge-daemon",
+      "legacyLabel": "com.xdr.openbridge-daemon",
+      "description": "OpenBridge 浏览器桥接守护（常驻）",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/.openbridge/repo/packages/daemon/dist/cli/index.js",
+        "serve"
+      ],
+      "cwd": "~/.openbridge/repo",
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "OPENBRIDGE_NO_MCP": "1"
+      },
+      "keepAlive": true,
+      "runAtLoad": true,
+      "processType": "Background",
+      "throttleInterval": 10,
+      "log": "~/.openbridge/repo/.openbridge-data/daemon.log",
+      "errorLog": "~/.openbridge/repo/.openbridge-data/daemon.err.log",
+      "enabled": true
+    },
+    {
+      "name": "refund-daily",
+      "label": "com.shopdesk.refund-daily",
+      "legacyLabel": "com.xdr.refund-daily",
+      "description": "退款单导出 → xlsx → 入库 → 上云",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/jushuitan-aftersales/export-refund-daily.mjs",
+        "--days",
+        "3"
+      ],
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "calendar": [
+        {
+          "hour": 7,
+          "minute": 0
+        }
+      ],
+      "processType": "Background",
+      "log": "~/Library/Logs/xdr-refund-daily.log",
+      "errorLog": "~/Library/Logs/xdr-refund-daily.err.log",
+      "enabled": true
+    },
+    {
+      "name": "summary",
+      "label": "com.shopdesk.summary",
+      "legacyLabel": "local.shopdesk.summary",
+      "description": "每日任务汇总",
+      "command": [
+        "/bin/bash",
+        "~/Library/Application Support/shopdesk/daily-summary.sh"
+      ],
+      "calendar": [
+        {
+          "hour": 22,
+          "minute": 0
+        }
+      ],
+      "log": "/tmp/shopdesk-summary.out.log",
+      "errorLog": "/tmp/shopdesk-summary.err.log",
+      "enabled": true
+    },
+    {
+      "name": "sync-agent",
+      "label": "com.shopdesk.sync-agent",
+      "legacyLabel": "com.xdr.sync-agent",
+      "description": "云端任务队列 daemon（常驻）",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/xdr-sync-agent/bin/xdr-sync-agent.js",
+        "daemon"
+      ],
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "keepAlive": true,
+      "runAtLoad": true,
+      "processType": "Background",
+      "throttleInterval": 10,
+      "log": "~/Library/Logs/xdr-sync-agent/launchd.out.log",
+      "errorLog": "~/Library/Logs/xdr-sync-agent/launchd.err.log",
+      "enabled": true
+    },
+    {
+      "name": "sync-agent-cleanup",
+      "label": "com.shopdesk.sync-agent-cleanup",
+      "legacyLabel": "com.xdr.sync-agent-cleanup",
+      "description": "同步任务过期工作目录清理",
+      "command": [
+        "/bin/bash",
+        "~/xdr-sync-agent/scripts/cleanup-stale-work.sh"
+      ],
+      "calendar": [
+        {
+          "hour": 4,
+          "minute": 30
+        }
+      ],
+      "runAtLoad": true,
+      "processType": "Background",
+      "log": "~/Library/Logs/xdr-sync-agent-cleanup/launchd.out.log",
+      "errorLog": "~/Library/Logs/xdr-sync-agent-cleanup/launchd.err.log",
+      "enabled": true
+    },
+    {
+      "name": "sync-agent-profit-facts",
+      "label": "com.shopdesk.sync-agent-profit-facts",
+      "legacyLabel": "com.xdr.sync-agent-profit-facts",
+      "description": "利润事实库同步 daemon（常驻）",
+      "command": [
+        "~/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/xdr-sync-agent/bin/xdr-sync-agent.js",
+        "daemon"
+      ],
+      "env": {
+        "PATH": "/Users/zhaoxiaozhong/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "XDR_AGENT_CONFIG": "/Users/zhaoxiaozhong/.config/xdr-sync-agent/config-profit-facts.json"
+      },
+      "keepAlive": true,
+      "runAtLoad": true,
+      "processType": "Background",
+      "throttleInterval": 10,
+      "log": "~/Library/Logs/xdr-sync-agent-profit-facts/launchd.out.log",
+      "errorLog": "~/Library/Logs/xdr-sync-agent-profit-facts/launchd.err.log",
+      "enabled": true
+    }
+  ]
+}
