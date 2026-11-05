@@ -59,6 +59,7 @@ npm run schedule -- list                  # 26 条任务清单
 npm run schedule -- plan                  # 清单 vs 系统实际状态，差在哪
 npm run schedule -- install --all         # 统一成 com.shopdesk.*（会先停旧 label）
 npm run board                             # 生成定时任务看板 docs/schedules.html
+npm run workbench                         # 起本地工作台，看耗时、改时间、立即运行
 ```
 
 plist 不再手写，事实来源是 [`schedules/tasks.json`](schedules/tasks.json)。

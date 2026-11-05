@@ -16,3 +16,6 @@ config/local.json
 
 # 迁移期产物
 docs/parity-report-*.json
+
+# 工作台运行时数据
+var/

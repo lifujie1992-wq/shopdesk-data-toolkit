@@ -78,7 +78,11 @@ function plistValue(value, indent) {
 
 function renderPlist(task) {
   const label = task.label ?? `com.shopdesk.${task.name}`;
-  const args = task.command.map((a) => `\t\t<string>${esc(expand(a))}</string>`).join("\n");
+  // track: true 的任务改由 run-task.js 起，才能记录耗时；常驻进程没有"跑完"的概念，不包装。
+  const argv = task.track && !task.keepAlive
+    ? [process.execPath, join(ROOT, "tools", "run-task.js"), task.name]
+    : task.command;
+  const args = argv.map((a) => `\t\t<string>${esc(expand(a))}</string>`).join("\n");
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
@@ -305,6 +309,7 @@ function cmdImport() {
       ...(plist.ProcessType ? { processType: plist.ProcessType } : {}),
       ...(plist.ThrottleInterval ? { throttleInterval: plist.ThrottleInterval } : {}),
       enabled: true,
+      ...(plist.KeepAlive ? {} : { track: true }),
     };
     const MANAGED = new Set(["Label", "ProgramArguments", "WorkingDirectory", "KeepAlive", "RunAtLoad",
       "StartInterval", "StartCalendarInterval", "StandardOutPath", "StandardErrorPath",

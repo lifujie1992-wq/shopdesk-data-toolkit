@@ -15,7 +15,8 @@
     "parity": "node tools/parity.js",
     "doctor": "node sources/jst/bin/jst.js doctor",
     "schedule": "node tools/schedule.js",
-    "board": "node tools/board.js"
+    "board": "node tools/board.js",
+    "workbench": "node tools/workbench.js"
   },
   "engines": {
     "node": ">=22"

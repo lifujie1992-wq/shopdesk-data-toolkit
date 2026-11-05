@@ -27,7 +27,8 @@
       "throttleInterval": 60,
       "log": "~/projects/shopdesk-aftersale/logs/launchd.out.log",
       "errorLog": "~/projects/shopdesk-aftersale/logs/launchd.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "aftersale-push",
@@ -49,7 +50,8 @@
       "throttleInterval": 60,
       "log": "~/projects/shopdesk-aftersale/logs/launchd-push.out.log",
       "errorLog": "~/projects/shopdesk-aftersale/logs/launchd-push.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "appeal",
@@ -68,7 +70,8 @@
       ],
       "log": "/tmp/shopdesk-appeal.out.log",
       "errorLog": "/tmp/shopdesk-appeal.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "appeal-submit",
@@ -89,7 +92,8 @@
       ],
       "log": "/tmp/shopdesk-appeal-submit.out.log",
       "errorLog": "/tmp/shopdesk-appeal-submit.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "autodeploy",
@@ -103,7 +107,8 @@
       "interval": 300,
       "log": "/tmp/shopdesk-autodeploy.out.log",
       "errorLog": "/tmp/shopdesk-autodeploy.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "badreviews-mysql",
@@ -123,7 +128,8 @@
       ],
       "log": "~/doudian-daily/data/badreviews-cron.log",
       "errorLog": "~/doudian-daily/data/badreviews-cron.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "doudian-daily",
@@ -143,7 +149,8 @@
       ],
       "log": "~/doudian-daily/data/cron.log",
       "errorLog": "~/doudian-daily/data/cron.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "douyin-commission-rates",
@@ -173,7 +180,8 @@
       "processType": "Background",
       "log": "~/projects/douyin-commission-rates/logs/daily.out.log",
       "errorLog": "~/projects/douyin-commission-rates/logs/daily.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "douyin-settle-recon.monthly",
@@ -212,7 +220,8 @@
       "processType": "Background",
       "log": "~/projects/douyin-settle-recon/data/monthly/logs/launchd.out.log",
       "errorLog": "~/projects/douyin-settle-recon/data/monthly/logs/launchd.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "failure-repair",
@@ -237,7 +246,8 @@
       "extra": {
         "ExitTimeOut": 10
       },
-      "enabled": false
+      "enabled": false,
+      "track": true
     },
     {
       "name": "failure-watch",
@@ -257,7 +267,8 @@
       "processType": "Background",
       "log": "~/projects/xdr-sync-agent/var/logs/failure-watch.out.log",
       "errorLog": "~/projects/xdr-sync-agent/var/logs/failure-watch.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "feige-customer-daily",
@@ -286,7 +297,8 @@
         "Nice": 5,
         "Umask": 63
       },
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "health",
@@ -317,7 +329,8 @@
       ],
       "log": "/tmp/shopdesk-health.out.log",
       "errorLog": "/tmp/shopdesk-health.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "invoice-capture-cleanup",
@@ -343,7 +356,8 @@
         "Nice": 10,
         "LowPriorityIO": true
       },
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "invoice-capture-sync",
@@ -365,7 +379,8 @@
       ],
       "log": "~/.local/share/invoice-mac-agent/logs/capture-launchd.out.log",
       "errorLog": "~/.local/share/invoice-mac-agent/logs/capture-launchd.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "invoice-mac-agent",
@@ -382,7 +397,8 @@
       "runAtLoad": true,
       "log": "~/.local/share/invoice-mac-agent/logs/launchd.out.log",
       "errorLog": "~/.local/share/invoice-mac-agent/logs/launchd.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "jst-aftersales-sync",
@@ -413,7 +429,8 @@
       "processType": "Background",
       "log": "~/Library/Logs/xdr-sync-agent/aftersales-sync.out.log",
       "errorLog": "~/Library/Logs/xdr-sync-agent/aftersales-sync.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "jst-auth-refresh",
@@ -444,7 +461,8 @@
       "processType": "Background",
       "log": "~/Library/Logs/xdr-sync-agent/auth-refresh.out.log",
       "errorLog": "~/Library/Logs/xdr-sync-agent/auth-refresh.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "jst-purple-orders-sync",
@@ -467,7 +485,8 @@
       "processType": "Background",
       "log": "~/Library/Logs/xdr-sync-agent/purple-orders-sync.out.log",
       "errorLog": "~/Library/Logs/xdr-sync-agent/purple-orders-sync.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "nosleep",
@@ -530,7 +549,8 @@
       "processType": "Background",
       "log": "~/Library/Logs/xdr-refund-daily.log",
       "errorLog": "~/Library/Logs/xdr-refund-daily.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "summary",
@@ -549,7 +569,8 @@
       ],
       "log": "/tmp/shopdesk-summary.out.log",
       "errorLog": "/tmp/shopdesk-summary.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "sync-agent",
@@ -591,7 +612,8 @@
       "processType": "Background",
       "log": "~/Library/Logs/xdr-sync-agent-cleanup/launchd.out.log",
       "errorLog": "~/Library/Logs/xdr-sync-agent-cleanup/launchd.err.log",
-      "enabled": true
+      "enabled": true,
+      "track": true
     },
     {
       "name": "sync-agent-profit-facts",
