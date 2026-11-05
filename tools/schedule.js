@@ -175,7 +175,8 @@ function cmdPlan() {
     const file = files.get(label);
     const state = loaded.get(label);
     const problems = [];
-    if (!file) problems.push("未安装");
+    // enabled:false 的任务本来就该是「没装」，不算问题
+    if (!file && task.enabled !== false) problems.push("未安装");
     if (task.enabled === false && (file || state)) problems.push("清单里已停用但仍存在");
     if (state && state.lastExit !== 0) problems.push(`上次退出码 ${state.lastExit}`);
     if (task.legacyLabel && (files.has(task.legacyLabel) || loaded.has(task.legacyLabel))) {
@@ -237,7 +238,12 @@ function cmdInstall(names) {
     }
     writeFileSync(path, renderPlist(task));
     if (task.log) mkdirSync(dirname(expand(task.log)), { recursive: true });
-    const result = spawnSync("/bin/launchctl", ["bootstrap", `gui/${process.getuid()}`, path], { encoding: "utf8" });
+    // bootout 是异步的：紧接着 bootstrap 可能拿到 EIO("Input/output error")，重试几次
+    let result = spawnSync("/bin/launchctl", ["bootstrap", `gui/${process.getuid()}`, path], { encoding: "utf8" });
+    for (let attempt = 0; result.status !== 0 && attempt < 3; attempt += 1) {
+      spawnSync("/bin/sleep", ["0.5"]);
+      result = spawnSync("/bin/launchctl", ["bootstrap", `gui/${process.getuid()}`, path], { encoding: "utf8" });
+    }
     process.stdout.write(`${result.status === 0 ? "✓" : "✗"} ${label}${result.status ? `  ${result.stderr.trim()}` : ""}\n`);
     if (task.legacyLabel) {
       const legacyFile = join(AGENTS, `${task.legacyLabel}.plist`);

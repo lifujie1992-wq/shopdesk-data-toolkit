@@ -132,6 +132,44 @@ npm run schedule -- import                  # 把现有 LaunchAgents 反推成�
 | `extra` | 上面没建模、但影响行为的键（`Nice`、`Umask`、`LowPriorityIO`、`ExitTimeOut`…），原样透传 |
 | `legacyLabel` | 旧 label。`install` 会先把它 bootout 再装新的，避免双份执行 |
 
+## 迁移已完成（2026-11-06 03:15）
+
+26 个任务全部从旧 label 切到 `com.shopdesk.*`，旧 plist 已删除。
+
+```
+com.shopdesk.* 已加载        26
+残留旧 label                0（只剩手工任务 com.xdr.manual-replay-20261017）
+plan                        清单与系统一致
+```
+
+切换后实际跑过的任务（走计时包装，全部 exit 0）：
+
+| 任务 | 次数 | 最近耗时 |
+|---|---|---|
+| failure-watch | 4 | 8.6 s |
+| invoice-mac-agent | 2 | 43 ms |
+| aftersale-push | 1 | 97 ms |
+| sync-agent-cleanup | 1 | 368 ms |
+
+四个常驻进程（sync-agent / profit-facts / openbridge / workbench）全部起来，退出码 0；
+OpenBridge 的 Chrome 扩展在守护重启后约 1 分钟自动重连。
+
+### 回滚
+
+切换前把 36 个文件备份到了 `var/backups/launchagents-<时间>/`（含 tasks.json）：
+
+```bash
+B=var/backups/launchagents-20261106-031400
+for f in "$B"/*.plist; do
+  launchctl bootout "gui/$(id -u)/$(basename "$f" .plist)" 2>/dev/null
+done
+cp "$B"/*.plist ~/Library/LaunchAgents/
+for f in "$B"/*.plist; do
+  launchctl bootstrap "gui/$(id -u)" "$f"
+done
+rm -f ~/Library/LaunchAgents/com.shopdesk.*.plist   # 清掉新 label
+```
+
 ## 安全迁移路径
 
 ```bash
