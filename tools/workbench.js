@@ -117,38 +117,78 @@ function durationsByName(history) {
 }
 
 const MO = "日一二三四五六";
-function describe(task) {
-  if (task.keepAlive) return { kind: "daemon", text: "常驻" };
-  if (task.interval) return { kind: "interval", text: `每 ${task.interval} 秒` };
-  if (!task.calendar?.length) return { kind: "manual", text: "手动" };
-  return {
-    kind: "calendar",
-    text: task.calendar.map((c) => {
-      const p = [];
-      if (c.month !== undefined) p.push(`${c.month} 月`);
-      if (c.day !== undefined) p.push(`${c.day} 日`);
-      if (c.weekday !== undefined) p.push(`周${MO[c.weekday]}`);
-      p.push(c.hour !== undefined
-        ? `${String(c.hour).padStart(2, "0")}:${String(c.minute ?? 0).padStart(2, "0")}`
-        : `每小时 :${String(c.minute ?? 0).padStart(2, "0")}`);
-      return p.join(" ");
-    }).join(" / "),
-  };
+
+/** 人类可读的触发时间，例如「每天 08:30」「每小时 :02、:32」「每周一 10:05」 */
+function scheduleText(task) {
+  if (task.keepAlive) return "常驻";
+  if (task.interval) return `每 ${task.interval} 秒`;
+  if (!task.calendar?.length) return "仅手动";
+  const list = task.calendar;
+  const hh = (c) => `${String(c.hour ?? 0).padStart(2, "0")}:${String(c.minute ?? 0).padStart(2, "0")}`;
+  const allMinuteOnly = list.every((c) => c.minute !== undefined && c.hour === undefined
+    && c.day === undefined && c.weekday === undefined && c.month === undefined);
+  if (allMinuteOnly) return `每小时 ${list.map((c) => `:${String(c.minute).padStart(2, "0")}`).join("、")}`;
+  const allDaily = list.every((c) => c.hour !== undefined && c.day === undefined
+    && c.weekday === undefined && c.month === undefined);
+  if (allDaily) return `每天 ${list.map(hh).join("、")}`;
+  return list.map((c) => {
+    const parts = [];
+    if (c.month !== undefined) parts.push(`每年 ${c.month} 月`);
+    else if (c.day !== undefined && c.weekday === undefined) parts.push("每月");
+    if (c.day !== undefined) parts.push(`${c.day} 日`);
+    if (c.weekday !== undefined) parts.push(`每周${MO[c.weekday]}`);
+    if (c.hour === undefined && c.minute !== undefined) parts.push(`每小时 :${String(c.minute).padStart(2, "0")}`);
+    else parts.push(hh(c));
+    return parts.join(" ");
+  }).join("、");
+}
+
+/** 平均每天触发几次；不足一天一次时返回更合适的口径 */
+function frequency(task) {
+  if (task.keepAlive) return { perDay: 0, label: "常驻" };
+  if (task.interval) return { perDay: 86_400 / task.interval, label: `${Math.round(86_400 / task.interval)} 次/天` };
+  if (!task.calendar?.length) return { perDay: 0, label: "手动" };
+  let hits = 0;
+  const start = new Date(); start.setHours(0, 0, 0, 0);
+  for (let d = 0; d < 366; d += 1) {
+    const day = new Date(start.getTime() + d * 86_400_000);
+    for (const c of task.calendar) {
+      if (c.month !== undefined && day.getMonth() + 1 !== c.month) continue;
+      if (c.day !== undefined && day.getDate() !== c.day) continue;
+      if (c.weekday !== undefined && day.getDay() !== c.weekday) continue;
+      hits += c.hour === undefined ? 24 : 1;
+    }
+  }
+  const perDay = hits / 366;
+  const round = (n) => Math.round(n * 10) / 10;
+  if (perDay >= 1) return { perDay, label: `${round(perDay)} 次/天` };
+  if (perDay * 7 >= 1) return { perDay, label: `${round(perDay * 7)} 次/周` };
+  if (perDay * 30 >= 1) return { perDay, label: `${round(perDay * 30)} 次/月` };
+  return { perDay, label: `${round(perDay * 365)} 次/年` };
 }
 
 function nextRun(task, from = new Date()) {
   if (task.keepAlive || task.interval || !task.calendar?.length) return null;
-  for (let i = 0; i <= 8 * 1440; i += 1) {
-    const at = new Date(from.getTime() + i * 60_000);
-    at.setSeconds(0, 0);
+  for (let d = 0; d < 400; d += 1) {
+    const base = new Date(from);
+    base.setDate(base.getDate() + d);
+    base.setHours(0, 0, 0, 0);
+    const candidates = [];
     for (const c of task.calendar) {
-      if (c.month !== undefined && at.getMonth() + 1 !== c.month) continue;
-      if (c.day !== undefined && at.getDate() !== c.day) continue;
-      if (c.weekday !== undefined && at.getDay() !== c.weekday) continue;
-      if (c.hour !== undefined && at.getHours() !== c.hour) continue;
-      if (at.getMinutes() !== (c.minute ?? 0)) continue;
-      return at.toISOString();
+      if (c.month !== undefined && base.getMonth() + 1 !== c.month) continue;
+      if (c.day !== undefined && base.getDate() !== c.day) continue;
+      if (c.weekday !== undefined && base.getDay() !== c.weekday) continue;
+      if (c.hour === undefined) {
+        for (let h = 0; h < 24; h += 1) {
+          const at = new Date(base); at.setHours(h, c.minute ?? 0, 0, 0);
+          if (at > from) candidates.push(at);
+        }
+      } else {
+        const at = new Date(base); at.setHours(c.hour, c.minute ?? 0, 0, 0);
+        if (at > from) candidates.push(at);
+      }
     }
+    if (candidates.length) return candidates.sort((a, b) => a - b)[0].toISOString();
   }
   return null;
 }
@@ -166,7 +206,9 @@ function buildState() {
     return {
       ...task,
       label,
-      schedule: describe(task),
+      schedule: { text: scheduleText(task) },
+      frequency: frequency(task),
+      perDay: frequency(task).perDay,
       nextRun: nextRun(task),
       installed: files.has(label),
       legacyPresent: Boolean(task.legacyLabel && (files.has(task.legacyLabel) || loaded.has(task.legacyLabel))),
