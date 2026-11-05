@@ -29,6 +29,9 @@
   .stat .l{color:var(--dim2);font-size:10.5px}
   .stat.green .k{color:var(--green)}.stat.blue .k{color:var(--blue)}.stat.amber .k{color:var(--amber)}
   .stat.red .k{color:var(--red)}.stat.purple .k{color:var(--purple)}
+  .stray{background:#241c07;border:1px solid #5c470f;border-radius:10px;padding:10px 14px;margin:14px 0 0;font-size:12.5px;color:#e3b341}
+  .stray b{color:#f0d48a}
+  .stray .hint{color:#b99b4f}
   .filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
   .filters button{border-radius:20px}
   .filters button.on{background:#1c2b40;border-color:var(--blue);color:#cfe1ff}
@@ -95,6 +98,7 @@
 <main>
   <!-- ============ 看板 ============ -->
   <div id="board-view">
+    <div id="stray"></div>
     <div class="stats" id="stats"></div>
     <div class="filters" id="filters">
       <button data-f="" class="on">全部</button>
@@ -174,6 +178,17 @@ const statusOf = (t) => {
   if (t.legacyInstalled) return ["ok", "已加载" + legacy, "t-ok"];
   return ["", "未安装", "t-dim"];
 };
+
+function renderStray() {
+  const box = document.getElementById("stray");
+  const list = STATE.stray || [];
+  if (!list.length) { box.innerHTML = ""; return; }
+  box.innerHTML = `<div class="stray">
+    <b>清单外还有 ${list.length} 个任务在 launchd 里跑</b>
+    <div>${list.map((s) => `<code>${esc(s.label)}</code>${s.pid ? " 运行中" : ""}${s.lastExit ? ` 退出 ${s.lastExit}` : ""}`).join("　")}</div>
+    <div class="hint">清单里没有它们，看板管不到。确认不要了就 <code>launchctl bootout gui/$(id -u)/&lt;label&gt;</code>。</div>
+  </div>`;
+}
 
 function renderStats() {
   const t = STATE.tasks;
@@ -505,6 +520,7 @@ async function load() {
     document.getElementById("meta").textContent =
       `${data.tasks.length} 个任务 · ${data.historyCount} 条耗时记录 · 更新于 ${new Date(data.generatedAt).toLocaleTimeString("zh-CN", { hour12: false })}`;
     renderStats();
+    renderStray();
     if (view === "board") renderBoard();
   } catch (e) { toast("刷新失败：" + e.message, true); }
 }

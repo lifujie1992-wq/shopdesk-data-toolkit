@@ -239,7 +239,19 @@ function buildState() {
     .filter(([, names]) => new Set(names).size > 1)
     .map(([time, names]) => ({ time, names: [...new Set(names)] }));
 
-  return { generatedAt: new Date().toISOString(), root: ROOT, tasks, collisions, historyCount: history.length };
+  // 清单外的任务：在 launchd 里跑着、但清单里没有。历史上出过「一次性补跑脚本卡死循环 15 万次」，
+  // 靠这条才能发现。
+  const known = new Set();
+  for (const task of manifest.tasks) {
+    known.add(task.label ?? `com.shopdesk.${task.name}`);
+    if (task.legacyLabel) known.add(task.legacyLabel);
+  }
+  const stray = [...loaded.entries()]
+    .filter(([label]) => !known.has(label))
+    .filter(([label]) => /^(com\.shopdesk\.|com\.lee\.|com\.xdr\.|local\.)/.test(label))
+    .map(([label, state]) => ({ label, pid: state.pid, lastExit: state.lastExit }));
+
+  return { generatedAt: new Date().toISOString(), root: ROOT, tasks, collisions, stray, historyCount: history.length };
 }
 
 /* ---------------- 校验 ---------------- */

@@ -219,3 +219,58 @@ $ node sources/jst/bin/jst.js auth status
 
 `codex login` 仍然没登录。如果以后想换回 Codex，先登录，再把
 `~/.agent-autoloop/rules.json` 里固定 `use: "command"` 改回 `use: "codex"`。
+
+---
+
+## 6. 一次性补跑脚本卡死循环 20 天（151,974 次）
+
+### 现象
+
+看板 `plan` 一直列着「清单外任务 `com.xdr.manual-replay-20261017`」，
+我一开始当成手工遗留忽略了。实际查下去：
+
+```
+launchctl print gui/501/com.xdr.manual-replay-20261017
+  type = Submitted
+  runs = 151974          ← 15 万次
+  immediate reason = inefficient
+  pid = 92959
+```
+
+- 日志 `run.log` 已 29.8 MB / 304,141 行
+- 每轮都起一个 `ssh` 子进程连控制服务器
+- 从 2026-10-17 21:10 起，20 天没停
+
+### 它是什么
+
+`~/projects/task-runs/20261017-replay/run.mjs`，当天手工 `launchctl submit` 提交的**一次性补跑控制器**：
+给 10-16 那天漏掉的队列任务（finalize_sales / sync_purple_orders / refund_export）补跑。
+
+### 为什么停不下来
+
+脚本里有个自我保护：提交订单前检查业务日期，变了就抛
+`business_date_changed_before_orders_submission` 退出——
+防止拿旧日期覆盖新数据。这个逻辑是对的。
+
+问题是它是个 **Submitted 类型的 launchd 任务**：进程一退出，launchd 立刻重启，
+没有 ThrottleInterval 节流。于是「启动 → 发现日期变了 → 退出 → 立刻再启动」，
+每 ~10 秒一轮，无限循环。而且它**永远不可能成功**（10-17 早就过去了），所以永远不会自己停。
+
+### 处理
+
+```bash
+launchctl bootout gui/$(id -u)/com.xdr.manual-replay-20261017
+```
+
+- 进程和孩子进程都清掉了
+- 29.8 MB 日志压成最后 300 行留档：`~/projects/task-runs/run.log.tail.gz`
+- 它的 plist 文件本来就不在了（Submitted 类型），重启也不会复活
+
+### 改进
+
+看板加了「清单外任务」告警条：launchd 里跑着、但 `schedules/tasks.json` 里没有的 label，
+会以黄条列出来（带 pid 和退出码）。用临时 Submitted 任务验证过，能抓到现在也能清掉。
+
+教训：**`launchctl submit` 起来的东西不受 plist 管，坏了自己停不下来**。
+一次性任务要么用 cron 表达式，要么跑完就 `bootout`。
+
