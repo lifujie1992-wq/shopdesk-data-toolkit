@@ -1,0 +1,2880 @@
+{
+  "generated_at": "2026-09-08T06:42:05.342Z",
+  "note": "Static references include write operations. No candidate is authorized for invocation by this catalog. See ARCHAEOLOGY.md for verified reads.",
+  "pages": [
+    {
+      "calls": [
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetDrpSupplier",
+          "helper": "_ACP",
+          "method": "SetDrpSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConvertDrpAndSetSupplier",
+          "helper": "_ACP",
+          "method": "ConvertDrpAndSetSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "NoDoidsDialog",
+          "helper": "_ACP",
+          "method": "ConvertDrpAndSetSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FilterSetDrpSupplier",
+          "helper": "_ACP",
+          "method": "SetDrpSupplierFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/partner/DistributorPicker.aspx?owner_co_id=",
+          "evidence": "static_function_reference_only",
+          "function": "PickSupplier",
+          "helper": "_ACU",
+          "method": "<dynamic>",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CalcDrpAmount",
+          "helper": "_ACP",
+          "method": "CalcDrpAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Splits",
+          "helper": "_ACP",
+          "method": "Splits",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BulkSplit",
+          "helper": "_ACP",
+          "method": "BulkSplit",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BulkSplitMerge",
+          "helper": "_ACP",
+          "method": "BulkSplitMerge",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SplitMerges",
+          "helper": "_ACP",
+          "method": "SplitMerges",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ParseSplitPresale",
+          "helper": "_ACP",
+          "method": "ParseSplitPresale",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SplitPresale",
+          "helper": "_ACP",
+          "method": "SplitPresale",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MergeByShop",
+          "helper": "_ACP",
+          "method": "Merge",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateRemarks",
+          "helper": "_ACP",
+          "method": "SaveAppendRemarks",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateRemarks",
+          "helper": "_ACP",
+          "method": "SaveAppendRemarks",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DoPresend",
+          "helper": "_ACP",
+          "method": "Presend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DRPPay",
+          "helper": "_ACP",
+          "method": "DRPPay",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ForceFConfirms",
+          "helper": "_ACP",
+          "method": "ForceFConfirms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ForceConfirm",
+          "helper": "_ACP",
+          "method": "ForceConfirms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ForceConfirms",
+          "helper": "_ACP",
+          "method": "ForceConfirms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Confirms",
+          "helper": "_ACP",
+          "method": "ConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SummaryStockOut",
+          "helper": "_ACP",
+          "method": "LoadStockSummaries",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SummaryStockOut",
+          "helper": "_ACP",
+          "method": "ChangeItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SummaryStockOut",
+          "helper": "_ACP",
+          "method": "LoadStockSummaries",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowConfirmResultList",
+          "helper": "_ACP",
+          "method": "ForceConfirms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowConfirmResultList",
+          "helper": "_ACP",
+          "method": "ConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SortConfirms",
+          "helper": "_ACP",
+          "method": "SortConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowShopOrder",
+          "helper": "_ACP",
+          "method": "GetOrderUrl",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/item/Combine.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowSkuInfo",
+          "helper": "_ACU",
+          "method": "<dynamic>",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetItemLablesHtml",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/user/Supplier/Supplier.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_AddSupplierAlert",
+          "helper": "_ACU",
+          "method": "SettingBindSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/user/Supplier/Supplier.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_AddSupplierAlert2",
+          "helper": "_ACU",
+          "method": "SettingBindSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DecryptReceiverFromClient",
+          "helper": "_ACU",
+          "method": "GetDecryptErrorInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/user/UserCombine.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_UserPicker",
+          "helper": "_ACU",
+          "method": "LoadUserByType",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetCbLogisticNo",
+          "helper": "_ACP",
+          "method": "GetCbLogisticNo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetDeclareWeight",
+          "helper": "_ACP",
+          "method": "SetDeclareWeight",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnQuestionLidErrorOrders",
+          "helper": "_ACU",
+          "method": "UnQuestionLidErrorOrders",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateDeclare",
+          "helper": "_ACP",
+          "method": "GetHasNotDelcareSku",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AddProductDeclare",
+          "helper": "_ACP",
+          "method": "CheckHasSku",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveOrderDeclare",
+          "helper": "_ACP",
+          "method": "SaveOrderDeclare",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveDataInfo",
+          "helper": "_ACP",
+          "method": "SaveCustomsInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Extend",
+          "helper": "_ACP",
+          "method": "ExtendTime",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DbSetAmount",
+          "helper": "_ACP",
+          "method": "SetDeclareAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DbSetExportAmount",
+          "helper": "_ACP",
+          "method": "SetDeclareExportAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DbSetWeight",
+          "helper": "_ACP",
+          "method": "SetDeclareWeight",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LookCBSkuDeclareVolume",
+          "helper": "_ACP",
+          "method": "GetSkuDeclareVolume",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/AmazonFormulateDownload.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DownloadAmazonFormulate",
+          "helper": "_ACU",
+          "method": "Check",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/AmazonFormulateDownload.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DownloadAmazonFormulate",
+          "helper": "_ACU",
+          "method": "CreateAsyncTask",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ExcludeDeclare",
+          "helper": "_ACP",
+          "method": "SaveExcludeDecalreSkuId",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CbModifyItemsForOne",
+          "helper": "_ACP",
+          "method": "CbModifyItemsForOne",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/crossborder/InvoiceDownload.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CbInvoiceExport",
+          "helper": "_ACU",
+          "method": "Download",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SendSample",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ViewKPI",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyWarehouse",
+          "helper": "_ACP",
+          "method": "CalcStockWmsCoid",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyWarehouse",
+          "helper": "_ACP",
+          "method": "SetWarehouse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyWarehouse",
+          "helper": "_ACP",
+          "method": "GetExistsLcUpOrderForSetWarehouse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyWarehouseV2",
+          "helper": "_ACP",
+          "method": "SetWms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyWarehouseV2",
+          "helper": "_ACP",
+          "method": "GetExistsLcUpOrderForSetWarehouse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyLockWarehouse",
+          "helper": "_ACP",
+          "method": "SetLockWarehouse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "TpwFullManageSetWms",
+          "helper": "_ACP",
+          "method": "FullManageSetWms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LookDrpOrder",
+          "helper": "_ACP",
+          "method": "LookDrpOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnCancel",
+          "helper": "_ACU",
+          "method": "UnCancels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnCancels",
+          "helper": "_ACU",
+          "method": "UnCancels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSentByOrders",
+          "helper": "_ACU",
+          "method": "UnSents",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSentByOrders",
+          "helper": "_ACU",
+          "method": "ConvertsByUnSent",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSentByOrders",
+          "helper": "_ACU",
+          "method": "UnSents",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSentByOrders",
+          "helper": "_ACU",
+          "method": "ConvertsByUnSent",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BackToOwner",
+          "helper": "_ACP",
+          "method": "BackToOwner",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowWxChannelHelpZYDoc",
+          "helper": "_ACP",
+          "method": "ShowWxChannelHelpZYDoc",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowWxChannelSloveMethod",
+          "helper": "_ACP",
+          "method": "ShowWxChannelSloveMethod",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowWxChannelZYSloveMethod",
+          "helper": "_ACP",
+          "method": "ShowWxChannelZYSloveMethod",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetShipping",
+          "helper": "_ACP",
+          "method": "ResetUploadFail",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenDrpGylOrderSet",
+          "helper": "_ACP",
+          "method": "WxChannelMiddlemanToDrpGylUrl",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenGYLAddDrpFundDialog",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QS_LoadDrpNoStockSolution",
+          "helper": "_ACP",
+          "method": "GetDrpNoStockSolution",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenGYLStockSupplierDialog",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QS_DrpStockSplit",
+          "helper": "_ACP",
+          "method": "DrpOrderStockSplit",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CancleSupplierOrder",
+          "helper": "_ACP",
+          "method": "CancleSupplierOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowEndTimeEditor",
+          "helper": "_ACP",
+          "method": "SaveEndTime",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DoRemoveLabel",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetCreator",
+          "helper": "_ACP",
+          "method": "SetCreator",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetCreators",
+          "helper": "_ACP",
+          "method": "SetCreators",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BatchSetNode",
+          "helper": "_ACP",
+          "method": "Node",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetOrderDataOutofdateResult",
+          "helper": "_ACP",
+          "method": "ReloadOrdersWithFlds",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetWarehouse",
+          "helper": "_ACP",
+          "method": "SetWarehouse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLockWarehouse",
+          "helper": "_ACP",
+          "method": "SetLockWarehouse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkDisaled",
+          "helper": "_ACP",
+          "method": "MarkDisaled",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DeleteItem",
+          "helper": "_ACP",
+          "method": "DeleteItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SplitCombine",
+          "helper": "_ACP",
+          "method": "SplitCombine",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Change",
+          "helper": "_ACP",
+          "method": "Change",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeBatchItem",
+          "helper": "_ACP",
+          "method": "ChangeBatchItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeBatchItem",
+          "helper": "_ACP",
+          "method": "ChangeBatchItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowFullItems",
+          "helper": "_ACPHW",
+          "method": "CheckSkuExist",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadPurchaseAndFollowRecord",
+          "helper": "_ACPHW",
+          "method": "LoadPurchaseAndFollowRecordV3",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowFurnInfoSummary",
+          "helper": "_ACP",
+          "method": "LoadExtDatasModelStr",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveFurnInfoFromDialog",
+          "helper": "_ACP",
+          "method": "SaveFurnitureInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AutoMergeFilter",
+          "helper": "_ACP",
+          "method": "AutoMergeFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AutoMergeChecked",
+          "helper": "_ACP",
+          "method": "AutoMergeFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ModifyItems",
+          "helper": "_ACP",
+          "method": "ModifyItems",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GiftPicked",
+          "helper": "_ACP",
+          "method": "AddGiftMulti",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "PickLC",
+          "helper": "_ACP",
+          "method": "PrePickLc",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OneByOneLc",
+          "helper": "_ACP",
+          "method": "PrePickLc",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLcCore",
+          "helper": "_ACP",
+          "method": "SetLcsNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLcCore",
+          "helper": "_ACP",
+          "method": "GetExistsLcUpOrderForSetLcs",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BatchQuickPay",
+          "helper": "_ACP",
+          "method": "BatchQuickPay",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "EnableQuickPayNew",
+          "helper": "_ACP",
+          "method": "EnableQuickPay",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FConfirms",
+          "helper": "_ACP",
+          "method": "FConfirms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConfirmFilter",
+          "helper": "_ACP",
+          "method": "ConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConfirmFilter",
+          "helper": "_ACP",
+          "method": "ConfirmFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConfirmFilterSort",
+          "helper": "_ACP",
+          "method": "AutoConfirmFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnQuestionFilter",
+          "helper": "_ACP",
+          "method": "UnQuestionFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QuestionFilter",
+          "helper": "_ACP",
+          "method": "QuestionFilterCheck",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QuestionFilter",
+          "helper": "_ACP",
+          "method": "QuestionFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QuestionFilter",
+          "helper": "_ACP",
+          "method": "QuestionFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QuestionFilter",
+          "helper": "_ACP",
+          "method": "CheckPrintedFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FUnConfirms",
+          "helper": "_ACP",
+          "method": "FUnConfirms",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Questions",
+          "helper": "_ACP",
+          "method": "CheckPrinted",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReloadOrder",
+          "helper": "_ACP",
+          "method": "ReloadOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReloadCurrentPageOrderCallback",
+          "helper": "_ACP",
+          "method": "ReloadOrdersV2",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReloadCurrentPageOrderWithFlds",
+          "helper": "_ACP",
+          "method": "ReloadOrdersWithFlds",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CheckJhtPlus",
+          "helper": "_ACPHW",
+          "method": "CheckJhtPlus",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Price0SkuPicked",
+          "helper": "_ACP",
+          "method": "AddPrice0Items",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "JDMaliciousOrderUpload",
+          "helper": "_ACP",
+          "method": "MaliciousOrderUpload",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConfirmCurrent",
+          "helper": "_ACP",
+          "method": "ConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateVipSend",
+          "helper": "_ACP",
+          "method": "ConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Z_",
+          "helper": "_ACP",
+          "method": "Z",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetSplits",
+          "helper": "_ACP",
+          "method": "ResetSplits",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetMerges",
+          "helper": "_ACP",
+          "method": "ResetMerges",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SplitCombines",
+          "helper": "_ACP",
+          "method": "SplitCombines",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RunZPlan",
+          "helper": "_ACP",
+          "method": "ZPlan",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowZPlan",
+          "helper": "_ACP",
+          "method": "ZPlan",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ProcessPresend",
+          "helper": "_ACP",
+          "method": "GetPresendCount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ProcessPresend",
+          "helper": "_ACP",
+          "method": "CheckTaobaoRiskOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DoPresends",
+          "helper": "_ACP",
+          "method": "Presends",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DoPresends",
+          "helper": "_ACP",
+          "method": "WriteBusinessLog",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetWaitMerge",
+          "helper": "_ACP",
+          "method": "ResetWaitMerge",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeItems",
+          "helper": "_ACP",
+          "method": "ChangeItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLabels",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReCalcFilter",
+          "helper": "_ACP",
+          "method": "ReCalcFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/ConfirmRule/ConfirmRule.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CalcStockOff",
+          "helper": "_ACU",
+          "method": "IsReserveStockNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CalcStockOff",
+          "helper": "_ACP",
+          "method": "CalcStockOff",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/ConfirmRule/ConfirmRule.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetConfirmStockQuestion",
+          "helper": "_ACU",
+          "method": "SetConfirmStockQuestion",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CalcPresale",
+          "helper": "_ACP",
+          "method": "CalcPresale",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ToCopySelectedOrders",
+          "helper": "_ACP",
+          "method": "BatchCopyOrderOG",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "TurnPage",
+          "helper": "_ACP",
+          "method": "ToPrint",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/wms/express/expresssetter.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LookSkuVolume",
+          "helper": "_ACU",
+          "method": "LookOrderSkuVolume",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OnlyReCalcGift",
+          "helper": "_ACP",
+          "method": "OnlyReCalcGift",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReCalcGift",
+          "helper": "_ACP",
+          "method": "ReCalcGift",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Uporder2Kaola",
+          "helper": "_ACP",
+          "method": "Uporder2Kaola",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConfirmAutoPartDelivery",
+          "helper": "_ACP",
+          "method": "AutoPartDelivery",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReCalcItemLock",
+          "helper": "_ACP",
+          "method": "ReCalcItemLock",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreatePurchaseOrder",
+          "helper": "_ACP",
+          "method": "CreatePurchaseOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SubmitFactorySend",
+          "helper": "_ACP",
+          "method": "SubmitFactorySend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CancelFactorySend",
+          "helper": "_ACP",
+          "method": "CancelFactorySend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "funcRecalculateDistFreight",
+          "helper": "_ACP",
+          "method": "RecalculateDistributionFreight",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReCalcSupplierOrderItemPrice",
+          "helper": "_ACP",
+          "method": "ReCalcSupplierOrderItemPrice",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SpecifyProductionBatch",
+          "helper": "_ACP",
+          "method": "SaveBatchInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "IsShowToolOwner",
+          "helper": "_ACPHW",
+          "method": "ShowOwnerProductTool",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreatePurchaseOrderApply",
+          "helper": "_ACP",
+          "method": "CreatePurchaseOrderApply",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CalcPackage",
+          "helper": "_ACP",
+          "method": "CalcPackage",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetAudit",
+          "helper": "_ACP",
+          "method": "SetPackageSetting",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RecalculateFreight",
+          "helper": "_ACP",
+          "method": "IsRecalcFreightAllowNegative",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveToolBarSetting",
+          "helper": "_ACP",
+          "method": "SetToolBarSetting",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetToolBarSetting",
+          "helper": "_ACP",
+          "method": "SetToolBarSetting",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FreezeOrders",
+          "helper": "_ACP",
+          "method": "Freeze",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FreezeOrders",
+          "helper": "_ACP",
+          "method": "Freeze",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FreezeOrders",
+          "helper": "_ACP",
+          "method": "Freeze",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CyclePurchaseUnlock",
+          "helper": "_ACP",
+          "method": "CyclePurchaseUnlock",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditor.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "EnableQuickPay",
+          "helper": "_ACU",
+          "method": "EnableQuickPay",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowOrderAgreement",
+          "helper": "_ACP",
+          "method": "GetItemsRowSoIdAgreement",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenExportOrder",
+          "helper": "_ACPHW",
+          "method": "CheckExportEnable",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "getParamsAndJumpGly",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OrderLockStock",
+          "helper": "_ACP",
+          "method": "OrderLockStock",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OrderUnLockStock",
+          "helper": "_ACP",
+          "method": "OrderUnLockStock",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RemarkKeyWordsSetting",
+          "helper": "_ACPHW",
+          "method": "SaveRemarkKeyWords",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RemarkKeyWordsSetting",
+          "helper": "_ACP",
+          "method": "SaveRemarkKeyWords",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowAddSkuDialog",
+          "helper": "_ACPHW",
+          "method": "ReloadOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RemoveAllPurchaseLabels",
+          "helper": "_ACP",
+          "method": "RemoveAllPurchaseLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SimulateMerge",
+          "helper": "_ACP",
+          "method": "SimulateMergeRule",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AddRemarkGift",
+          "helper": "_ACP",
+          "method": "AddRemarkGifts",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowActionOperateSetting",
+          "helper": "_ACP",
+          "method": "SetToolBarSettingNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RecalculateWeightAndVolume",
+          "helper": "_ACP",
+          "method": "RecalculateWeightAndVolume",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateOrderUnlockDate",
+          "helper": "_ACP",
+          "method": "SaveOrderUnlockDate",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BatchSetUnlockDate",
+          "helper": "_ACP",
+          "method": "BatchSaveOrderUnlockDate",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "WXBatchEditAgency",
+          "helper": "_ACP",
+          "method": "WXChannelFirstOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ParseGlassSetting",
+          "helper": "_ACP",
+          "method": "ParseGlassSetting",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowOrderArchBanner",
+          "helper": "_ACP",
+          "method": "GetOrderNewestArchiveExecuteInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowOrderOssBanner",
+          "helper": "_ACP",
+          "method": "GetOssNewestArchiveExecuteInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowOrderNewArch",
+          "helper": "_ACP",
+          "method": "GetOrderArchiveInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateFilterRuleSysSkuid",
+          "helper": "_ACP",
+          "method": "ReCalcFilter",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreatePurchase",
+          "helper": "_ACP",
+          "method": "CreatePurchaseOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/order_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OrderPickerWavePackagingMaterial",
+          "helper": "_ACU",
+          "method": "ModifyPackage",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BestSellOrderSearch",
+          "helper": "_ACP",
+          "method": "ConfirmCheckOids",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OrderItemStockAnalysis",
+          "helper": "_ACP",
+          "method": "ParseGlassSetting",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadGoodsMissmatchCount",
+          "helper": "_ACPHW",
+          "method": "GetGoodsMissMatchCount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ExportAction",
+          "helper": "_ACP",
+          "method": "ExportBySync",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "HideTopPool",
+          "helper": "_ACP",
+          "method": "SaveShowSearch",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkOrderUrgentLabel",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkQuestionProcessedLabel",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ApplyInterception",
+          "helper": "_ACP",
+          "method": "ApplyInterceptionByPage",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "InterceptionSuccess",
+          "helper": "_ACP",
+          "method": "ApplyInterceptionByPage",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SignUploadFailOrderProcessed",
+          "helper": "_ACP",
+          "method": "SignUploadFailOrderProcessed",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkIgnore",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ApplyOnlineInterception",
+          "helper": "_ACP",
+          "method": "CreateByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkInterception",
+          "helper": "_ACP",
+          "method": "MarkCreateByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CancelMarkInterception",
+          "helper": "_ACP",
+          "method": "UnMarkCreateByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkInterceptionSuccess",
+          "helper": "_ACP",
+          "method": "MarkSuccessByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CancelMarkInterceptionSuccess",
+          "helper": "_ACP",
+          "method": "UnMarkSuccessByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CancelApplyInterception",
+          "helper": "_ACP",
+          "method": "CancelByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkInterceptionStatus",
+          "helper": "_ACP",
+          "method": "QueryStatusByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkIgnoreByOrder",
+          "helper": "_ACP",
+          "method": "MarkIgnoreByOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetUploadFail",
+          "helper": "_ACP",
+          "method": "ResetUploadFail",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeSaveItem",
+          "helper": "_ACP",
+          "method": "SaveItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeRenderLc",
+          "helper": "_ACP",
+          "method": "LoadCalcLcInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeLabelClick",
+          "helper": "_ACP",
+          "method": "SetLabel",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveFeNode",
+          "helper": "_ACP",
+          "method": "Node",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ClearFeNode",
+          "helper": "_ACP",
+          "method": "Node",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeParseAction",
+          "helper": "_ACP",
+          "method": "LoadOrderAction",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowOrderDetail",
+          "helper": "_ACU",
+          "method": "EncryptOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeRenderPackInfo",
+          "helper": "_ACP",
+          "method": "GetInoutInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeRenderParentChildBill",
+          "helper": "_ACP",
+          "method": "GetInoutInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/lookExpress.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FeParseLcTrace",
+          "helper": "_ACU",
+          "method": "GetTrace",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadFeLabels",
+          "helper": "_ACP",
+          "method": "GetAllFeLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx?o_id=",
+          "evidence": "static_function_reference_only",
+          "function": "SaveFeAddress2",
+          "helper": "_ACU",
+          "method": "<dynamic>",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadStates",
+          "helper": "_ACU",
+          "method": "GetAreas",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadRecieverInfo",
+          "helper": "_ACU",
+          "method": "LoadOrderReceiver",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadCitys",
+          "helper": "_ACU",
+          "method": "GetAreas",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadDistricts",
+          "helper": "_ACU",
+          "method": "GetAreas",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ParseReceiver",
+          "helper": "_ACU",
+          "method": "ParseReceiver",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/PddOnline.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CheckPddOnlineOrder",
+          "helper": "_ACU",
+          "method": "CheckPddOnlineOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetSessionUid",
+          "helper": "_ACU",
+          "method": "GetShopSessionUid",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetShopBuyerId",
+          "helper": "_ACU",
+          "method": "ShowShopBuyerId",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetShopBuyerId",
+          "helper": "_ACP",
+          "method": "ShowShopBuyerId",
+          "runtime_verified": false
+        }
+      ],
+      "page": "/app/order/order/list.aspx"
+    },
+    {
+      "calls": [
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DecryptReceiverFromClient",
+          "helper": "_ACU",
+          "method": "GetDecryptErrorInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/item/Combine.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowSkuInfo",
+          "helper": "_ACU",
+          "method": "<dynamic>",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetItemLablesHtml",
+          "helper": "_ACP",
+          "method": "SetLabels",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/user/Supplier/Supplier.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_AddSupplierAlert",
+          "helper": "_ACU",
+          "method": "SettingBindSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/user/Supplier/Supplier.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_AddSupplierAlert2",
+          "helper": "_ACU",
+          "method": "SettingBindSupplier",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadStates",
+          "helper": "_ACU",
+          "method": "GetAreas",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadRecieverInfo",
+          "helper": "_ACU",
+          "method": "LoadOrderReceiver",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadCitys",
+          "helper": "_ACU",
+          "method": "GetAreas",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadDistricts",
+          "helper": "_ACU",
+          "method": "GetAreas",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ParseReceiver",
+          "helper": "_ACU",
+          "method": "ParseReceiver",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SendSample",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ViewKPI",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/wms/express/expresssetter.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LookSkuVolume",
+          "helper": "_ACU",
+          "method": "LookOrderSkuVolume",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ResetSplit",
+          "helper": "_ACP",
+          "method": "ResetSplit",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CopyOrder",
+          "helper": "_ACP",
+          "method": "CopyOrderNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSend",
+          "helper": "_ACP",
+          "method": "UnSend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSend",
+          "helper": "_ACP",
+          "method": "UnSend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSend",
+          "helper": "_ACU",
+          "method": "ConvertsByUnSent",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnSend",
+          "helper": "_ACP",
+          "method": "UnSend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BuyerPicked",
+          "helper": "_ACP",
+          "method": "LoadBuyer",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Resend",
+          "helper": "_ACP",
+          "method": "CheckWxSupDSResendIntercept",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AddLabelEvent",
+          "helper": "_ACP",
+          "method": "RemoveLabel",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AddLabels",
+          "helper": "_ACP",
+          "method": "AddLabel",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RecalcOrderPackage",
+          "helper": "_ACP",
+          "method": "RecalcOrderPackage",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetOrderLc",
+          "helper": "_ACP",
+          "method": "PrePickLc",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowOrder",
+          "helper": "_ACU",
+          "method": "EncryptOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Jump2RuleHistory",
+          "helper": "_ACP",
+          "method": "GetSplitMergeRule",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowFilterRule",
+          "helper": "_ACP",
+          "method": "GetFilterRuleId",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowGiftRule",
+          "helper": "_ACP",
+          "method": "GetGiftRuleType",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DrpRuleLink",
+          "helper": "_ACP",
+          "method": "GetDrpExtData",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenGYLDrpRuleModal",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenDrpGylPageUrlFloat",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OpenGYLDrpPriceRuleModal",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowFreightRule",
+          "helper": "_ACP",
+          "method": "GetDrpExtData",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowPayDetail",
+          "helper": "_ACP",
+          "method": "GetDrpExtData",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLogisticsCompanies2New",
+          "helper": "_ACP",
+          "method": "SetLCNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLogisticsCompanies2New",
+          "helper": "_ACP",
+          "method": "SetLCNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLogisticsCompanies2",
+          "helper": "_ACP",
+          "method": "SetLC",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetLogisticsCompanies2",
+          "helper": "_ACP",
+          "method": "SetLC",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RecalculateFreight",
+          "helper": "_ACP",
+          "method": "IsRecalcFreightAllowNegative",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ConfimRecalcDrpFreight",
+          "helper": "_ACP",
+          "method": "RecalculateDistributionFreight",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OrderClearAndUnbindExpress",
+          "helper": "_ACP",
+          "method": "ClearAndUnbindExpress",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "VerifyLid",
+          "helper": "_ACP",
+          "method": "VerifyLid",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/drp/drp_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "getParamsAndJumpGly",
+          "helper": "_ACU",
+          "method": "GetRedirectToken",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "WhileGetConfirmResult",
+          "helper": "_ACP",
+          "method": "WhileGetConfirmResult",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FConfirm",
+          "helper": "_ACP",
+          "method": "FConfirm",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "FUnConfirm",
+          "helper": "_ACP",
+          "method": "FUnConfirm",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Question",
+          "helper": "_ACU",
+          "method": "Converts",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/order_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Question",
+          "helper": "_ACU",
+          "method": "CheckPrinted",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "EnableQuickPay",
+          "helper": "_ACP",
+          "method": "EnableQuickPay",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "QuickPay",
+          "helper": "_ACP",
+          "method": "QuickPay",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "WholeOrderRefund",
+          "helper": "_ACP",
+          "method": "WholeOrderRefund",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateItem",
+          "helper": "_ACP",
+          "method": "CopyItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LoadPurchaseAndFollowRecord",
+          "helper": "_ACU",
+          "method": "LoadPurchaseAndFollowRecordV3",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "EditPropVal",
+          "helper": "_ACP",
+          "method": "SaveOrderItemPropValue",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BuildNewGoods",
+          "helper": "_ACP",
+          "method": "SaveOrderItemFields",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "PickBatchInfo",
+          "helper": "_ACP",
+          "method": "SyncUpdateOrderInoutSkuBatchInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Change",
+          "helper": "_ACP",
+          "method": "Change",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DeleteItem",
+          "helper": "_ACP",
+          "method": "Delete",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "MarkDisaled",
+          "helper": "_ACP",
+          "method": "MarkDisaled",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnMarkDisaled",
+          "helper": "_ACP",
+          "method": "UnMarkDisaled",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_SkuPickedWithQtyPrice",
+          "helper": "_ACP",
+          "method": "AddItemsWithQtyPrice",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveQty",
+          "helper": "_ACP",
+          "method": "SaveQty",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveFreeAmount",
+          "helper": "_ACP",
+          "method": "SaveFreeAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SavePrice",
+          "helper": "_ACP",
+          "method": "SavePrice",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveProcessInfo",
+          "helper": "_ACP",
+          "method": "SaveProcessInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SavePerUnit",
+          "helper": "_ACP",
+          "method": "SavePerUnit",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveSalesUnit",
+          "helper": "_ACP",
+          "method": "SaveSalesUnit",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CheckBatchQty",
+          "helper": "_ACP",
+          "method": "CheckBatchQty",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RealCopy",
+          "helper": "_ACP",
+          "method": "GetCountryEname",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReloadOrder",
+          "helper": "_ACP",
+          "method": "ReloadOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetOrderDataOutofdateResult",
+          "helper": "_ACP",
+          "method": "ReloadOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AppendDrpAmountNew",
+          "helper": "_ACP",
+          "method": "CalcDrpAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ClearFlag",
+          "helper": "_ACP",
+          "method": "ClearFlag",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateCreator",
+          "helper": "_ACP",
+          "method": "SetCreator",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreatePurchaseOrderWithTarget",
+          "helper": "_ACP",
+          "method": "CreatePurchaseOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SubmitFactorySend",
+          "helper": "_ACU",
+          "method": "SubmitFactorySend",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetOrderActions",
+          "helper": "_ACPHW",
+          "method": "GetOrderActionList",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeTraceNumCurrent",
+          "helper": "_ACP",
+          "method": "ChangeTraceNumCurrent",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeTraceNumCurrent",
+          "helper": "_ACP",
+          "method": "ChangeTraceNumCurrent",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CoupangAckOrder",
+          "helper": "_ACP",
+          "method": "CoupangAckOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeBatchItem",
+          "helper": "_ACP",
+          "method": "ChangeBatchItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ChangeBatchItem",
+          "helper": "_ACP",
+          "method": "ChangeBatchItem",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReRenderOrderItems",
+          "helper": "_ACP",
+          "method": "GetOrderDataJson",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SplitCombine",
+          "helper": "_ACP",
+          "method": "SplitCombine",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ParseInputReceiver",
+          "helper": "_ACU",
+          "method": "ParseReceiver",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/address.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ParseCbInputReceiver",
+          "helper": "_ACU",
+          "method": "ParseCbReceiver",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowPickableIndex",
+          "helper": "_ACP",
+          "method": "GetPickableIndexNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowRawRemarks",
+          "helper": "_ACU",
+          "method": "SaveAppendRemarksNew",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveOrderInvoice",
+          "helper": "_ACP",
+          "method": "SaveOrderInvoice",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ShowInvoiceActions",
+          "helper": "_ACP",
+          "method": "GetOrderInvoiceActions",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RenderAftersaleInfo",
+          "helper": "_ACPHW",
+          "method": "LoadAfterSale",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "BuildSplitConfirmCtrl",
+          "helper": "_ACP",
+          "method": "GetAllSplitAsIds",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AgreeRefund",
+          "helper": "_ACP",
+          "method": "RefundAgree",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RefuseRefund",
+          "helper": "_ACP",
+          "method": "RefundRefuse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RefuseReturn1",
+          "helper": "_ACP",
+          "method": "RefundRefuse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReturnAgree1",
+          "helper": "_ACP",
+          "method": "GetReturnAddress",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReturnAgree1",
+          "helper": "_ACP",
+          "method": "ReturnAgree1",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ReturnAgree2",
+          "helper": "_ACP",
+          "method": "ReturnAgree2",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "RefuseReturn2",
+          "helper": "_ACP",
+          "method": "RefundRefuse",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/order_common.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "OrderPickerWavePackagingMaterial",
+          "helper": "_ACU",
+          "method": "ModifyPackage",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetCbLogisticNo",
+          "helper": "_ACP",
+          "method": "GetCbLogisticNo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SetDeclareWeight",
+          "helper": "_ACP",
+          "method": "SetDeclareWeight",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "UnQuestionLidErrorOrders",
+          "helper": "_ACU",
+          "method": "UnQuestionLidErrorOrders",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CreateDeclare",
+          "helper": "_ACP",
+          "method": "GetHasNotDelcareSku",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "AddProductDeclare",
+          "helper": "_ACP",
+          "method": "CheckHasSku",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveOrderDeclare",
+          "helper": "_ACP",
+          "method": "SaveOrderDeclare",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SaveDataInfo",
+          "helper": "_ACP",
+          "method": "SaveCustomsInfo",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "Extend",
+          "helper": "_ACP",
+          "method": "ExtendTime",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DbSetAmount",
+          "helper": "_ACP",
+          "method": "SetDeclareAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DbSetExportAmount",
+          "helper": "_ACP",
+          "method": "SetDeclareExportAmount",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DbSetWeight",
+          "helper": "_ACP",
+          "method": "SetDeclareWeight",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "LookCBSkuDeclareVolume",
+          "helper": "_ACP",
+          "method": "GetSkuDeclareVolume",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/AmazonFormulateDownload.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DownloadAmazonFormulate",
+          "helper": "_ACU",
+          "method": "Check",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/float/AmazonFormulateDownload.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "DownloadAmazonFormulate",
+          "helper": "_ACU",
+          "method": "CreateAsyncTask",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "ExcludeDeclare",
+          "helper": "_ACP",
+          "method": "SaveExcludeDecalreSkuId",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CbModifyItemsForOne",
+          "helper": "_ACP",
+          "method": "CbModifyItemsForOne",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/crossborder/InvoiceDownload.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CbInvoiceExport",
+          "helper": "_ACU",
+          "method": "Download",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/user/UserCombine.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "_UserPicker",
+          "helper": "_ACU",
+          "method": "LoadUserByType",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/PddOnline.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "CheckPddOnlineOrder",
+          "helper": "_ACU",
+          "method": "CheckPddOnlineOrder",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/Jht/WebApi/Printer.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "SubmitCloudPrint",
+          "helper": "_ACU",
+          "method": "GetPrintDataByPc",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/Jht/WebApi/Printer.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "PrintedCallBack",
+          "helper": "_ACU",
+          "method": "UpPrintStatusByPc",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetSessionUid",
+          "helper": "_ACU",
+          "method": "GetShopSessionUid",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/list.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetShopBuyerId",
+          "helper": "_ACU",
+          "method": "ShowShopBuyerId",
+          "runtime_verified": false
+        },
+        {
+          "endpoint": "/app/order/order/OrderEditorNew.aspx",
+          "evidence": "static_function_reference_only",
+          "function": "GetShopBuyerId",
+          "helper": "_ACP",
+          "method": "ShowShopBuyerId",
+          "runtime_verified": false
+        }
+      ],
+      "page": "/app/order/order/OrderEditorNew.aspx"
+    }
+  ]
+}

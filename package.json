@@ -1,0 +1,18 @@
+{
+  "name": "shopdesk-agents",
+  "version": "0.1.0",
+  "private": true,
+  "description": "抖店 / 聚水潭 取数与同步脚本统一仓库",
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "sources/jst"
+  ],
+  "scripts": {
+    "doctor": "node packages/core/src/doctor.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,82 +1,191 @@
-# 新机迁移与验收
+# 迁移计划
 
-## 1. 准备环境与复制源码
+原则：**并行建新、旧的不动、逐条对拍、软链切换、观察回滚。**
+全程不出现「改一半不能用」的状态。
 
-目标是 macOS。建议 Node.js 24（内置 SQLite）、Python 3.12、uv、SSH，以及已安装的店铺工作台。完整 App、登录会话和密钥不在 Git 中。
+## 阶段 0：冻结（✅ 2026-11-06）
 
-```sh
-git clone https://github.com/lifujie1992-wq/shopdesk-data-toolkit.git
-cd shopdesk-data-toolkit
-python3 tools/toolkit.py verify
-python3 tools/toolkit.py prepare          # 预览，任何同名目录/命令都阻止迁移
-python3 tools/toolkit.py prepare --apply  # 只复制，不运行采集、不启用定时任务
-export PATH="$HOME/.local/bin:$PATH"
+- 产出 `docs/AUDIT.md`、`docs/ARCHITECTURE.md`、仓库骨架。
+- 不改动任何现有文件，26 个 launchd 任务照常跑。
+
+## 阶段 1：core 落地（✅ 2026-11-06）
+
+- `packages/core` 落地：`errors` / `date` / `paths` / `session` / `jst-transport` /
+  `sqlite` / `cli` / `doctor`，全部从旧代码提取，行为对齐。
+- `jst doctor` 实测：Node 24.20.0、`node:sqlite` 可用、`~/shopdesk-data` 可写、
+  Keychain `com.xx-cli.jst-inventory` 3/3 cookie 可读、session 解析成功。
+- `orders` 已迁移，对拍结果见下。
+
+### 对拍记录：`jst orders`（2026-11-05 数据）
+
+| 用例 | 结果 |
+|---|---|
+| `count --days 1` | 输出字节级相同 |
+| `login-status` | 输出字节级相同 |
+| `summary` | 输出字节级相同 |
+| `list --limit 3` | 输出字节级相同 |
+| `sync-sqlite --days 1` | 表/列(53)/索引/行数(2834) 全同 |
+| 逐行内容比对 | `--sort-list skus` 后 **0 差异** |
+
+> `skus` 字段是聚水潭返回的逗号分隔项，**顺序每次请求都不同**。
+> 旧实现自己连跑两次，2834 行里有 105 行 `skus` 顺序不一致 —— 上游抖动，非回归。
+
+## 阶段 2 结果：聚水潭 Node 侧全部迁完（✅ 2026-11-06）
+
+| 命令 | 迁移方式 | 验收 |
+|---|---|---|
+| `jst orders` | 重写为 `src/orders.js`（用 core 传输/落库） | 字节级对拍 + 2834 行×53 列 |
+| `jst sales` | 重写为 `src/sales.js` | 77 行、schema/索引/视图全同 |
+| `jst inventory` | 12 源文件原样搬迁，`errors`/`chrome-session` 上收 core | **91 个单测全过** + CLI 对拍 |
+| `jst order-page` | 6 源文件原样搬迁，`CliError` 上收 core | **17 个单测全过** + CLI 对拍 |
+| `jst aftersales` | 2 源文件原样搬迁 | **18 个单测全过** + help 对拍 |
+| `jst refund` | `export-refund-daily.mjs` 参数化入口 | 入口打通（未真实导出） |
+
+合计 **126 个单元测试 0 失败**。
+
+搬迁过程中发现并修正的隐式耦合（审计时没看出来，靠测试才暴露）：
+
+1. `aftersales/src/session.js` 动态 import 了兄弟项目
+   `../../jushuitan-order-page/src/bridge.js` → 改为同仓库内相对路径。
+2. 同一文件还 import 了 `../../xdr-sync-agent/scripts/{login-jst-saved,refresh-jst-auth}.mjs`，
+   `export-refund-daily.mjs` 静态 import 了 `../xdr-sync-agent/src/failure-alerts.js`
+   → 统一改为按家目录锚定（`~/xdr-sync-agent/...`），xdr-sync-agent 继续作为独立项目。
+3. `export-refund-daily.mjs` 的 `IMPORTER` 指死了 `~/jushuitan-aftersales/import-refund-export.py`
+   → 改为 `import.meta.dirname`，脚本随仓库走。
+4. `order-page` 的 bin 用 `parseArgs()` 默认读 `process.argv`，被 `jst` 调用时会拿错参数
+   → 显式传 `args: argv`；独立运行检测用 `realpathSync` 比较（旧命令是软链）。
+
+**真实抓取对拍（2026-11-06 补完）**：
+
+`jst aftersales sync` 已用 2026-11-05 全量数据做完对拍（写 `/tmp`，未碰生产库）：
+
+| 项 | 旧 | 新 |
+|---|---|---|
+| 主表行数 | 41102 | 41102 |
+| 商品明细行数 | 46238 | 46238 |
+| 主表列数 | 82 | 82（schema 全同） |
+| 明细逐行差异 | — | **0** |
+| 主表逐行差异 | — | 仅 `商家剩余处理时长`/`售后更新时间`（实时倒计时） |
+
+> 首次跑出 41103 / 41102 的 1 行差，是 4 分钟内上游一条淘宝售后单
+> （621168709，“待确认”）发生了状态变更；旧实现重跑第二次也是 41102。
+> 旧 vs 旧 的对照组差异（1537 行）比新 vs 旧（768 行）还大 —— 纯上游抖动。
+
+`jst refund` 只验证了入口与失败路径（两边输出、退出码完全一致）。
+**真实导出未跑**：它会创建导出任务、下载 xlsx 并向云端发布，不便拿来试。
+下次 07:00 定时任务跑完后，可用同一份 xlsx 手工核对一次。
+
+## 阶段 2：聚水潭逐命令迁移（风险从低到高）
+
+顺序按「依赖少、调用方少」排：
+
+1. `orders`（无 OpenBridge、无 Chrome、参数最规整）
+2. `sales`
+3. `purple`
+4. `profit`
+5. `inventory`（Chrome cookie 解密要一起搬）
+6. `aftersales`（OpenBridge + Chrome target，最复杂）
+7. `order-page`（OpenBridge）
+
+每个命令的验收标准（缺一不可）：
+
+```bash
+# a. 帮助与参数
+jst <cmd> --help
+
+# b. 登录态
+jst <cmd> login-status
+
+# c. 对拍：同一天、同一参数，新旧输出 JSON 深比较
+node tools/parity.js --old jst-orders --new "jst orders" --args "count --days 3"
+
+# d. 落库对拍：行数、列名、主键、抽样 20 行的字段值
+node tools/parity.js --db old.sqlite --db new.sqlite --table order_details
 ```
 
-也可 `--home /独立目录` 试装，适合检查文件布局。该选项只改变复制目标；Python/Node 的 `homedir()` 仍读当前登录用户目录，所以独立目录试装不等于已具备真实运行环境。
+`parity.js` 只要有一处不一致就非零退出，**不允许「差不多就行」**。
 
-工具恢复 `~/doudian-daily`、`~/jushuitan-*`、`~/shopdesk-workbench-src`、`~/projects/*`，并建立 `~/xdr-sync-agent` 兼容链接和 `~/.local/bin/` 中的 CLI 链接。用户名硬编码路径会按目标目录替换。其他固定服务器地址保留原快照值，使用前检查。
+## 阶段 3：原路径变 shim
 
-## 2. 安装依赖
+旧命令不删，改成转发器，保证 launchd、xdr-sync-agent、手工脚本零改动：
 
-Node CLI 多数只用内置模块。店铺工作台如需重新构建，先在其目录执行 `npm install`，再 `bash build.sh --no-install`。完整 Electron App 底座仍需另行安装。`build.sh` 不带参数会部署并重启 App，应在安排好的维护时间执行。
-
-```sh
-# 独立采集脚本；执行它们时使用该虚拟环境的 Python
-uv venv "$HOME/.venvs/shopdesk-legacy" --python 3.12
-uv pip install --python "$HOME/.venvs/shopdesk-legacy/bin/python" -r requirements.txt
-
-cd "$HOME/projects/xdr-sync-agent"
-uv venv .venv --python 3.12
-uv pip install --python .venv/bin/python -r requirements-excel.txt -r requirements-warehouse.txt
-
-cd "$HOME/projects/douyin-commission-rates"
-uv sync --extra dev
-cd "$HOME/projects/douyin-settle-recon"
-uv sync --extra dev
+```js
+#!/usr/bin/env node
+// 兼容层：jushuitan-order-details/bin/jst-orders.js
+import { spawnSync } from "node:child_process";
+const r = spawnSync("jst", ["orders", ...process.argv.slice(2)], { stdio: "inherit" });
+process.exit(r.status ?? 1);
 ```
 
-退款 Excel 导入需要 `fastexcel`（见 XDR 的 Excel 依赖），利润事实构建也依赖相应 Python 数据处理库。旧定时任务使用 `/usr/bin/python3`，不会自动使用新虚拟环境；启用前须将任务的解释器换为安装依赖的 Python。不要仅安装到 `.venv` 就假定旧 plist 已能运行。
+`~/.local/bin/jst-orders` 这个软链也可以直接指向新 `jst` 的 `orders` 入口。
 
-## 3. 登录与配置
+## 阶段 4：数据目录迁移
 
-1. 安装并打开店铺工作台，各店分别扫码登录。源码快照含 Bridge、探索池和财务扩展，但实际安装的 App 必须具备对应版本能力。财务扩展安装入口是月账单项目的 `tools/install_shopdesk_extension.py`；先看其 README。
-2. 抖店脚本读取 `~/Library/Application Support/shopdesk/shops.json` 及各会话分区。Bridge 元数据为同目录 `agent-bridge.json`，它是 JSON 且包含令牌，不应复制进 Git。
-3. 聚水潭需要 Chrome 中本人登录、OpenBridge daemon 和扩展可用；安装地址从原 OpenBridge 项目/安装渠道取得。按 `jst-inventory` README 导入 Keychain 登录态。需要真实页面的任务仍要求 Chrome + OpenBridge 运行。
-4. 自行配置 SSH 身份文件及服务器账号。云端连接示例为仓库的 `config/xdr-config.example.json`，填好后保存到 `~/.config/xdr-sync-agent/config.json`，限制为 0600。若维护独立 profit-facts worker，也要给它设置独立状态目录及任务过滤；不要直接启动两个使用同一默认配置的 worker。
-5. 飞鸽发布等项目会复用 XDR 的连接配置；它们可能需要额外云端写权限。按照各模块 README 配置，不要仅凭 SSH 可连接就认为所有数据集已授权。
-6. 售后 HTTP API：复制组件的 `config/config.env.example` 到 `~/.config/aftersale/env`，填 URL、Token 等并设为 0600。发票代理的配置见 `invoice-mac-agent/config.example.json`，保存到 `~/.config/invoice-mac-agent/config.json`，先用 `dry-run`。
-7. 中差评 MySQL：用 `config/mysql.env.example` 配置环境变量并在运行前加载。仓库版不再内置生产密码，缺少 `SHOPDESK_MYSQL_PASSWORD` 时拒绝写库。launchd 不读取交互 shell 的变量，须为该任务另行提供本机环境配置。
-8. 佣金项目 `config/daily.json` 是部署配置，未收录。复制 `daily.example.json` 后填写目标与映射；真实 `data/shop-mappings.json` 应由本机重新规划和核实。不要拿空示例代替已核实的生产映射。
-9. 月账单需要将获授权的原始空白模板放到 `~/projects/douyin-settle-recon/doc/【抖音】月度账单处理模版.xlsx`，并配置其上传账号与费用映射。模板和历史样例未进入仓库；不能用任意新建空 Excel 替代。
-10. 如需飞书通知，按原模块要求在本机配置 `alert-webhook.json`。仓库只保留读取逻辑及测试用假地址。
+1. 建 `~/shopdesk-data/{jst,doudian}/…`。
+2. `rsync` 旧 SQLite 过去（停机 0 秒，只读副本）。
+3. 旧路径改成指向新位置的软链 —— 此时**新旧代码都能正常读写同一份数据**。
+4. 观察 7 天，确认没有进程还在写旧路径：
+   ```bash
+   lsof ~/jst-order-details.sqlite   # 应为空（只剩软链解析后的新 inode）
+   ```
+5. 删软链、删旧文件。
 
-## 4. 单模块验收
+## 阶段 5：抖店 Python 侧
 
-先做离线测试和文件检查，再按业务需要选一店进行真实验收。下列采集命令会访问实际平台，但不应在未经配置的新目录中盲目执行。
+- 先拆 `doudian-daily/doudian_sync.py`、`doudian_client_sync.py`：
+  确认哪个在跑（查 launchd + `.zsh_history`），只迁活的，其余进 `_legacy/`。
+- `doudian.py` 的两份分叉合并成 `sources/doudian/client.py`，
+  用 `metrics_contract.json` 做回归基准（107 字段逐个比对）。
+- `invoice*.py` 与 `projects/invoice-mac-agent` 二选一，保留能跑的那个。
 
-```sh
-python3 tools/toolkit.py doctor
-jst-inventory login-status
-jst-orders login-status
-jst-sales login-status
-jst-order-page login-status
-node "$HOME/projects/feige-customer-daily/collect.mjs" --list-shops
-"$HOME/.venvs/shopdesk-legacy/bin/python" "$HOME/doudian-daily/daily_collect.py" --list
-# 飞鸽单店采集，先只写本机
-node "$HOME/projects/feige-customer-daily/collect.mjs" --shop-id '<店铺ID>' --local-only
+## 阶段 6：定时任务收敛
+
+- `schedules/*.plist.tpl`：路径用 `{{HOME}}`、`{{NODE}}`、`{{CLI}}` 占位。
+- `schedules/install.sh` 渲染 + `launchctl bootstrap`；`uninstall.sh` 反向。
+- 一次性把 4 种前缀统一成 `com.shopdesk.`。
+- 清理 `.bak-*` 到 `_legacy/`。
+- 修掉当前退出码非 0 的 3 个任务。
+
+## 阶段 7：归档
+
+```
+~/_legacy/2026-11/
+├── jushuitan-*/
+├── doudian-daily/
+├── projects/shopdesk-data-toolkit/
+├── *.zip / *.bak-* / appeal*.js
+└── MANIFEST.md      ← 每个目录对应新位置的映射
 ```
 
-确认原始行数、日期范围、业务身份、完整性状态及本地输出，再验证该模块的云端发布。飞鸽/XDR 的快照与ACK逻辑、月账单的归档与下游同步状态各有定义，进程退出0不等于所有数据已正确入云。
+保留 30 天，确认无遗漏后删除。
 
-## 5. 定时任务
+## 回滚
 
-```sh
-python3 tools/toolkit.py render-schedules --output /tmp/shopdesk-schedules
+任一阶段出问题：
+
+```bash
+schedules/uninstall.sh          # 停新任务
+git -C ~/projects/shopdesk-agents checkout .   # 代码回滚
+mv ~/_legacy/2026-11/jushuitan-order-details ~/   # 目录还原
+ln -sfn <old> ~/jst-order-details.sqlite          # 数据还原
 ```
 
-该命令只生成待审核 plist，不安装、不加载。`docs/schedules.json` 记录采集时看到的调度。模板不包含原任务的环境变量；需在本机补齐配置文件位置、Python路径、工作目录、权限和互斥关系。
+因为阶段 3 之前旧的**从未改动**，回滚成本为 0。
 
-先选需要的数据采集任务逐项部署。申诉提交、发票 PDF 回传、云端自动拉取作业及 autodeploy 会执行实际业务操作；开发机不应直接批量加载整套定义。尤其 autodeploy 沿用原仓库策略，可能重置其工作目录；启用前必须改好来源与分支。原生产机与新电脑不能未经协调同时消费相同提交队列。
+## 时间与风险
 
-`runtime-wrappers/` 在迁移时只复制到 `~/shopdesk-runtime-wrappers`。按需审核后再放入工作台数据目录；迁移工具不会覆盖工作台的当前运行脚本。
+| 阶段 | 预计 | 风险 | 可控性 |
+|---|---|---|---|
+| 1 core | 半天 | 无 | 纯新增 |
+| 2 orders/sales | 1 天 | 低 | 有对拍 |
+| 2 inventory/aftersales/order-page | 2–3 天 | 中（Chrome 解密、OpenBridge） | shim 兜底 |
+| 5 doudian | 1–2 天 | 中（分叉版本判断） | 合约比对 |
+| 6 定时任务 | 半天 | 中（漏任务） | 逐个 `launchctl` 核对 |
+
+**唯一真正的风险**是「漏掉一个没人记得的调用方」。缓解手段：
+
+```bash
+# 迁移前先摸清谁在调旧命令
+grep -rl "jst-orders\|jst-sales\|daily_collect" \
+  ~/Library/LaunchAgents ~/xdr-sync-agent ~/.zsh_history ~/projects 2>/dev/null
+```

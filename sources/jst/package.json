@@ -1,0 +1,13 @@
+{
+  "name": "@shopdesk/jst",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "聚水潭统一 CLI：orders / sales / inventory / order-page / aftersales / purple / profit",
+  "bin": {
+    "jst": "./bin/jst.js"
+  },
+  "dependencies": {
+    "@shopdesk/core": "0.1.0"
+  }
+}

@@ -1,0 +1,4430 @@
+{
+  "captured_at": "2026-09-08T06:48:19.854Z",
+  "rows": 5,
+  "details": 5,
+  "columns": [
+    {
+      "id": "checked",
+      "name": "{@@checkbox}",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "o_id",
+      "name": "内部订单号",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "labels",
+      "name": "标记|多标签",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "its",
+      "name": "商品",
+      "help": "单击显示或修改商品详情",
+      "visible": true
+    },
+    {
+      "id": "shop_id",
+      "name": "店铺id",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "so_id",
+      "name": "线上订单号",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "order_date",
+      "name": "下单时间",
+      "help": "",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "pay_date",
+      "name": "付款时间",
+      "help": "双击排序可能会占用很多资源，可能会影响发货，请慎用",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "outer_so_id",
+      "name": "外部交易单号",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "shop_buyer_id",
+      "name": "买家帐号+店铺",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "confirm_date",
+      "name": "审核时间",
+      "help": "",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "pay_amount",
+      "name": "应付+运费",
+      "help": "",
+      "type": "n",
+      "visible": false
+    },
+    {
+      "id": "paid_amount",
+      "name": "已付金额",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "amount_list",
+      "name": "附加信息",
+      "help": "上下两列分别代表：`待发货订单的商品成交金额+运费-订单优惠`待发货订单的商品成交金额，未加运费也未减订单优惠",
+      "visible": false
+    },
+    {
+      "id": "status",
+      "name": "状态",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "question_suggest",
+      "name": "处理建议",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "buyer_message",
+      "name": "买家留言",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "logistics_status",
+      "name": "O2O订单配送状态",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "remark",
+      "name": "卖家备注",
+      "help": "如果线上修改备注而订单已经在发货中,则不会终止发货`如需终止发货,请在备注前加上汉字[异常],将终止发货并标记异常",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "rider_name_mobile",
+      "name": "骑手姓名及电话",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "node",
+      "name": "便签|线下备注",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "erp_serial_number",
+      "name": "流水号",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "drp_co_id_from",
+      "name": "分销商",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "pick_code",
+      "name": "取件码",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "logistics_company",
+      "name": "快递公司",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "plan_delivery_date",
+      "name": "最晚发货时间",
+      "help": "取订单所有商品的最晚发货时间中较早的一条作为订单整体的最晚发货时间。最晚发货时间的取值规则为：平台下发/商家指定预售时间>店铺发货时效>平台默认时间。``商家指定预售时间格式：预售的商品编码为商品编码+预售+计划发货日期(A1234预售2015-11-11)或者商品编码+==+计划发货日期(A1234==2015-11-11)``请注意：不同平台考核揽收和发货的时间节点不同，请预留充分时间审核。",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "address",
+      "name": "收货地址",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "drp_remark",
+      "name": "供分销备注",
+      "help": "供分销商实时共享信息，缺货换规格、同步备货进度、大件拆单等，内外部多人协同更高效",
+      "visible": true
+    },
+    {
+      "id": "weight",
+      "name": "重量",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "ext_datas",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "invoice_title",
+      "name": "发票抬头+税号",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "promise_time",
+      "name": "承诺送达时间",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "send_date",
+      "name": "发货日期",
+      "help": "如果是外部系统发货,则会自动取接口同步下来的时间为发货日期",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "lastCollect_time",
+      "name": "最晚揽收时间",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "creator_name",
+      "name": "业务员",
+      "help": "判断依据`手工下单，根据当前用户自动绑定`线上订单根据卖家备注判断。当卖家备注中含【@用户名】则自动绑定，比如:【@张三】 则【张三】为业务员。`依赖备注进行业务员绑定的请保证【用户管理】模块【用户姓名】的唯一性，否则可能误判",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "second_logistics",
+      "name": "二段物流",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "wms_co_name",
+      "name": "发货仓",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "black_delivery_cps",
+      "name": "平台禁发快递公司",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "l_id",
+      "name": "国内快递单号",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "suggest_lcIds",
+      "name": "停发建议",
+      "help": "聚水潭大数据分析出的订单快递停发建议",
+      "visible": true
+    },
+    {
+      "id": "drp_co_id_to",
+      "name": "供销商",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "volume",
+      "name": "体积",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "sign_time",
+      "name": "预计送达时间",
+      "help": "仅限淘系平台",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "end_time",
+      "name": "确认收货时间",
+      "help": "仅限淘系平台、头条放心购、拼多多、苏宁易购，快手电商、有赞微商城、微信视频号，如果线上状态为取消，该时间为完结时间",
+      "type": "d",
+      "visible": true
+    },
+    {
+      "id": "lwh",
+      "name": "运营云仓",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "deliver_time_left",
+      "name": "剩余发货时间",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "f_weight",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "cus_name",
+      "name": "线下客户",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "lock_user_name",
+      "name": "锁定用户",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "pre_so_id",
+      "name": "原始单号",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "co_id",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "receiver_name",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_mobile",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_phone",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "question_type",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "question_desc",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "shop_site",
+      "name": "shop_site",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "buyer_id",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "seller_flag",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "drp_co_id",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "is_cod",
+      "name": "货到付款",
+      "help": "",
+      "type": "b",
+      "visible": true
+    },
+    {
+      "id": "merge_so_id",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "link_o_id",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "is_split",
+      "name": "",
+      "help": "",
+      "type": "b",
+      "visible": true
+    },
+    {
+      "id": "is_merge",
+      "name": "",
+      "help": "",
+      "type": "b",
+      "visible": true
+    },
+    {
+      "id": "invoice_type",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "presend_status",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "wms_co_id",
+      "name": "发货仓",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "is_paid",
+      "name": "",
+      "help": "",
+      "type": "b",
+      "visible": true
+    },
+    {
+      "id": "shop_name",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "type",
+      "name": "订单类型",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "freight",
+      "name": "运费",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "drp_amount",
+      "name": "分销金额",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "free_amount",
+      "name": "优惠金额",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "buyer_tax_no",
+      "name": "发票税号",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "src_status",
+      "name": "",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "outer_pay_id",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "order_from",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "plat_channel",
+      "name": "平台物流商",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "plat_l_id",
+      "name": "平台物流单号",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "skus",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_state",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_city",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_district",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_town",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_address",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "raw_so_id",
+      "name": "",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "is_crossborder_order",
+      "name": "",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "outer_as_id",
+      "name": "换货单号",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "open_id",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "lc_id",
+      "name": "快递公司编码",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "cus_id",
+      "name": "线下客户id",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "as_id",
+      "name": "售后单号",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "lock_user_id",
+      "name": "",
+      "help": "",
+      "type": "n",
+      "visible": true
+    },
+    {
+      "id": "upload_return_address",
+      "name": "上传退货地址",
+      "help": "",
+      "visible": true
+    },
+    {
+      "id": "jht_send_unsend_qty",
+      "name": "已发数/未发数",
+      "help": "聚货通分批发货订单的已发货数量/未发货数量（如 0/1）；非货通分批发货订单为空",
+      "visible": false
+    },
+    {
+      "id": "shop_buyer_id_en",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_mobile_en",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_phone_en",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    },
+    {
+      "id": "receiver_name_en",
+      "name": "",
+      "help": "",
+      "type": "s",
+      "visible": true
+    }
+  ],
+  "fields": [
+    {
+      "path": "detail",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.aftersales",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.extension_model",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.extensions",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.field_labels",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.field_labels.all_item_amount",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.all_item_qty",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.item_cancelled_amount",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.l_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.left_item_qty",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.logistics_company",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.o_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.order_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.order_from_text",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.paid_amount",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.pay_amount",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.pay_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.receiver_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.receiver_zip",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.refund_item_qty",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.shop_buyer_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.shop_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.field_labels.so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.o_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order._drp_daily_balance_switch",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order._is_owner",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.actions",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.order.actions[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].created",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].creator",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].creator_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].link_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].oa_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.actions[].remark",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.all_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.all_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.all_item_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.all_item_qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.app_cid",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.area_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.as_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.begin_pay_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.big_to",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.buyer_id",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.buyer_message",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.buyer_paid_amount",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.buyer_rate",
+      "types": [
+        "boolean",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.buyer_tax_no",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.calc_time",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.campaign_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.campaign_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.cancel_desc",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.cancel_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.check_freight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.check_receiver_address",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.check_receiver_address2",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.check_receiver_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.collect_time",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.confirm_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.created",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.creator",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.creator_name",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.currency",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.cus_id",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.deliver_able",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.discount_rate",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_amount",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_co_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_co_id_from",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_co_id_to",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_co_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_info",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.drp_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.end_time",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.ext_datas",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.f_freight",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.f_weight",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.freight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.full_address",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.gift_type",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.has_drp_remark",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.HasCombineOrderItem",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.have_ipc_video",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.invoice_amount",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.invoice_data",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.invoice_title",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.invoice_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.is_cod",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.is_invoice",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.is_lock_stock",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.is_merge",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.is_paid",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.is_presend",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.is_print",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.is_print_express",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.is_question",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.is_split",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.is_up_send",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.IsCrossBorderShopSite",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.item_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.item_cancelled_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.order.items[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order.items[].activity_u_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].activity_u_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].base_price",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].batch_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].bin",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].bu_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].buyer_paid_amount",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].buyer_rate",
+      "types": [
+        "boolean",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].campaign_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].campaign_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].child_stock",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order.items[].child_stock.122924469_23231Q-印花半身裙-2XL",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].child_stock.122924469_23231Y-绿色衬衫-2XL",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].combine_link",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].cost_price",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].created",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].creator",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].discount_rate",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].drp_co_id_to",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].drp_price",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].estimate_commission",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].expiration_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].full_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].i_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].il_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].il_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].img_60",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].io_qty",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].is_combine",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.items[].is_gift",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.items[].is_presale",
+      "types": [
+        "boolean",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_end_time",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_ext_data",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_l_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_labels",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_lc_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_pay_amount",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_pickable",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_plan_delivery_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_send_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_shop_status",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_sign",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].item_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].modified",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].modifier",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].monitor_price",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].oi_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].oi_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].order_price",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].origin_amount",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].origin_qty",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].outer_oi_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].outer_so_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].per_carton",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].per_unit",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].pic",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].plan_qty",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].presale_date",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].price",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].process_info",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].process_tec",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].produce_info",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].produced_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].properties_value",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].r_qty",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].raw_outer_as_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].raw_qty",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].raw_sku_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].raw_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].real_commission",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].referrer_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].referrer_name",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].refund_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].refund_qty",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].refund_status",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].remark",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].reserve_qty",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].sales_unit",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].seller_income_amount",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].seller_rate",
+      "types": [
+        "boolean",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].shop_i_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].shop_sku_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].sku_correspond",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].sku_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].sku_tag",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].sku_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].src_combine_sku_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].src_combine_sku_qty",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].stock",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].stock_lock",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].supplier_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[].bgcolor",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[].color",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[].font-weight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[].key",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[].title",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].tags[].value",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].total_weight",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].ts",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.items[].unit",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.items[].volume",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.items[].weight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.l_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.l_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.l_id_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.l_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.labels",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.lc_code",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.lc_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.left_item_qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.link_o_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.lock_user_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.logistics_company",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.logistics_status",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.merge_so_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.modified",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.modifier",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.modifier_name",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.ModifyFreeAmountAble",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.node",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.open_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.order_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.order_from",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.order_from_text",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.origin_amount",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.origin_freight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.origin_zip",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.outer_as_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.outer_drp_co_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.outer_pay_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.outer_so_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.owner_co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.package",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.paid_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pay_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pay_confirmed",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.pay_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.order.pays[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].as_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].balance",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].bill_list",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].buyer_account",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].buyer_account_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].buyer_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].buyer_opening_bank",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].confirm_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].confirmer",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].confirmer_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].created",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].creator",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].creator_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].creator_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].credit_amount",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].currency",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].cus_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].drp_co_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].drp_co_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].final_pay_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].finished_date",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].io_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].is_order_pay",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].link_o_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].link_pay_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].modified",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].modifier",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].modifier_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].online_refund_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].original_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].original_currency",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].outer_pay_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].pay_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].pay_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].pay_tag",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].pay_type",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].payment",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].remark",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].reserved_fund",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].seller_account",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].shop_buyer_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].shop_buyer_id_en",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].shop_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].split_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].status",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].supplier_co_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].tag",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].tmp_drp_co_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.pays[].ts",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.plan_delivery_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.presend_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.presend_time",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.promotions",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].autoid",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].coupon_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].outer_oi_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].promotion_desc",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].promotion_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].promotion_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.promotions[].source_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.purchase_batch_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.question_desc",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.question_type",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.raw_remark",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.raw_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_address",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_city",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_country",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_district",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_idcard_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_name",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_name_en",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_state",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_town",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.receiver_zip",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.referrer_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.referrer_name",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.refund_item_qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.reiceiver_idcard",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.remark",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.save_hashcode",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.seller_can_rate",
+      "types": [
+        "boolean",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.seller_flag",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.seller_income_amount",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.seller_rate",
+      "types": [
+        "boolean",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.send_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.sender_address",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.shipment",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.shop_buyer_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.shop_buyer_id_en",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.shop_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.shop_modified",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.shop_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.shop_site",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.shop_status",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.sign_time",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.skus",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.split_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.src_status",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.status",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.status_color",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.status_text",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.store_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.store_name",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.surcharge",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.tag",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.ts",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.order.upsent_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "detail.order.volume",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.weight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.wms_co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.order.wms_co_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.revenue.amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.buyer_paid_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.freight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.government_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].buyer_paid_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].freight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].government_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].oi_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].origin_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].origin_qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].outer_oi_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].pay_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].platform_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].price_adjustment",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].bearer",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].bearer_str",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].coupon_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].outer_oi_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].price",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].promotion_desc",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].promotion_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].promotion_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].raw_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].source_type",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].promotions[].source_type_str",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].properties_value",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].raw_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].re_calc_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].referrer_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].seller_income_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].service_charge",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].shop_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].shop_sku_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].sku_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].sku_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.items[].value_added_service_charge",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.order_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "detail.revenue.origin_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.pay_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.platform_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.price_adjustment",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.re_calc_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.referrer_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.seller_income_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.service_charge",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.shop_free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.revenue.shop_site",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.revenue.so_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.revenue.status",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "detail.revenue.value_added_service_charge",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "detail.source",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "list.__KeyData",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list._address",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list._IsMustSyncAddress",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list._receiver_mobile",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list._receiver_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list._receiver_phone",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list._sku_cost",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list._standard_sku_name",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "list.a_item_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.a_pay_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.address",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.amount_list",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.app_cid",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.as_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.black_delivery_cps",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.buyer_id",
+      "types": [
+        "number",
+        "null"
+      ]
+    },
+    {
+      "path": "list.buyer_message",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.buyer_tax_no",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.check_receiver_address",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.checked",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.confirm_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.confirm_user",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.creator_name",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.cus_id",
+      "types": [
+        "null",
+        "number"
+      ]
+    },
+    {
+      "path": "list.cus_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.deliver_time_left",
+      "types": [
+        "string",
+        "number"
+      ]
+    },
+    {
+      "path": "list.drp_amount",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.drp_co_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.drp_co_id_from",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.drp_co_id_to",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.drp_remark",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.end_time",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.erp_serial_number",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.ext_datas",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.f_weight",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.free_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.freight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.furn_info",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.glasses_setting",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.has_calc_unreach",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.invoice_title",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.invoice_type",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.is_cod",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.is_crossborder_order",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.is_disabled",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.is_merge",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.is_paid",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.is_refund",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.is_split",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.items",
+      "types": [
+        "array"
+      ]
+    },
+    {
+      "path": "list.items[]",
+      "types": [
+        "object"
+      ]
+    },
+    {
+      "path": "list.items[].amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].base_price",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].i_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].io_qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].is_gift",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.items[].is_presale",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.items[].item_ext_data",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].item_labels",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.items[].item_plan_delivery_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].lock_key",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].oi_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].outer_oi_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].pic",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].presale_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].price",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].properties_value",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].raw_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].referrer_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].referrer_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].remark",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].shop_i_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].shop_sku_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].sku_correspond",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.items[].sku_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].sku_type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.items[].weight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.its",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.jht_send_unsend_qty",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.l_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.labels",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.lastCollect_time",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.lc_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.link_o_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.links",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.lock_user_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.lock_user_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.logistics_company",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.logistics_status",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.lwh",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.merge_so_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.multiWaybillLid",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.node",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.norefund_item_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.norefund_item_qty",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.o_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.o_id_en",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.open_id",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.order_date",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.order_from",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.orderFreight",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.outer_as_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.outer_pay_id",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.outer_so_id",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.paid_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.pay_amount",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.pay_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.pick_code",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.plan_delivery_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.plat_channel",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.plat_l_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.pre_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.presend_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.process_infos",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.promise_time",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.question_desc",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.question_suggest",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.question_type",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.raw_remark",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.raw_so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.reach_lcIds",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.real_co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.receiver_address",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.receiver_city",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.receiver_district",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.receiver_mobile",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.receiver_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.receiver_name_en",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.receiver_phone",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.receiver_state",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.receiver_town",
+      "types": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "path": "list.remark",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.rider_name_mobile",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.second_logistics",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.seller_flag",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.send_date",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.shop_buyer_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.shop_buyer_id_en",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.shop_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.shop_name",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.shop_site",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.sign_time",
+      "types": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "path": "list.skus",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.skus_order",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.so_id",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.src_drp_co_id_from",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.src_drp_co_id_to",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.src_status",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.status",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.suggest_lcIds",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.sysfuzzy_shop_buyer_id",
+      "types": [
+        "boolean"
+      ]
+    },
+    {
+      "path": "list.temp_drp_co_id_from",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.type",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.upload_return_address",
+      "types": [
+        "string"
+      ]
+    },
+    {
+      "path": "list.upsent_status",
+      "types": [
+        "null"
+      ]
+    },
+    {
+      "path": "list.volume",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.weight",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.wms_co_id",
+      "types": [
+        "number"
+      ]
+    },
+    {
+      "path": "list.wms_co_name",
+      "types": [
+        "string"
+      ]
+    }
+  ]
+}

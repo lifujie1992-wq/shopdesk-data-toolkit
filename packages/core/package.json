@@ -1,0 +1,18 @@
+{
+  "name": "@shopdesk/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "共享基础库：错误、日期、路径、认证、聚水潭传输、SQLite、CLI",
+  "exports": {
+    ".": "./src/index.js",
+    "./errors": "./src/errors.js",
+    "./date": "./src/date.js",
+    "./paths": "./src/paths.js",
+    "./session": "./src/session.js",
+    "./jst-transport": "./src/jst-transport.js",
+    "./sqlite": "./src/sqlite.js",
+    "./cli": "./src/cli.js",
+    "./chrome-session": "./src/chrome-session.js"
+  }
+}

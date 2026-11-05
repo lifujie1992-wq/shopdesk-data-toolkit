@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>店铺取数脚本全景 · shopdesk-agents</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#151b24; --panel-2:#1b222d; --line:#253040;
+    --text:#e6edf3; --dim:#8b98a9; --dim-2:#6b7788;
+    --blue:#5b9dff; --green:#3fb950; --amber:#d29922; --red:#f85149; --purple:#bc8cff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--blue);text-decoration:none}
+  code,kbd{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12px;background:#0b1017;border:1px solid var(--line);
+    border-radius:5px;padding:1px 5px;color:#a8c7fa;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(13,17,23,.9);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+  }
+  .head-in{display:flex;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+  .brand h1{font-size:16px;margin:0;font-weight:650;letter-spacing:.2px;white-space:nowrap}
+  .brand .sub{color:var(--dim-2);font-size:12px;white-space:nowrap}
+  .search{flex:1;min-width:180px;position:relative}
+  .search input{
+    width:100%;background:var(--panel);border:1px solid var(--line);color:var(--text);
+    border-radius:9px;padding:8px 12px 8px 32px;font-size:13px;outline:none;
+  }
+  .search input:focus{border-color:var(--blue)}
+  .search svg{position:absolute;left:10px;top:9px;opacity:.5}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:12px}
+  nav.tabs button{
+    background:transparent;border:1px solid var(--line);color:var(--dim);
+    padding:5px 12px;border-radius:20px;font-size:12.5px;cursor:pointer;transition:.15s;
+  }
+  nav.tabs button:hover{color:var(--text);border-color:#35455c}
+  nav.tabs button.on{background:#1c2b40;border-color:var(--blue);color:#cfe1ff}
+
+  /* ---------- sections ---------- */
+  section{padding:34px 0 6px}
+  section > .wrap > h2{
+    font-size:19px;margin:0 0 4px;font-weight:650;display:flex;align-items:center;gap:9px;
+  }
+  section > .wrap > h2 .num{
+    font-size:12px;color:var(--dim-2);border:1px solid var(--line);
+    border-radius:6px;padding:1px 7px;font-weight:500;
+  }
+  .lede{color:var(--dim);font-size:13px;margin:0 0 18px;max-width:820px}
+
+  /* ---------- stat chips ---------- */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:22px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+  .stat .k{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
+  .stat .l{color:var(--dim);font-size:12px;margin-top:3px}
+  .stat.green .k{color:var(--green)} .stat.blue .k{color:var(--blue)}
+  .stat.amber .k{color:var(--amber)} .stat.purple .k{color:var(--purple)}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px 12px;position:relative;transition:.15s;
+  }
+  .card:hover{border-color:#31415a;transform:translateY(-1px)}
+  .card h3{margin:0 0 4px;font-size:14.5px;font-weight:650;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .card .purpose{color:var(--dim);font-size:12.5px;margin:0 0 10px;min-height:2.6em}
+  .kv{display:grid;grid-template-columns:64px 1fr;gap:2px 8px;font-size:12px;margin:0}
+  .kv dt{color:var(--dim-2)}
+  .kv dd{margin:0;color:#c3cddb;word-break:break-all}
+  .kv dd code{font-size:11.5px}
+
+  .badge{
+    font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px;
+    border:1px solid;letter-spacing:.2px;white-space:nowrap;
+  }
+  .b-ok{color:var(--green);border-color:#1f5b31;background:#0f2a18}
+  .b-todo{color:var(--amber);border-color:#5c470f;background:#241c07}
+  .b-legacy{color:var(--dim);border-color:#333c4a;background:#171d26}
+  .b-fix{color:var(--blue);border-color:#1d3d69;background:#0e1d31}
+  .b-bad{color:var(--red);border-color:#5d1f1b;background:#2a0f0d}
+
+  /* ---------- table ---------- */
+  .tablewrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel-2);color:var(--dim);font-weight:600;font-size:11.5px;letter-spacing:.3px;position:sticky;top:0}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#19202b}
+  td.time{font-family:ui-monospace,Menlo,monospace;color:var(--blue);white-space:nowrap}
+  td .dim{color:var(--dim-2)}
+
+  /* ---------- bars ---------- */
+  .bars{display:flex;flex-direction:column;gap:9px}
+  .bar-row{display:grid;grid-template-columns:200px 1fr 92px;gap:10px;align-items:center;font-size:12.5px}
+  .bar-row .label{color:#b9c4d2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-track{height:16px;background:#0b1017;border-radius:5px;overflow:hidden;display:flex}
+  .bar-fill{height:100%;border-radius:5px;display:flex;align-items:center;justify-content:flex-end;
+    padding-right:6px;font-size:10.5px;font-weight:600;color:#06101d}
+  .bar-fill.old{background:linear-gradient(90deg,#8a4b4b,#c96b6b)}
+  .bar-fill.new{background:linear-gradient(90deg,#2f7d4a,#4fbf74)}
+  .bar-fill.blue{background:linear-gradient(90deg,#2b5c9e,#5b9dff)}
+  .bar-row .val{text-align:right;color:var(--dim);font-size:11.5px;font-variant-numeric:tabular-nums}
+
+  .dupe{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+  .dupe-item{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .dupe-item .n{font-size:12px;color:#c3cddb;margin-bottom:7px}
+  .dupe-item .n code{font-size:11px}
+  .dupe-line{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--dim);margin-top:4px}
+  .pill{font-weight:700;padding:1px 7px;border-radius:5px;font-size:11px}
+  .pill.before{background:#2a0f0d;color:#ff9d96}
+  .pill.after{background:#0f2a18;color:#57d97a}
+
+  /* ---------- issue cards ---------- */
+  .issues{display:grid;gap:12px}
+  .issue{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--red);
+    border-radius:10px;padding:14px 16px}
+  .issue.fixed{border-left-color:var(--green)}
+  .issue.pending{border-left-color:var(--amber)}
+  .issue h4{margin:0 0 6px;font-size:14px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .issue p{margin:6px 0;color:var(--dim);font-size:12.5px}
+  .issue ul{margin:6px 0 0;padding-left:18px;color:#c3cddb;font-size:12.5px}
+  .issue li{margin:3px 0}
+
+  /* ---------- tree ---------- */
+  pre.tree{
+    background:#0b1017;border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;overflow:auto;font-size:12px;line-height:1.75;color:#9fb0c4;margin:0;
+  }
+  pre.tree b{color:#dbe6f3;font-weight:600}
+  pre.tree i{color:var(--dim-2);font-style:normal}
+
+  .note{
+    background:#101a26;border:1px solid #1d3352;border-radius:10px;
+    padding:12px 15px;font-size:12.5px;color:#a9bdd6;margin:14px 0 0;
+  }
+  .note b{color:#cfe1ff}
+  footer{color:var(--dim-2);font-size:11.5px;padding:40px 0 30px;text-align:center;border-top:1px solid var(--line);margin-top:36px}
+  .hidden{display:none !important}
+
+  @media (max-width:640px){
+    .bar-row{grid-template-columns:110px 1fr 60px}
+    .kv{grid-template-columns:56px 1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="head-in">
+      <div class="brand">
+        <h1>店铺取数脚本全景</h1>
+        <span class="sub">shopdesk-agents · 2026-11-06</span>
+      </div>
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>
+        </svg>
+        <input id="q" type="search" placeholder="搜索脚本、用途、命令、数据表…（按 / 聚焦）">
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="on" data-f="all">全部</button>
+      <button data-f="jst">聚水潭</button>
+      <button data-f="dd">抖店</button>
+      <button data-f="ops">同步与运维</button>
+      <button data-f="ui">工作台·前段</button>
+      <button data-f="migrated">已迁移</button>
+      <button data-f="pending">未迁移</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ============ 概览 ============ -->
+<section id="overview">
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+    <div class="note" id="celebrate">
+      <b>一句话结论：</b>聚水潭侧 7 个项目已收敛成一个 <code>jst</code> 命令，
+      基础设施从 4 份重复实现合并为 <code>@shopdesk/core</code> 一份；
+      抖店（Python）侧仍在原处，是下一阶段。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 脚本清单 ============ -->
+<section id="scripts">
+  <div class="wrap">
+    <h2>脚本清单 <span class="num" id="count"></span></h2>
+    <p class="lede">按数据源分组。每张卡片写清「做什么 / 谁在跑 / 认证方式 / 数据落在哪」，以及重构后的入口。</p>
+    <div class="grid" id="cards"></div>
+    <p class="lede hidden" id="empty" style="padding:20px 0;color:var(--dim-2)">没有匹配的条目。</p>
+  </div>
+</section>
+
+<!-- ============ 定时任务 ============ -->
+<section id="schedule">
+  <div class="wrap">
+    <h2>定时任务 <span class="num">launchd</span></h2>
+    <p class="lede">全部 26 个 LaunchAgent 里与取数相关的部分。时间是本地时间（Asia/Shanghai）。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:96px">触发</th><th style="width:190px">任务</th><th>做什么</th><th style="width:120px">入口</th></tr></thead>
+        <tbody id="sched-body"></tbody>
+      </table>
+    </div>
+    <div class="note">
+      三种命名前缀共存（<code>com.lee.</code> / <code>com.xdr.</code> / <code>local.</code>），
+      且全部写死绝对路径。阶段 6 会统一成 <code>com.shopdesk.*</code> 并由模板生成。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 重复度 ============ -->
+<section id="dupe">
+  <div class="wrap">
+    <h2>重复度：重构前 vs 重构后 <span class="num">为什么乱</span></h2>
+    <p class="lede">同一个基础设施代码被复制到每个项目里，改一处要改七处——这是「不能复用」的根因。</p>
+    <div class="dupe" id="dupe-grid"></div>
+
+    <h2 style="margin-top:34px">代码规模 <span class="num">行</span></h2>
+    <p class="lede">左侧是原始项目，右侧条长按最大值等比。库存项目最大，也是测试最多的（91 个）。</p>
+    <div class="bars" id="size-bars"></div>
+  </div>
+</section>
+
+<!-- ============ 问题 ============ -->
+<section id="issues">
+  <div class="wrap">
+    <h2>故障与修复 <span class="num">2026-11-06</span></h2>
+    <p class="lede">顺手体检发现的三个长期故障，两个已在代码层修好并验证，一个需要人工扫码。</p>
+    <div class="issues" id="issue-list"></div>
+  </div>
+</section>
+
+<!-- ============ 结构 ============ -->
+<section id="tree">
+  <div class="wrap">
+    <h2>目标结构 <span class="num">分层</span></h2>
+    <p class="lede">按「能力」分层，不按「项目」分层：一个数据源一个命令，基础设施只写一次。</p>
+<pre class="tree"><b>shopdesk-agents/</b>
+├── <b>packages/core/</b>            @shopdesk/core —— 共享基础库
+│   ├── session.js            认证抽象（keychain / json）
+│   ├── chrome-session.js     Chrome cookie 解密 + Keychain 读写
+│   ├── jst-transport.js      transportData + 限流 + 访问上限 + 静默时段
+│   ├── sqlite.js             原子写 / 建表补列 / 批量 replace
+│   ├── cli.js                子命令分发 + 声明式参数 + 输出契约
+│   ├── errors.js             CliError + 脱敏 diagnostic
+│   ├── date.js paths.js doctor.js
+│   └── <i>替代了 4 份 errors.js、3 份 session.js、3 份请求骨架</i>
+│
+├── <b>sources/jst/</b>             bin: jst
+│   ├── src/orders.js         订单明细（53 字段）
+│   ├── src/sales.js          店铺日报（77 店）
+│   ├── inventory/            库存 / 采购预警（91 测试）
+│   ├── order-page/           订单页 / 未发货（17 测试）
+│   └── aftersales/           售后明细 + 退款导出（18 测试）
+│
+├── <b>pipelines/</b>              跨源业务流水线（利润事实库 …）
+├── <b>schedules/</b>              launchd 模板 + install / uninstall
+├── <b>tools/parity.js</b>         新旧对拍（不一致就非零退出）
+└── <b>docs/</b>                    AUDIT / ARCHITECTURE / MIGRATION / INCIDENTS</pre>
+    <div class="note">
+      数据落位同样收敛：<code>~/shopdesk-data/&lt;source&gt;/&lt;dataset&gt;/</code>。
+      迁移期用软链，旧路径继续可用，调用方零改动。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 进度 ============ -->
+<section id="progress">
+  <div class="wrap">
+    <h2>迁移进度 <span class="num">7 阶段</span></h2>
+    <p class="lede">旧命令全程可用，任何一步出问题都能立刻回退。</p>
+    <div class="bars" id="phase-bars"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  shopdesk-agents · 生成于 2026-11-06 · 数据来源：家目录实盘扫描 + launchd 配置 + 各项目 README
+</footer>
+
+<script>
+/* ============================================================
+   数据
+   ============================================================ */
+const MODULES = [
+  /* ---------- 聚水潭 ---------- */
+  {
+    id:'jst-orders', group:'jst', status:'migrated',
+    name:'订单明细', dir:'jushuitan-order-details', lines:986,
+    purpose:'按发货日期拉订单明细快照，53 个接口字段入 SQLite；支持「订单 / 商品」两个维度与增量合并。',
+    old:'jst-orders', now:'jst orders', auth:'macOS Keychain',
+    sched:'由 xdr-sync-agent 调用', data:'~/jst-order-details.sqlite（612 MB）',
+    note:'已对拍：2834 行 × 53 列零差异'
+  },
+  {
+    id:'jst-sales', group:'jst', status:'migrated',
+    name:'销售业绩', dir:'jushuitan-sales-performance', lines:701,
+    purpose:'按天拉全店销售日报（77 家店），计算净销、毛利、退款、48 小时发货率，生成「综合快览」文案。',
+    old:'jst-sales', now:'jst sales', auth:'macOS Keychain',
+    sched:'由 xdr-sync-agent 调用', data:'~/jst-sales-performance.sqlite（11 MB）',
+    note:'含中文视图「销售业绩报告」'
+  },
+  {
+    id:'jst-inventory', group:'jst', status:'migrated',
+    name:'库存与采购预警', dir:'jushuitan-inventory-warning', lines:7488,
+    purpose:'拉 SPU/SKU 库存、采购预警、缺货、店铺缺货明细、销售分析抽屉、商品利润分析；支持断点续抓与完整性校验。',
+    old:'jst-inventory', now:'jst inventory', auth:'Chrome Cookie → Keychain',
+    sched:'每小时（xdr 队列）', data:'~/jst-inventory-full.sqlite（294 MB）',
+    note:'最大的模块，91 个单测全部通过'
+  },
+  {
+    id:'jst-page', group:'jst', status:'migrated',
+    name:'订单页 / 未发货', dir:'jushuitan-order-page', lines:1475,
+    purpose:'通过 OpenBridge 操作已登录的订单页，抓列表与「销售订单详情」，含未发货订单同步。',
+    old:'jst-order-page', now:'jst order-page', auth:'OpenBridge（浏览器标签页）',
+    sched:'xdr 手动任务 sync_order_page', data:'jst-order-today.sqlite / jst-order-unshipped.sqlite',
+    note:'17 个单测通过'
+  },
+  {
+    id:'jst-aftersales', group:'jst', status:'migrated',
+    name:'售后明细 / 退款导出', dir:'jushuitan-aftersales', lines:1373,
+    purpose:'售后页全量明细落库；另一条链路把「退款单」导出成 xlsx、下载、入库并触发上云。',
+    old:'jst-aftersales · export-refund-daily.mjs', now:'jst aftersales · jst refund',
+    auth:'OpenBridge', sched:'08:00 / 12:00 / 16:00 · 退款 07:00',
+    data:'~/jst-aftersales.sqlite（1.2 GB）· ~/jst-refund-export.sqlite（761 MB）',
+    note:'真实对拍：41102 / 46238 行，明细零差异'
+  },
+  {
+    id:'jst-profit', group:'jst', status:'pending',
+    name:'利润事实库', dir:'jushuitan-profit-facts', lines:720,
+    purpose:'把订单库 + 成本拼成利润事实表，并做口径校验（VALIDATION.md）。',
+    old:'build_facts.py', now:'jst profit（待迁移）', auth:'复用订单库',
+    sched:'xdr daemon（profit-facts）', data:'jst-profit-facts.sqlite',
+    note:'Python，随抖店侧一起迁'
+  },
+  {
+    id:'jst-purple', group:'jst', status:'pending',
+    name:'紫色旗订单（刷单）', dir:'jushuitan-purple-orders → doudian-daily', lines:900,
+    purpose:'按 seller_flag=5 统计「刷单」订单，输出明细与按店汇总，供评价链路关联。',
+    old:'jst_purple_orders.py · jst_brush.py', now:'jst purple（待迁移）',
+    auth:'macOS Keychain', sched:'09:25', data:'~/jst-purple-orders.sqlite（21 MB）',
+    note:'与抖店评价链路共用 jst_brush.py，必须一起迁'
+  },
+
+  /* ---------- 抖店 ---------- */
+  {
+    id:'dd-metrics', group:'dd', status:'legacy',
+    name:'抖店经营指标', dir:'doudian-daily', lines:3938,
+    purpose:'11 步采集：首页实时、罗盘流量、千川投放、体验分、评价、订单、商品、售后、物流、库存、商品流水；107 字段契约。',
+    old:'daily_collect.py', now:'doudian metrics（待迁移）',
+    auth:'店铺工作台分区 Cookie（只读磁盘）', sched:'每天 08:30',
+    data:'data/shop_metrics.sqlite3（64 MB）+ data/<日期>.json',
+    note:'工作台只负责扫码，脚本关着也能跑'
+  },
+  {
+    id:'dd-reviews', group:'dd', status:'legacy',
+    name:'中差评 → MySQL', dir:'doudian-daily', lines:600,
+    purpose:'抓中差评并写入 MySQL，同时用 jst_brush 关联刷单订单。',
+    old:'badreviews_to_mysql.py', now:'doudian reviews（待迁移）',
+    auth:'工作台分区 Cookie + MySQL', sched:'每天 09:15', data:'MySQL',
+    note:'与紫旗共用 jst_brush.py'
+  },
+  {
+    id:'dd-invoice', group:'dd', status:'legacy',
+    name:'旧版发票采集', dir:'doudian-daily', lines:900,
+    purpose:'抖店发票申请与回传的早期实现，已被 invoice-mac-agent 取代但未删除。',
+    old:'invoice.py · invoice_sync.py', now:'（建议合并）', auth:'工作台分区 Cookie',
+    sched:'无', data:'本地文件',
+    note:'与 projects/invoice-mac-agent 重复，二选一'
+  },
+  {
+    id:'dd-excel', group:'dd', status:'legacy',
+    name:'Excel 回填', dir:'doudian-daily/excel', lines:700,
+    purpose:'把采集结果回填进店铺 Excel 模板（含「得分」列），早期人工流程的自动化。',
+    old:'fill_excel.py · fill_shop_excel.py', now:'（保留）', auth:'读本地 JSON',
+    sched:'手工', data:'xlsx', note:''
+  },
+  {
+    id:'dd-module', group:'dd', status:'legacy',
+    name:'工作台采集模块', dir:'doudian-daily/workbook-module', lines:1100,
+    purpose:'装进「店铺工作台」的 GUI 采集模块，与命令行脚本互不依赖，内嵌又一份 doudian.py。',
+    old:'install.sh', now:'（保留）', auth:'工作台进程内', sched:'手工点按',
+    data:'工作台表格', note:'doudian.py 已与根目录版本分叉'
+  },
+
+  /* ---------- 同步 / 运维 ---------- */
+  {
+    id:'ops-xdr', group:'ops', status:'infra',
+    name:'云端同步与任务队列', dir:'projects/xdr-sync-agent', lines:0,
+    purpose:'Mac 侧 agent 从云端队列拉固定任务，执行本地 CLI、校验、上传、失败修复与告警。所有同步的总入口。',
+    old:'xdr-sync-agent daemon', now:'（保持独立）', auth:'Keychain 不离开本机',
+    sched:'两个常驻 daemon', data:'~/Library/Application Support/xdr-sync-agent',
+    note:'服务端源码同在 projects/xdr-sync-agent/server'
+  },
+  {
+    id:'ops-aftersale', group:'ops', status:'legacy',
+    name:'售后待审核计数', dir:'projects/shopdesk-aftersale', lines:2231,
+    purpose:'每 30 分钟遍历 41 家抖店，读售后工作台「待商家审核」6 个分项数量，落 JSON 并推送。',
+    old:'scrape_counts.py', now:'（待收敛）', auth:'工作台隐藏页内存会话',
+    sched:'每 30 分钟（:02 / :32）', data:'data/runs/*.json',
+    note:'当前 3 家店会话失效，退出码 2'
+  },
+  {
+    id:'ops-feige', group:'ops', status:'legacy',
+    name:'飞鸽客服表现', dir:'projects/feige-customer-daily', lines:1054,
+    purpose:'按客服维度采集飞鸽接待数据并发布到云端。',
+    old:'collect.mjs', now:'（待收敛）', auth:'工作台', sched:'每天 10:30',
+    data:'云端', note:''
+  },
+  {
+    id:'ops-invoice', group:'ops', status:'legacy',
+    name:'发票采集与回传', dir:'projects/invoice-mac-agent', lines:2972,
+    purpose:'驱动抖店发票页采集申请信息，下载 PDF 并回传代理。',
+    old:'capture-cli.mjs · agent.mjs', now:'（待收敛）', auth:'工作台', sched:'10:15 · 04:10 清理',
+    data:'下载目录 + 云端', note:'与 doudian-daily/invoice*.py 重复'
+  },
+  {
+    id:'ops-commission', group:'ops', status:'legacy',
+    name:'精选联盟佣金率', dir:'projects/douyin-commission-rates', lines:0,
+    purpose:'采集商品链接佣金率，生成快照并向云端原子发布（SQLite + manifest + SSH）。',
+    old:'python -m commission_rates.cli daily', now:'（保持）', auth:'工作台', sched:'每天 05:10',
+    data:'data/jst-commission-rates.sqlite（643 MB）',
+    note:'2026-11-06 已加传输重试'
+  },
+  {
+    id:'ops-settle', group:'ops', status:'legacy',
+    name:'月度账单核对', dir:'projects/douyin-settle-recon', lines:0,
+    purpose:'下载每月账单、核对、gzip 上传。',
+    old:'douyin_settle_recon.cli monthly', now:'（保持）', auth:'工作台', sched:'每月 1 日 01:00',
+    data:'data/runs + 上传队列', note:''
+  },
+  {
+    id:'ops-failure', group:'ops', status:'infra',
+    name:'失败监控与自动修复', dir:'projects/xdr-sync-agent', lines:0,
+    purpose:'轮询失败队列，按规则重放修复，并做每日清理。',
+    old:'failure-watch · failure-repair', now:'（保持）', auth:'内部',
+    sched:'常驻 + 04:30 清理', data:'任务运行记录', note:''
+  },
+  {
+    id:'ops-openbridge', group:'ops', status:'infra',
+    name:'OpenBridge 守护', dir:'~/.openbridge', lines:0,
+    purpose:'本机浏览器桥接守护进程，聚水潭订单页 / 售后 / 退款链路都依赖它。',
+    old:'openbridge daemon', now:'（保持不变）', auth:'Chrome 扩展授权',
+    sched:'KeepAlive 常驻', data:'~/.openbridge/repo/.openbridge-data',
+    note:'端口从 runtime.json 读取'
+  },
+
+  /* ---------- 工作台 / 前端 ---------- */
+  {
+    id:'ui-workbench', group:'ui', status:'legacy',
+    name:'店铺工作台（Electron）', dir:'shopdesk-workbench-src', lines:0,
+    purpose:'多店独立会话的浏览器宿主：扫码登录一次，Cookie 落在分区目录，脚本只读磁盘即可取数。',
+    old:'店铺工作台.app', now:'（保持）', auth:'扫码', sched:'手动打开',
+    data:'~/Library/Application Support/shopdesk/Partitions',
+    note:'同时承载申诉/售后等自动化脚本'
+  },
+  {
+    id:'ui-appeal', group:'ui', status:'legacy',
+    name:'申诉自动化', dir:'shopdesk-appeal · shopdesk-appeal-test', lines:0,
+    purpose:'扫描差评/品质问题并提交申诉，含队列策略与人工确认环节。',
+    old:'appeal.js · appeal-web.js（根目录 90 KB / 72 KB 散落）', now:'（待收敛）',
+    auth:'工作台', sched:'06:35 · 每 30 分钟提交', data:'本地队列',
+    note:'根目录还留着两份未归档的副本'
+  },
+  {
+    id:'ui-replenish', group:'ui', status:'legacy',
+    name:'补货工作台', dir:'replenishment-workbench · worktrees/*', lines:0,
+    purpose:'前端补货决策台（Next.js），消费库存与销售分析结果。',
+    old:'npm run dev', now:'（保持）', auth:'无', sched:'—', data:'读 SQLite',
+    note:'另有 2 个 git worktree 副本'
+  },
+  {
+    id:'ui-toolkit', group:'ui', status:'legacy',
+    name:'源码快照工具箱', dir:'projects/shopdesk-data-toolkit', lines:0,
+    purpose:'14 个组件的全量源码拷贝 + 迁移脚本。',
+    old:'tools/toolkit.py', now:'（建议归档）', auth:'—', sched:'—', data:'—',
+    note:'只拷贝没去重，属于「假重构」'
+  }
+];
+
+const SCHEDULE = [
+  [':02 / :32','售后待审核计数','41 家抖店，读「待商家审核」6 个分项','scrape_counts.py'],
+  ['04:10','发票捕获清理','清理上次采集残留','capture-cleanup-cli.mjs'],
+  ['04:30','同步任务清理','清理过期工作目录','cleanup-stale-work.sh'],
+  ['05:10','精选联盟佣金率','采集佣金率并原子发布到云端','commission_rates.cli daily'],
+  ['06:35','申诉扫描','扫描待申诉差评/品质问题','daily-appeal.sh'],
+  ['07:00','退款单导出','导出近 3 天退款单 → xlsx → 入库 → 上云','export-refund-daily.mjs'],
+  ['08:00 · 12:00 · 16:00','聚水潭售后同步','售后明细全量落库','sync-jst-aftersales.sh'],
+  ['08:30','抖店经营指标','11 步采集，107 字段契约','daily_collect.py'],
+  ['09:05 · 13:05 · 17:05 · 21:05','工作台健康检查','登录态与采集模块体检','health-check.sh'],
+  ['09:10 · 15:00 · 21:00','聚水潭登录态刷新','验证并回灌 Keychain','refresh-jst-auth.sh'],
+  ['09:15','中差评入库','抓中差评写 MySQL','badreviews_to_mysql.py'],
+  ['09:25','紫色旗订单','刷单订单明细落库','sync-jst-purple-orders.sh'],
+  ['10:15','发票同步','采集发票 PDF 并回传','capture-cli.mjs'],
+  ['10:30','飞鸽客服日报','按客服采集接待表现','collect.mjs'],
+  ['22:00','每日汇总','汇总当日任务结果','daily-summary.sh'],
+  ['每月 1 日 01:00','月度账单核对','下载 → 核对 → gzip 上传','douyin_settle_recon.cli'],
+  ['常驻','云端同步 · 失败监控 · OpenBridge · 防睡眠','—','daemon / KeepAlive']
+];
+
+const DUPLICATION = [
+  ['errors.js（CliError）',4,1],
+  ['session.js（Keychain 读 cookie）',3,1],
+  ['transportData 请求骨架',3,1],
+  ['SQLite 导出（建表+upsert）',2,1],
+  ['Chrome cookie 解密',1,1],
+  ['doudian.py',2,2],
+  ['发票逻辑',3,3],
+  ['jst CLI 可执行文件',7,1],
+  ['全量源码拷贝',1,1]
+];
+
+const SIZES = [
+  ['jushuitan-inventory-warning',7488],
+  ['doudian-daily',3938],
+  ['projects/shopdesk-aftersale',2231],
+  ['jushuitan-order-page',1475],
+  ['jushuitan-aftersales',1373],
+  ['jushuitan-order-details',986],
+  ['jushuitan-profit-facts',720],
+  ['jushuitan-sales-performance',701]
+];
+
+const PHASES = [
+  ['0 · 冻结与盘点',100],
+  ['1 · core 落地',100],
+  ['2 · 聚水潭迁移',100],
+  ['3 · 原路径改 shim',0],
+  ['4 · 数据目录迁移',0],
+  ['5 · 抖店 Python 侧',0],
+  ['6 · 定时任务收敛',0],
+  ['7 · 归档旧目录',0]
+];
+
+const ISSUES = [
+  {
+    cls:'fixed', title:'聚水潭登录态刷新连续失败三天',
+    meta:'com.xdr.jst-auth-refresh · 退出码 1 → 0',
+    body:'不是简单掉线，是四层问题叠加：① 脚本只认 3 个错误码，接口实际抛第 4 个 invalid_callback，导致从未尝试自动登录；② 「立即登录」按钮在后台标签页视口外，坐标点击打空（抓包 0 请求）；③ 登录成功后弹出「密码超 3 个月未修改」拦截窗，确定按钮同样点不中；④ 会话恢复后旧订单页标签页仍持死上下文。',
+    items:['改为「滚动到可视区 + 元素 click()」','补充 invalid_callback 为需重登','读到 invalid_callback 时先重载订单页','17 个前端测试通过，会话有效期至 11-15']
+  },
+  {
+    cls:'fixed', title:'佣金率上传间歇性失败',
+    meta:'com.xdr.douyin-commission-rates · cloud_transport_failed',
+    body:'服务器当时在线，是 05:10 这个时点 Mac 刚唤醒、网络栈未就绪，ssh 非零退出让整次采集白跑。',
+    items:['SSH / scp 加 3 次退避重试（5s / 10s）','远端 helper 幂等，重放安全','已端到端验证：643 MB 上传成功，quick_check ok']
+  },
+  {
+    cls:'fixed', title:'明文 cookie 落在家目录',
+    meta:'~/jst-cookie-export.json / .txt',
+    body:'10 月 7 日导出的聚水潭会话，u_sso_token 明文、权限 0600 但仍在家目录。',
+    items:['已确认无任何活代码引用','会话已在 Keychain，可随时重建','直接删除，未保留备份']
+  },
+  {
+    cls:'pending', title:'3 家抖店售后会话失效',
+    meta:'local.shopdesk.aftersale-counts · 退出码 2',
+    body:'41 家店里 38 家成功、3 家返回 needs_login。退出码 2 是脚本的预期行为，不是 bug。',
+    items:['QUEEN GLOW有服饰专卖店','QUEEN GLOW官方旗舰店','QUEEN GLOW女装旗舰店','需要打开「店铺工作台」重新扫码；若店铺已停运则从 shops.json 移除']
+  }
+];
+
+/* ============================================================
+   渲染
+   ============================================================ */
+const $ = (s, r = document) => r.querySelector(s);
+const el = (tag, cls, html) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html != null) n.innerHTML = html;
+  return n;
+};
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+const STATUS = {
+  migrated:['b-ok','已迁移'],
+  pending:['b-todo','待迁移'],
+  legacy:['b-legacy','待收敛'],
+  infra:['b-fix','基础设施']
+};
+
+/* ---- 概览统计 ---- */
+const stats = [
+  ['7','聚水潭项目','blue'],
+  ['5','抖店相关脚本','amber'],
+  ['26','launchd 定时任务','purple'],
+  ['176','单元测试全绿','green'],
+  ['6','已迁移命令（5 模块）','green'],
+  ['4','已知故障（3 已修）','amber']
+];
+const statsBox = $('#stats');
+stats.forEach(([k,l,c]) => {
+  const d = el('div', 'stat ' + c, `<div class="k">${k}</div><div class="l">${l}</div>`);
+  statsBox.appendChild(d);
+});
+
+/* ---- 卡片 ---- */
+const cardsBox = $('#cards');
+const groupName = { jst:'聚水潭', dd:'抖店', ops:'同步与运维', ui:'工作台 · 前端' };
+let currentFilter = 'all';
+let currentQuery = '';
+
+function renderCards() {
+  cardsBox.innerHTML = '';
+  const q = currentQuery.trim().toLowerCase();
+  let shown = 0;
+
+  MODULES.forEach(m => {
+    if (currentFilter === 'migrated' && m.status !== 'migrated') return;
+    if (currentFilter === 'pending' && m.status === 'migrated') return;
+    if (['jst','dd','ops','ui'].includes(currentFilter) && m.group !== currentFilter) return;
+
+    const hay = [m.name, m.purpose, m.old, m.now, m.dir, m.data, m.note, groupName[m.group]]
+      .join(' ').toLowerCase();
+    if (q && !hay.includes(q)) return;
+
+    shown++;
+    const [cls, label] = STATUS[m.status] || ['b-legacy', m.status];
+    const card = el('article', 'card');
+    card.innerHTML = `
+      <h3>${esc(m.name)} <span class="badge ${cls}">${label}</span></h3>
+      <p class="purpose">${esc(m.purpose)}</p>
+      <dl class="kv">
+        <dt>目录</dt><dd><code>${esc(m.dir)}</code></dd>
+        ${m.old !== m.now ? `<dt>旧入口</dt><dd>${esc(m.old)}</dd>` : ''}
+        <dt>新入口</dt><dd>${m.now.startsWith('jst ') ? `<code>${esc(m.now)}</code>` : esc(m.now)}</dd>
+        <dt>认证</dt><dd>${esc(m.auth)}</dd>
+        <dt>定时</dt><dd>${esc(m.sched)}</dd>
+        <dt>落位</dt><dd>${esc(m.data)}</dd>
+        ${m.note ? `<dt>备注</dt><dd style="color:#8b98a9">${esc(m.note)}</dd>` : ''}
+      </dl>`;
+    cardsBox.appendChild(card);
+  });
+
+  $('#count').textContent = shown + ' 项';
+  $('#empty').classList.toggle('hidden', shown > 0);
+}
+renderCards();
+
+/* ---- 定时任务表 ---- */
+const tbody = $('#sched-body');
+SCHEDULE.forEach(([time, name, what, entry]) => {
+  const tr = el('tr');
+  tr.innerHTML = `<td class="time">${esc(time)}</td>
+    <td><strong>${esc(name)}</strong></td>
+    <td class="dim">${esc(what)}</td>
+    <td><code>${esc(entry)}</code></td>`;
+  tbody.appendChild(tr);
+});
+
+/* ---- 重复度 ---- */
+const dupeBox = $('#dupe-grid');
+DUPLICATION.forEach(([name, before, after]) => {
+  const same = before === after;
+  const item = el('div', 'dupe-item');
+  item.innerHTML = `
+    <div class="n"><code>${esc(name)}</code></div>
+    <div class="dupe-line">
+      <span class="pill before">${before} 份</span>
+      <span>→</span>
+      <span class="pill after"${same ? ' style="background:#241c07;color:#e3b341"' : ''}>${after} 份${same ? '（未收敛）' : ''}</span>
+      ${same ? '' : '<span style="color:var(--green);margin-left:auto">已收敛</span>'}
+    </div>`;
+  dupeBox.appendChild(item);
+});
+
+/* ---- 规模条 ---- */
+const sizeBox = $('#size-bars');
+const maxSize = Math.max(...SIZES.map(([, n]) => n));
+SIZES.forEach(([name, n]) => {
+  const pct = Math.max(2, Math.round(n / maxSize * 100));
+  const row = el('div', 'bar-row');
+  row.innerHTML = `
+    <div class="label" title="${esc(name)}">${esc(name)}</div>
+    <div class="bar-track"><div class="bar-fill blue" style="width:${pct}%"></div></div>
+    <div class="val">${n.toLocaleString()} 行</div>`;
+  sizeBox.appendChild(row);
+});
+
+/* ---- 阶段条 ---- */
+const phaseBox = $('#phase-bars');
+PHASES.forEach(([name, pct]) => {
+  const row = el('div', 'bar-row');
+  const cls = pct === 100 ? 'new' : '';
+  row.innerHTML = `
+    <div class="label">${esc(name)}</div>
+    <div class="bar-track">
+      <div class="bar-fill ${cls}" style="width:${Math.max(pct, 1)}%">${pct === 100 ? '完成' : ''}</div>
+    </div>
+    <div class="val">${pct}%</div>`;
+  phaseBox.appendChild(row);
+});
+
+/* ---- 问题 ---- */
+const issueBox = $('#issue-list');
+ISSUES.forEach(i => {
+  const box = el('div', 'issue ' + i.cls);
+  const badge = i.cls === 'fixed'
+    ? '<span class="badge b-ok">已修复并验证</span>'
+    : '<span class="badge b-bad">需人工</span>';
+  box.innerHTML = `
+    <h4>${esc(i.title)} ${badge}</h4>
+    <div style="color:var(--dim-2);font-size:11.5px;margin-bottom:6px">${esc(i.meta)}</div>
+    <p>${esc(i.body)}</p>
+    <ul>${i.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  issueBox.appendChild(box);
+});
+
+/* ---- 交互 ---- */
+$('#tabs').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  [...$('#tabs').children].forEach(b => b.classList.toggle('on', b === btn));
+  currentFilter = btn.dataset.f;
+  renderCards();
+});
+
+let timer;
+$('#q').addEventListener('input', (e) => {
+  clearTimeout(timer);
+  timer = setTimeout(() => { currentQuery = e.target.value; renderCards(); }, 120);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && document.activeElement !== $('#q')) {
+    e.preventDefault();
+    $('#q').focus();
+  }
+});
+</script>
+</body>
+</html>

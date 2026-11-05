@@ -1,9 +1,0 @@
-{
-  "name": "jushuitan-order-page-cli",
-  "version": "0.2.1",
-  "private": true,
-  "type": "module",
-  "bin": { "jst-order-page": "bin/jst-order-page.js" },
-  "scripts": { "test": "node --test" },
-  "engines": { "node": ">=22" }
-}
