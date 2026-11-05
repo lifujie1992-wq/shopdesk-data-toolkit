@@ -34,7 +34,7 @@ description: 店铺取数与同步任务失败时的自动排查与修复手册�
 | `invalid_callback` / `not_logged_in` / `session_expired` | 聚水潭浏览器会话失效 | 跑 `node ~/xdr-sync-agent/scripts/refresh-jst-auth.mjs`；成功就完事 |
 | 上面这条命令返回 `login_verification_required` / `saved_login_failed` / `saved_login_autofill_missing` | Chrome 里密码没自动填充，或需要短信/图形验证 | **只能本人**：请他在 Chrome 打开 erp321.com 手动登录一次。用 ask 卡片 |
 | `order_page_required` / 订单页读不到 | 订单页标签页失效 | 同上 refresh 脚本会重建；仍失败则 ask |
-| `需要重新登录` / `needs_login`（抖店多店） | 某几家店在工作台里掉线 | **只能本人**：工作台扫码。列出具体店名，别只说“有几家失败” |
+| `需要重新登录` / `needs_login`（抖店多店） | 某几家店在工作台里掉线 | 这类事件**正常不会派到你这里**（派单前已分流成直接告警）。真收到了说明判定漏了：核实后按“待你处理”收尾，别改代码 |
 | `cloud_transport_failed` | Mac 刚唤醒、网络没就绪，SSH 失败 | 已加重试；偶发不必动。稳定复现才查网络与 `~/.ssh/xdr_mac` |
 | 退款导出 `生成文件失败` | 聚水潭那边导出任务失败 | 先看是不是搜索区间没数据（换一天验证）；是上游问题就 ask，别改代码 |
 | 发票 / 月度账单失败 | 页面结构变化或文件缺失 | 只读排查，给出结论和建议；这两个项目**不要自动改文件** |

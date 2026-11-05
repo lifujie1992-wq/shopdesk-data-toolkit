@@ -51,6 +51,22 @@ codex_api::endpoint::responses_websocket:
           第一行写结论            第一行写「待你处理：…」+ 卡片
 ```
 
+## 两类失败，两条路
+
+不是所有失败都该叫 Agent。**店铺掉线（工作台里的抖店会话失效）只能人工扫码**，
+派 Agent 过去它也只能回一句"要你处理"，纯烧 Token。所以在派单之前就分流：
+
+| 失败类型 | 判定 | 处理 |
+|---|---|---|
+| 店铺掉线 | 原因里含「需在工作台重新登录」或 `needs_login` | **不派 Agent**，立刻推飞书，同一原因一小时内只推一次 |
+| 其他全部（含聚水潭登录态失效） | 其余 | 派 Agent 自修 |
+
+聚水潭的 `not_logged_in` / `invalid_callback` **不算**店铺掉线——那套登录态有
+`refresh-jst-auth.mjs` 能自动恢复，本来就该交给 Agent。
+
+判定集中在 `src/failure-alerts.js` 的 `needsHuman()`：命中就让 `repair_key = null`，
+`deliverAlert` 直接走飞书；没命中的才写 `repair_key = 'autoloop'` 去派单。
+
 ## 组件
 
 | 组件 | 位置 |
