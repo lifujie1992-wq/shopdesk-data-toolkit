@@ -24,6 +24,7 @@ import {
 } from "@shopdesk/core";
 
 import * as orders from "../src/orders.js";
+import { discoverModules } from "../src/registry.js";
 import { main as inventoryMain } from "../inventory/bin/jst-inventory.js";
 import { cli as orderPageCli } from "../order-page/bin/jst-order-page.js";
 import { cli as aftersalesCli } from "../aftersales/bin/jst-aftersales.js";
@@ -308,5 +309,11 @@ const program = createProgram({
     profit: { description: "利润事实库（原 jst-profit-facts）—— 阶段 2", run: notMigrated("profit") },
   },
 });
+
+// 约定优于配置：sources/jst/src/<名字>/index.js 放进来自动成为 `jst <名字>`。
+// 显式注册的命令优先（orders / sales / inventory 等有历史包袱的仍在上面手写）。
+for (const mod of await discoverModules(new URL("../src/", import.meta.url).pathname)) {
+  if (!program.commands[mod.command]) program.commands[mod.command] = mod;
+}
 
 await run(program);

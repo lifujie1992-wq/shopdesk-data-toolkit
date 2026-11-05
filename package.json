@@ -9,8 +9,11 @@
     "sources/jst"
   ],
   "scripts": {
-    "doctor": "node packages/core/src/doctor.js",
-    "test": "node --test"
+    "test": "node --test sources/jst/src/*/test/*.test.js sources/jst/*/test/*.test.js",
+    "new": "node tools/new.js",
+    "audit": "node tools/audit.js",
+    "parity": "node tools/parity.js",
+    "doctor": "node sources/jst/bin/jst.js doctor"
   },
   "engines": {
     "node": ">=22"

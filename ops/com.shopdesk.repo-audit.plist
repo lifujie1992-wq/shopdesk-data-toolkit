@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  每周巡检一次「仓库外有没有长出脚本」。
+  发现漂移就走已有的告警链路（Feishu），不会自动搬文件。
+
+  安装：cp ops/com.shopdesk.repo-audit.plist ~/Library/LaunchAgents/ \
+        && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.shopdesk.repo-audit.plist
+  卸载：launchctl bootout gui/$(id -u)/com.shopdesk.repo-audit
+
+  想让它自动搬文件，把最后一段换成 `npm run audit -- --apply --yes`，
+  但那样就没有人工确认了，不建议。
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.shopdesk.repo-audit</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-lc</string>
+    <string>cd "$HOME/projects/shopdesk-data-toolkit" &amp;&amp; npm run --silent audit &gt;&gt; "$HOME/Library/Logs/shopdesk-repo-audit.log" 2&gt;&amp;1 || node "$HOME/xdr-sync-agent/bin/xdr-failure-alert.js" --task repo-drift --reason "仓库外出现新脚本，运行 cd ~/projects/shopdesk-data-toolkit && npm run audit 查看清单"</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>1</integer>
+    <key>Hour</key>
+    <integer>10</integer>
+    <key>Minute</key>
+    <integer>5</integer>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>/Users/zhaoxiaozhong/Library/Logs/shopdesk-repo-audit.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/zhaoxiaozhong/Library/Logs/shopdesk-repo-audit.log</string>
+</dict>
+</plist>

@@ -51,6 +51,15 @@
 
 **整个迁移期旧命令始终可用**，26 个 launchd 任务不需要动。
 
+## 新增脚本
+
+```bash
+npm run new -- jst <名字> --desc "一句话用途"   # 建骨架，自动注册成 jst <名字>
+npm run audit                                  # 看看仓库外有没有又长出脚本
+```
+
+详见 [`docs/ADDING-SCRIPTS.md`](docs/ADDING-SCRIPTS.md)。
+
 ## 快速开始
 
 ```bash
