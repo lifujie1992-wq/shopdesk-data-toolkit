@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>定时任务看板 · 2026/11/6 03:01:26</title>
+<style>
+  :root{--bg:#0d1117;--panel:#151b24;--panel2:#1b222d;--line:#253040;--text:#e6edf3;--dim:#8b98a9;--dim2:#6b7788;
+        --blue:#5b9dff;--green:#3fb950;--amber:#d29922;--red:#f85149;--purple:#bc8cff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC",Arial,sans-serif}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#0b1017;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:#a8c7fa}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:9;background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .head{display:flex;align-items:center;gap:14px;padding:12px 0;flex-wrap:wrap}
+  h1{font-size:16px;margin:0;font-weight:650}
+  .sub{color:var(--dim2);font-size:12px}
+  .search{flex:1;min-width:170px}
+  .search input{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+  .search input:focus{border-color:var(--blue)}
+  section{padding:26px 0 4px}
+  h2{font-size:17px;margin:0 0 4px;font-weight:650;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:11px;color:var(--dim2);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-weight:500}
+  .lede{color:var(--dim);font-size:13px;margin:0 0 14px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin-top:16px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+  .stat .k{font-size:24px;font-weight:700;line-height:1.15}
+  .stat .l{color:var(--dim);font-size:11.5px;margin-top:2px}
+  .stat.green .k{color:var(--green)}.stat.blue .k{color:var(--blue)}.stat.amber .k{color:var(--amber)}
+  .stat.red .k{color:var(--red)}.stat.purple .k{color:var(--purple)}
+  .hours{display:grid;gap:4px}
+  .hour{display:grid;grid-template-columns:56px 1fr 44px;gap:10px;align-items:center;font-size:12px}
+  .hour .h{color:var(--dim);font-family:ui-monospace,Menlo,monospace}
+  .hour .bar{height:18px;background:#0b1017;border-radius:4px;display:flex;align-items:center;gap:3px;padding:0 3px;overflow:hidden}
+  .hour .fill{height:10px;border-radius:3px;background:linear-gradient(90deg,#2b5c9e,#5b9dff);min-width:3px}
+  .hour .cnt{color:var(--dim2);text-align:right;font-variant-numeric:tabular-nums}
+  .hour .tip{color:#9fb0c4;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .tw{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+  th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:var(--dim);font-size:11px;font-weight:600;letter-spacing:.3px;position:sticky;top:56px}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#19202b}
+  td.mono{font-family:ui-monospace,Menlo,monospace;color:var(--blue);white-space:nowrap}
+  .tag{font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:20px;border:1px solid;white-space:nowrap}
+  .t-ok{color:var(--green);border-color:#1f5b31;background:#0f2a18}
+  .t-warn{color:var(--amber);border-color:#5c470f;background:#241c07}
+  .t-err{color:var(--red);border-color:#5d1f1b;background:#2a0f0d}
+  .t-dim{color:var(--dim);border-color:#333c4a;background:#171d26}
+  .t-run{color:var(--blue);border-color:#1d3d69;background:#0e1d31}
+  .logs{color:var(--dim2);font-size:11.5px}
+  .issues{display:grid;gap:8px}
+  .issue{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:9px;padding:10px 13px;font-size:12.5px}
+  .issue.error{border-left-color:var(--red)}
+  .issue.info{border-left-color:var(--dim)}
+  .issue b{color:#dbe6f3}
+  .note{background:#101a26;border:1px solid #1d3352;border-radius:9px;padding:11px 14px;font-size:12.5px;color:#a9bdd6;margin-top:14px}
+  footer{color:var(--dim2);font-size:11.5px;padding:30px 0;text-align:center;border-top:1px solid var(--line);margin-top:26px}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="wrap head">
+  <div><h1>定时任务看板</h1><div class="sub">生成于 2026/11/6 03:01:26 · 数据来自 schedules/tasks.json + launchctl</div></div>
+  <div class="search"><input id="q" placeholder="搜索任务、命令、label…（按 / 聚焦）"></div>
+</div></header>
+<main>
+<section><div class="wrap">
+  <div class="stats">
+    <div class="stat blue"><div class="k">26</div><div class="l">任务总数</div></div>
+    <div class="stat green"><div class="k">0</div><div class="l">已按新 label 安装</div></div>
+    <div class="stat purple"><div class="k">4</div><div class="l">常驻进程</div></div>
+    <div class="stat amber"><div class="k">5013</div><div class="l">24 小时触发次数</div></div>
+    <div class="stat green"><div class="k">0</div><div class="l">上次退出码非零</div></div>
+    <div class="stat amber"><div class="k">26</div><div class="l">清单与系统不一致</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>接下来 24 小时 <span class="n">按小时</span></h2>
+  <p class="lede">柱长表示该小时触发次数；常驻进程不计入。用于发现撞在同一分钟的套娃任务。</p>
+  <div class="hours">
+    <div class="hour"><div class="h">03:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">04:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、invoice-capture-cleanup、sync-agent-cleanup"><div class="fill" style="width:75%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、invoice-capture-cleanup、sync-agent-cleanup</div></div>
+      <div class="cnt">6</div></div>
+    <div class="hour"><div class="h">05:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、douyin-commission-rates"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、douyin-commission-rates</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">06:00</div>
+      <div class="bar" title="aftersale-counts、appeal、appeal-submit"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal、appeal-submit</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">07:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、refund-daily"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、refund-daily</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">08:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、doudian-daily、jst-aftersales-sync"><div class="fill" style="width:75%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、doudian-daily、jst-aftersales-sync</div></div>
+      <div class="cnt">6</div></div>
+    <div class="hour"><div class="h">09:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、badreviews-mysql、health、jst-auth-refresh、jst-purple-orders-sync"><div class="fill" style="width:100%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、badreviews-mysql、health、jst-auth-refresh、jst-purple-orders-sync</div></div>
+      <div class="cnt">8</div></div>
+    <div class="hour"><div class="h">10:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、feige-customer-daily、invoice-capture-sync"><div class="fill" style="width:75%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、feige-customer-daily、invoice-capture-sync</div></div>
+      <div class="cnt">6</div></div>
+    <div class="hour"><div class="h">11:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">12:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、jst-aftersales-sync"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、jst-aftersales-sync</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">13:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、health"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、health</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">14:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">15:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、jst-auth-refresh"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、jst-auth-refresh</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">16:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、jst-aftersales-sync"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、jst-aftersales-sync</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">17:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、health"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、health</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">18:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">19:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">20:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">21:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、health、jst-auth-refresh"><div class="fill" style="width:75%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、health、jst-auth-refresh</div></div>
+      <div class="cnt">6</div></div>
+    <div class="hour"><div class="h">22:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit、summary"><div class="fill" style="width:63%"></div>
+      <div class="tip">aftersale-counts、appeal-submit、summary</div></div>
+      <div class="cnt">5</div></div>
+    <div class="hour"><div class="h">23:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">00:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">01:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+    <div class="hour"><div class="h">02:00</div>
+      <div class="bar" title="aftersale-counts、appeal-submit"><div class="fill" style="width:50%"></div>
+      <div class="tip">aftersale-counts、appeal-submit</div></div>
+      <div class="cnt">4</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>任务明细 <span class="n" id="count">26</span></h2>
+  <p class="lede">「下次」指的是清单里的计划时间；标灰的表示还没按新 label 装到系统里。</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:190px">任务</th><th style="width:150px">触发</th><th style="width:96px">下次</th><th style="width:110px">状态</th><th>日志</th></tr></thead>
+    <tbody id="rows">
+    <tr data-k="aftersale-counts 抖店待商家审核售后数量（41 店） com.shopdesk.aftersale-counts /usr/bin/python3 ~/projects/shopdesk-aftersale/bin/scrape_counts.py">
+        <td><b>aftersale-counts</b><div class="logs">抖店待商家审核售后数量（41 店）</div></td>
+        <td class="mono">每小时 :02 / 每小时 :32</td>
+        <td class="mono">11/06 03:02</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">4.9 MB · 26 分钟前<br><span style="opacity:.65">~/projects/shopdesk-aftersale/logs/launchd.out.log</span></td>
+      </tr>
+    <tr data-k="aftersale-push 售后计数上云推送 com.shopdesk.aftersale-push /usr/bin/python3 ~/projects/shopdesk-aftersale/bin/push.py --once">
+        <td><b>aftersale-push</b><div class="logs">售后计数上云推送</div></td>
+        <td class="mono">每 300 秒</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">40 KB · 4 天前<br><span style="opacity:.65">~/projects/shopdesk-aftersale/logs/launchd-push.out.log</span></td>
+      </tr>
+    <tr data-k="appeal 申诉扫描 com.shopdesk.appeal /bin/bash ~/library/application support/shopdesk/daily-appeal.sh">
+        <td><b>appeal</b><div class="logs">申诉扫描</div></td>
+        <td class="mono">06:35</td>
+        <td class="mono">11/06 06:35</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 4 天前<br><span style="opacity:.65">/tmp/shopdesk-appeal.out.log</span></td>
+      </tr>
+    <tr data-k="appeal-submit 申诉提交（队列消费） com.shopdesk.appeal-submit /bin/bash ~/library/application support/shopdesk/submit-confirmed.sh">
+        <td><b>appeal-submit</b><div class="logs">申诉提交（队列消费）</div></td>
+        <td class="mono">每小时 :17 / 每小时 :47</td>
+        <td class="mono">11/06 03:17</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 3 小时前<br><span style="opacity:.65">/tmp/shopdesk-appeal-submit.out.log</span></td>
+      </tr>
+    <tr data-k="autodeploy 店铺工作台自动部署 com.shopdesk.autodeploy /bin/bash ~/shopdesk-workbench-src/autodeploy.sh">
+        <td><b>autodeploy</b><div class="logs">店铺工作台自动部署</div></td>
+        <td class="mono">每 300 秒</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 3 小时前<br><span style="opacity:.65">/tmp/shopdesk-autodeploy.out.log</span></td>
+      </tr>
+    <tr data-k="badreviews-mysql 中差评抓取并写入 mysql com.shopdesk.badreviews-mysql /usr/bin/python3 ~/doudian-daily/badreviews_to_mysql.py">
+        <td><b>badreviews-mysql</b><div class="logs">中差评抓取并写入 MySQL</div></td>
+        <td class="mono">09:15</td>
+        <td class="mono">11/06 09:15</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">3 KB · 18 小时前<br><span style="opacity:.65">~/doudian-daily/data/badreviews-cron.log</span></td>
+      </tr>
+    <tr data-k="doudian-daily 抖店经营指标采集（11 步 / 107 字段） com.shopdesk.doudian-daily /usr/bin/python3 ~/doudian-daily/daily_collect.py">
+        <td><b>doudian-daily</b><div class="logs">抖店经营指标采集（11 步 / 107 字段）</div></td>
+        <td class="mono">08:30</td>
+        <td class="mono">11/06 08:30</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">234 KB · 18 小时前<br><span style="opacity:.65">~/doudian-daily/data/cron.log</span></td>
+      </tr>
+    <tr data-k="douyin-commission-rates 精选联盟佣金率采集与云端原子发布 com.shopdesk.douyin-commission-rates ~/projects/douyin-commission-rates/.venv/bin/python -m commission_rates.cli --db ~/projects/douyin-commission-rates/data/jst-commission-rates.sqlite daily --config ~/projects/douyin-commission-rates/config/daily.json">
+        <td><b>douyin-commission-rates</b><div class="logs">精选联盟佣金率采集与云端原子发布</div></td>
+        <td class="mono">05:10</td>
+        <td class="mono">11/06 05:10</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">144 KB · 3 天前<br><span style="opacity:.65">~/projects/douyin-commission-rates/logs/daily.out.log</span></td>
+      </tr>
+    <tr data-k="douyin-settle-recon.monthly 月度账单下载、核对与上传（每月 1 日 01:00） com.shopdesk.douyin-settle-recon.monthly ~/projects/douyin-settle-recon/.venv/bin/python -u -m douyin_settle_recon.cli monthly --scheduled --state-dir ~/projects/douyin-settle-recon/data/monthly --output ~/projects/douyin-settle-recon/data/runs --template ~/projects/douyin-settle-recon/doc/【抖音】月度账单处理模版.xlsx --queue-dir ~/projects/douyin-settle-recon/data/upload-queue">
+        <td><b>douyin-settle-recon.monthly</b><div class="logs">月度账单下载、核对与上传（每月 1 日 01:00）</div></td>
+        <td class="mono">1 日 01:00</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">51 KB · 6 分钟前<br><span style="opacity:.65">~/projects/douyin-settle-recon/data/monthly/logs/launchd.out.log</span></td>
+      </tr>
+    <tr data-k="failure-repair 旧的自修队列（codex 未登录恒空转，已由 agent-autoloop 接管） com.shopdesk.failure-repair ~/.local/bin/node ~/projects/xdr-sync-agent/bin/xdr-failure-repair.js --once">
+        <td><b>failure-repair</b> <span class="tag t-dim">停用</span><div class="logs">旧的自修队列（Codex 未登录恒空转，已由 agent-autoloop 接管）</div></td>
+        <td class="mono">每 60 秒</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">已停用</span> </td>
+        <td class="logs">1.4 MB · 刚刚<br><span style="opacity:.65">~/projects/xdr-sync-agent/var/logs/failure-repair.out.log</span></td>
+      </tr>
+    <tr data-k="failure-watch 任务失败巡检（每 60 秒扫一次 launchd 记录） com.shopdesk.failure-watch ~/.local/bin/node ~/projects/xdr-sync-agent/bin/xdr-failure-watch.js">
+        <td><b>failure-watch</b><div class="logs">任务失败巡检（每 60 秒扫一次 launchd 记录）</div></td>
+        <td class="mono">每 60 秒</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">2.9 MB · 刚刚<br><span style="opacity:.65">~/projects/xdr-sync-agent/var/logs/failure-watch.out.log</span></td>
+      </tr>
+    <tr data-k="feige-customer-daily 飞鸽客服接待日报 com.shopdesk.feige-customer-daily ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/projects/feige-customer-daily/collect.mjs">
+        <td><b>feige-customer-daily</b><div class="logs">飞鸽客服接待日报</div></td>
+        <td class="mono">10:30</td>
+        <td class="mono">11/06 10:30</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">290 KB · 17 小时前<br><span style="opacity:.65">~/projects/feige-customer-daily/logs/launchd.out.log</span></td>
+      </tr>
+    <tr data-k="health 店铺工作台健康检查 com.shopdesk.health /bin/bash ~/library/application support/shopdesk/health-check.sh">
+        <td><b>health</b><div class="logs">店铺工作台健康检查</div></td>
+        <td class="mono">09:05 / 13:05 / 17:05 / 21:05</td>
+        <td class="mono">11/06 09:05</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">202 KB · 6 小时前<br><span style="opacity:.65">/tmp/shopdesk-health.out.log</span></td>
+      </tr>
+    <tr data-k="invoice-capture-cleanup 发票捕获残留清理 com.shopdesk.invoice-capture-cleanup ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/projects/invoice-mac-agent/capture-cleanup-cli.mjs --once">
+        <td><b>invoice-capture-cleanup</b><div class="logs">发票捕获残留清理</div></td>
+        <td class="mono">04:10</td>
+        <td class="mono">11/06 04:10</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">22 KB · 23 小时前<br><span style="opacity:.65">~/.local/share/invoice-mac-agent/logs/capture-cleanup.out.log</span></td>
+      </tr>
+    <tr data-k="invoice-capture-sync 发票采集与 pdf 回传 com.shopdesk.invoice-capture-sync ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/projects/invoice-mac-agent/capture-cli.mjs --once --complete">
+        <td><b>invoice-capture-sync</b><div class="logs">发票采集与 PDF 回传</div></td>
+        <td class="mono">10:15</td>
+        <td class="mono">11/06 10:15</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">718 KB · 17 小时前<br><span style="opacity:.65">~/.local/share/invoice-mac-agent/logs/capture-launchd.out.log</span></td>
+      </tr>
+    <tr data-k="invoice-mac-agent 发票代理（一次性执行） com.shopdesk.invoice-mac-agent ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/projects/invoice-mac-agent/agent.mjs --once">
+        <td><b>invoice-mac-agent</b><div class="logs">发票代理（一次性执行）</div></td>
+        <td class="mono">每 60 秒</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">14.1 MB · 刚刚<br><span style="opacity:.65">~/.local/share/invoice-mac-agent/logs/launchd.out.log</span></td>
+      </tr>
+    <tr data-k="jst-aftersales-sync 聚水潭售后明细同步（08/12/16 点） com.shopdesk.jst-aftersales-sync /bin/bash ~/xdr-sync-agent/scripts/sync-jst-aftersales.sh">
+        <td><b>jst-aftersales-sync</b><div class="logs">聚水潭售后明细同步（08/12/16 点）</div></td>
+        <td class="mono">08:00 / 12:00 / 16:00</td>
+        <td class="mono">11/06 08:00</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 30 天前<br><span style="opacity:.65">~/Library/Logs/xdr-sync-agent/aftersales-sync.out.log</span></td>
+      </tr>
+    <tr data-k="jst-auth-refresh 聚水潭登录态刷新并回灌 keychain com.shopdesk.jst-auth-refresh /bin/bash ~/xdr-sync-agent/scripts/refresh-jst-auth.sh">
+        <td><b>jst-auth-refresh</b><div class="logs">聚水潭登录态刷新并回灌 Keychain</div></td>
+        <td class="mono">09:10 / 15:00 / 21:00</td>
+        <td class="mono">11/06 09:10</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 38 天前<br><span style="opacity:.65">~/Library/Logs/xdr-sync-agent/auth-refresh.out.log</span></td>
+      </tr>
+    <tr data-k="jst-purple-orders-sync 聚水潭紫旗（刷单）订单同步 com.shopdesk.jst-purple-orders-sync /bin/bash ~/xdr-sync-agent/scripts/sync-jst-purple-orders.sh">
+        <td><b>jst-purple-orders-sync</b><div class="logs">聚水潭紫旗（刷单）订单同步</div></td>
+        <td class="mono">09:25</td>
+        <td class="mono">11/06 09:25</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 30 天前<br><span style="opacity:.65">~/Library/Logs/xdr-sync-agent/purple-orders-sync.out.log</span></td>
+      </tr>
+    <tr data-k="nosleep 防止息屏（caffeinate 常驻） com.shopdesk.nosleep /usr/bin/caffeinate -i -s">
+        <td><b>nosleep</b><div class="logs">防止息屏（caffeinate 常驻）</div></td>
+        <td class="mono">常驻</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">—</td>
+      </tr>
+    <tr data-k="openbridge-daemon openbridge 浏览器桥接守护（常驻） com.shopdesk.openbridge-daemon ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/.openbridge/repo/packages/daemon/dist/cli/index.js serve">
+        <td><b>openbridge-daemon</b><div class="logs">OpenBridge 浏览器桥接守护（常驻）</div></td>
+        <td class="mono">常驻</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">43.0 MB · 刚刚<br><span style="opacity:.65">~/.openbridge/repo/.openbridge-data/daemon.log</span></td>
+      </tr>
+    <tr data-k="refund-daily 退款单导出 → xlsx → 入库 → 上云 com.shopdesk.refund-daily ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/jushuitan-aftersales/export-refund-daily.mjs --days 3">
+        <td><b>refund-daily</b><div class="logs">退款单导出 → xlsx → 入库 → 上云</div></td>
+        <td class="mono">07:00</td>
+        <td class="mono">11/06 07:00</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">20 KB · 20 小时前<br><span style="opacity:.65">~/Library/Logs/xdr-refund-daily.log</span></td>
+      </tr>
+    <tr data-k="summary 每日任务汇总 com.shopdesk.summary /bin/bash ~/library/application support/shopdesk/daily-summary.sh">
+        <td><b>summary</b><div class="logs">每日任务汇总</div></td>
+        <td class="mono">22:00</td>
+        <td class="mono">11/06 22:00</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">129 KB · 5 小时前<br><span style="opacity:.65">/tmp/shopdesk-summary.out.log</span></td>
+      </tr>
+    <tr data-k="sync-agent 云端任务队列 daemon（默认配置，常驻） com.shopdesk.sync-agent ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/xdr-sync-agent/bin/xdr-sync-agent.js daemon">
+        <td><b>sync-agent</b><div class="logs">云端任务队列 daemon（默认配置，常驻）</div></td>
+        <td class="mono">常驻</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">6 KB · 23 天前<br><span style="opacity:.65">~/Library/Logs/xdr-sync-agent/launchd.out.log</span></td>
+      </tr>
+    <tr data-k="sync-agent-cleanup 同步任务过期工作目录清理 com.shopdesk.sync-agent-cleanup /bin/bash ~/xdr-sync-agent/scripts/cleanup-stale-work.sh">
+        <td><b>sync-agent-cleanup</b><div class="logs">同步任务过期工作目录清理</div></td>
+        <td class="mono">04:30</td>
+        <td class="mono">11/06 04:30</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 23 天前<br><span style="opacity:.65">~/Library/Logs/xdr-sync-agent-cleanup/launchd.out.log</span></td>
+      </tr>
+    <tr data-k="sync-agent-profit-facts 利润事实库同步 daemon（独立配置 xdr_agent_config，常驻） com.shopdesk.sync-agent-profit-facts ~/.local/node-v24.20.0-darwin-arm64/bin/node ~/xdr-sync-agent/bin/xdr-sync-agent.js daemon">
+        <td><b>sync-agent-profit-facts</b><div class="logs">利润事实库同步 daemon（独立配置 XDR_AGENT_CONFIG，常驻）</div></td>
+        <td class="mono">常驻</td>
+        <td class="mono">—</td>
+        <td><span class="tag t-dim">未加载</span> </td>
+        <td class="logs">0 B · 28 天前<br><span style="opacity:.65">~/Library/Logs/xdr-sync-agent-profit-facts/launchd.out.log</span></td>
+      </tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>需要注意 <span class="n">6</span></h2>
+  <div class="issues">
+    <div class="issue info"><b>26 个任务还没按新 label 安装</b><div style="color:var(--dim);margin-top:4px">旧 label 仍在运行，功能正常；切换用 <code>npm run schedule -- install --all</code>。</div></div>
+    
+    <div class="issue "><b>aftersale-counts</b> — 日志 4.9 MB，没有轮转</div>
+    <div class="issue info"><b>failure-repair</b> — 清单里已停用</div>
+    <div class="issue "><b>failure-watch</b> — 日志 2.9 MB，没有轮转</div>
+    <div class="issue "><b>invoice-mac-agent</b> — 日志 14.1 MB，没有轮转</div>
+    <div class="issue "><b>openbridge-daemon</b> — 日志 43.0 MB，没有轮转</div>
+    
+  </div>
+  <div class="note">
+    看板是快照，不会自动刷新。重新生成：<code>npm run board</code>。
+    改任务请改 <code>schedules/tasks.json</code>，再用 <code>npm run schedule -- install --all</code> 生效。
+  </div>
+</div></section>
+</main>
+<footer>shopdesk-data-toolkit · 定时任务看板</footer>
+<script>
+const input = document.getElementById('q');
+const rows = [...document.querySelectorAll('#rows tr')];
+const count = document.getElementById('count');
+function apply() {
+  const q = input.value.trim().toLowerCase();
+  let shown = 0;
+  for (const row of rows) {
+    const hit = !q || row.dataset.k.includes(q);
+    row.classList.toggle('hidden', !hit);
+    if (hit) shown++;
+  }
+  count.textContent = shown + ' / ' + rows.length;
+}
+input.addEventListener('input', apply);
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); }
+});
+</script>
+</body>
+</html>

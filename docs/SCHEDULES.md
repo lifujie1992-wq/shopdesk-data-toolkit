@@ -5,6 +5,23 @@
 
 现在事实来源是 [`schedules/tasks.json`](../schedules/tasks.json)，plist 由它生成。
 
+## 看板
+
+```bash
+npm run board            # 生成 docs/schedules.html（自包含，离线可开）
+npm run board -- --open   # 生成并打开
+npm run board -- --json   # 只要数据，给监控用
+```
+
+数据全部取真：清单 + `launchctl list` + 日志文件状态。看板内容：
+
+- 6 个统计：任务数 / 已安装 / 常驻 / 24 小时触发次数 / 退出码非零 / 清单漂移
+- **接下来 24 小时的按小时密度**——用来看有没有撞在同一分钟
+- 任务明细（可搜索）：触发规则、下次运行、运行状态、日志体积与最后写入
+- 需要注意：真问题逐条列出，漂移单独汇总
+
+看板是快照，不会自动刷新；重新生成即可。
+
 ## 命令
 
 ```bash
@@ -84,3 +101,31 @@ npm run schedule -- install --all
 - 没有自动安装（`install` 必须点名或 `--all`）。
 - 没有做「任务跑失败自动禁用」，失败交给告警 + 自修链路。
 - `com.xdr.manual-replay-20261017` 是手工临时任务，不在清单里，`plan` 会把它列在「清单外」。
+
+## 体检结论（2026-11-06）
+
+跑完看板后的真实数字：**26 个任务，24 小时共触发 5013 次**，其中 4320 次来自三个
+60 秒任务（`failure-watch`、`invoice-mac-agent`、`failure-repair`）。
+
+### 已经改掉的
+
+| 问题 | 处理 |
+|---|---|
+| `failure-repair` 每 60 秒起一次，但 Codex 未登录，**1440 次/天纯空转** | 清单里 `enabled: false`，`install --all` 会 bootout 并删除旧 plist |
+| `douyin-settle-recon.monthly` 名字是月度，实际还挂了 `StartInterval 3600`，**每小时空检查一次**（日志里全是 `no monthly cycle due`） | 去掉 interval，只保留每月 1 日 01:00 |
+| `failure-watch` 的描述写成"每 10 分钟"，实际是 60 秒 | 描述改正 |
+| 日志从不轮转：`openbridge 43 MB`、`invoice 14 MB`、`aftersale 4.9 MB`、`failure-watch 2.9 MB` | 新增 `ops/newsyslog.shopdesk.conf`，装到 `/etc/newsyslog.d/` 即可 |
+
+### 查过但不是问题的
+
+- **两个 `sync-agent` daemon 不是重复**：`sync-agent-profit-facts` 挂了
+  `XDR_AGENT_CONFIG` 指向另一份配置，是有意的双实例。已在清单描述里写清区别。
+- **`invoice-mac-agent` 每 60 秒**：是轮询 worker，没活时立刻退避退出（日志 `reason: backoff, processed: 0`），
+  属于设计行为。真要省，可以改成 5 分钟，但会拉长发票处理延迟。
+- **撞点 0 处**：日历类任务没有落在同一分钟的。
+
+### 还可以做，但没动
+
+- 三个 60 秒任务的频率（4320 次/天）。`failure-watch` 可以降到 5 分钟，
+  代价是失败发现变慢；这是业务取舍，不该我替你定。
+- 日志轮转没装：`sudo cp ops/newsyslog.shopdesk.conf /etc/newsyslog.d/shopdesk.conf`。

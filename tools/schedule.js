@@ -211,10 +211,14 @@ function cmdInstall(names) {
   const all = tasks();
   const picked = has("all") ? all.filter((t) => t.enabled !== false) : all.filter((t) => names.includes(t.name));
   if (!picked.length) throw new Error("要说清装哪几个，或用 --all");
+  const disabled = has("all") ? all.filter((t) => t.enabled === false) : [];
   if (has("dry-run")) {
     for (const task of picked) {
       const label = task.label ?? `com.shopdesk.${task.name}`;
       process.stdout.write(`将写入 ${join(AGENTS, `${label}.plist`)}；先 bootout ${task.legacyLabel ?? label}；再 bootstrap ${label}\n`);
+    }
+    for (const task of disabled) {
+      process.stdout.write(`将停用 ${task.name}：bootout 并删除 ${task.legacyLabel ?? task.label ?? `com.shopdesk.${task.name}`}.plist\n`);
     }
     return;
   }
@@ -238,6 +242,14 @@ function cmdInstall(names) {
         process.stdout.write(`  已移除旧 label 文件 ${task.legacyLabel}.plist\n`);
       }
     }
+  }
+  // enabled:false 的任务：停掉并从 LaunchAgents 移除，避免"清单说停用、系统还在跑"
+  for (const task of disabled) {
+    const old = task.legacyLabel ?? task.label ?? `com.shopdesk.${task.name}`;
+    spawnSync("/bin/launchctl", ["bootout", `gui/${process.getuid()}/${old}`], { stdio: "ignore" });
+    const file = join(AGENTS, `${old}.plist`);
+    if (existsSync(file)) rmSync(file);
+    process.stdout.write(`✓ ${old} 已停用并移除\n`);
   }
 }
 

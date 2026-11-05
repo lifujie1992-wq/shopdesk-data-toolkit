@@ -14,7 +14,8 @@
     "audit": "node tools/audit.js",
     "parity": "node tools/parity.js",
     "doctor": "node sources/jst/bin/jst.js doctor",
-    "schedule": "node tools/schedule.js"
+    "schedule": "node tools/schedule.js",
+    "board": "node tools/board.js"
   },
   "engines": {
     "node": ">=22"

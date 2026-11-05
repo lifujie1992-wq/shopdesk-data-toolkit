@@ -179,7 +179,7 @@
       "name": "douyin-settle-recon.monthly",
       "label": "com.shopdesk.douyin-settle-recon.monthly",
       "legacyLabel": "local.douyin-settle-recon.monthly",
-      "description": "月度账单下载、核对与上传",
+      "description": "月度账单下载、核对与上传（每月 1 日 01:00）",
       "command": [
         "~/projects/douyin-settle-recon/.venv/bin/python",
         "-u",
@@ -209,7 +209,6 @@
           "minute": 0
         }
       ],
-      "interval": 3600,
       "processType": "Background",
       "log": "~/projects/douyin-settle-recon/data/monthly/logs/launchd.out.log",
       "errorLog": "~/projects/douyin-settle-recon/data/monthly/logs/launchd.err.log",
@@ -219,7 +218,7 @@
       "name": "failure-repair",
       "label": "com.shopdesk.failure-repair",
       "legacyLabel": "com.xdr.failure-repair",
-      "description": "故障自动修复（Codex，未登录时空转）",
+      "description": "旧的自修队列（Codex 未登录恒空转，已由 agent-autoloop 接管）",
       "command": [
         "~/.local/bin/node",
         "~/projects/xdr-sync-agent/bin/xdr-failure-repair.js",
@@ -238,13 +237,13 @@
       "extra": {
         "ExitTimeOut": 10
       },
-      "enabled": true
+      "enabled": false
     },
     {
       "name": "failure-watch",
       "label": "com.shopdesk.failure-watch",
       "legacyLabel": "com.xdr.failure-watch",
-      "description": "任务失败巡检（每 10 分钟）",
+      "description": "任务失败巡检（每 60 秒扫一次 launchd 记录）",
       "command": [
         "~/.local/bin/node",
         "~/projects/xdr-sync-agent/bin/xdr-failure-watch.js"
@@ -556,7 +555,7 @@
       "name": "sync-agent",
       "label": "com.shopdesk.sync-agent",
       "legacyLabel": "com.xdr.sync-agent",
-      "description": "云端任务队列 daemon（常驻）",
+      "description": "云端任务队列 daemon（默认配置，常驻）",
       "command": [
         "~/.local/node-v24.20.0-darwin-arm64/bin/node",
         "~/xdr-sync-agent/bin/xdr-sync-agent.js",
@@ -598,7 +597,7 @@
       "name": "sync-agent-profit-facts",
       "label": "com.shopdesk.sync-agent-profit-facts",
       "legacyLabel": "com.xdr.sync-agent-profit-facts",
-      "description": "利润事实库同步 daemon（常驻）",
+      "description": "利润事实库同步 daemon（独立配置 XDR_AGENT_CONFIG，常驻）",
       "command": [
         "~/.local/node-v24.20.0-darwin-arm64/bin/node",
         "~/xdr-sync-agent/bin/xdr-sync-agent.js",
