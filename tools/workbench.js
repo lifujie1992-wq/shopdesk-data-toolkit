@@ -36,10 +36,18 @@ const arg = (name, fallback) => {
   return i === -1 ? fallback : process.argv[i + 1];
 };
 const PORT = Number(arg("port", process.env.WORKBENCH_PORT ?? 4173));
-const TOKEN = randomBytes(24).toString("base64url");
-
+// token 持久化：常驻服务重启后，已经打开的页面不需要刷新也能继续用
+const TOKEN_FILE = join(ROOT, "var", "workbench.token");
 mkdirSync(dirname(HISTORY), { recursive: true });
-writeFileSync(join(ROOT, "var", "workbench.token"), TOKEN, { mode: 0o600 });
+const TOKEN = (() => {
+  try {
+    const saved = readFileSync(TOKEN_FILE, "utf8").trim();
+    if (saved.length >= 16) return saved;
+  } catch { /* 第一次启动 */ }
+  const fresh = randomBytes(24).toString("base64url");
+  writeFileSync(TOKEN_FILE, fresh, { mode: 0o600 });
+  return fresh;
+})();
 
 /* ---------------- 数据 ---------------- */
 

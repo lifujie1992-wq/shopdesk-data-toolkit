@@ -636,6 +636,21 @@
       "log": "~/Library/Logs/xdr-sync-agent-profit-facts/launchd.out.log",
       "errorLog": "~/Library/Logs/xdr-sync-agent-profit-facts/launchd.err.log",
       "enabled": true
+    },
+    {
+      "name": "workbench",
+      "label": "com.shopdesk.workbench",
+      "description": "定时任务工作台（本地网页，http://127.0.0.1:4173）",
+      "command": [
+        "/Users/zhaoxiaozhong/.local/node-v24.20.0-darwin-arm64/bin/node",
+        "~/projects/shopdesk-data-toolkit/tools/workbench.js",
+        "--no-open"
+      ],
+      "cwd": "~/projects/shopdesk-data-toolkit",
+      "keepAlive": true,
+      "runAtLoad": true,
+      "log": "~/Library/Logs/shopdesk/workbench.log",
+      "enabled": true
     }
   ]
 }

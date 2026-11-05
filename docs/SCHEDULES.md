@@ -7,10 +7,17 @@
 
 ## 工作台（能看耗时、能自己改）
 
+工作台已经装成常驻服务（`com.shopdesk.workbench`），Mac 登录后一直在：
+**http://127.0.0.1:4173**
+
 ```bash
-npm run workbench          # 起服务并打开 http://127.0.0.1:4173
-npm run workbench -- --port 4174 --no-open
+npm run schedule -- install workbench   # 首次安装 / 重装
+launchctl kickstart -k gui/$(id -u)/com.shopdesk.workbench   # 重启
+npm run workbench -- --port 4174        # 临时换个端口手工起
 ```
+
+> 以前是手工 `node tools/workbench.js` 起的临时进程，关掉终端就没了——所以才"打不开"。
+> 现在它自己在清单里，被 launchd 看着，退出了会自动拉起。
 
 左边任务列表（可搜索/筛选异常·运行中·已停用·未迁 label），右边是编辑面板：
 
