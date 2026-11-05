@@ -203,6 +203,8 @@ function buildState() {
   const tasks = manifest.tasks.map((task) => {
     const label = task.label ?? `com.shopdesk.${task.name}`;
     const state = loaded.get(label);
+    // 旧 label 可能才是真正在跑的那一个，必须单独看，否则会误报「未安装」
+    const legacyState = task.legacyLabel ? loaded.get(task.legacyLabel) : null;
     return {
       ...task,
       label,
@@ -211,9 +213,13 @@ function buildState() {
       perDay: frequency(task).perDay,
       nextRun: nextRun(task),
       installed: files.has(label),
+      legacyInstalled: Boolean(task.legacyLabel && files.has(task.legacyLabel)),
       legacyPresent: Boolean(task.legacyLabel && (files.has(task.legacyLabel) || loaded.has(task.legacyLabel))),
       pid: state?.pid ?? null,
       lastExit: state?.lastExit ?? null,
+      legacyPid: legacyState?.pid ?? null,
+      legacyLastExit: legacyState?.lastExit ?? null,
+      runningUnder: state?.pid ? "new" : legacyState?.pid ? "legacy" : null,
       duration: stats[task.name] ?? null,
     };
   });

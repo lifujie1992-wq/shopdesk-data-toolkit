@@ -151,18 +151,33 @@ let filter = "";
 let view = "board";
 let selected = null, draft = null, dirty = false;
 
+// launchd 的「最后一次退出码」对常驻进程是上一次被杀的信号（-15 = SIGTERM），
+// 重启属于常态，不能当异常。只把正数退出码当作失败。
+const errorExit = (t) => {
+  const pick = (v) => (typeof v === "number" && v > 0 ? v : null);
+  return pick(t.lastExit) ?? pick(t.legacyLastExit);
+};
+
+// 状态要区分「新 label」和「旧 label」：旧 label 跑着也算在跑，只是没迁移。
 const statusOf = (t) => {
-  if (t.enabled === false) return ["off", "已停用", "t-dim"];
-  if (t.pid) return ["run", "运行中", "t-run"];
-  if (t.lastExit !== null && t.lastExit !== 0) return ["err", `退出 ${t.lastExit}`, "t-err"];
+  const legacy = t.legacyPresent ? "（旧 label）" : "";
+  // 清单里停用 ≠ 系统里停掉：没跑过 install 的话，旧 plist 还在照常触发
+  if (t.enabled === false) {
+    const stillThere = t.installed || t.legacyInstalled;
+    return stillThere ? ["off", "已停用·但系统里还在跑", "t-warn"] : ["off", "已停用", "t-dim"];
+  }
+  if (t.runningUnder === "new") return ["run", "运行中", "t-run"];
+  if (t.runningUnder === "legacy") return ["run", "运行中" + legacy, "t-run"];
+  const bad = errorExit(t);
+  if (bad !== null) return ["err", `退出 ${bad}${t.lastExit === bad ? "" : legacy}`, "t-err"];
   if (t.installed) return ["ok", "已加载", "t-ok"];
+  if (t.legacyInstalled) return ["ok", "已加载" + legacy, "t-ok"];
   return ["", "未安装", "t-dim"];
 };
 
 function renderStats() {
   const t = STATE.tasks;
   const running = t.filter((x) => x.pid).length;
-  // 与卡片上的状态点保持一致：已停用/运行中的不算"有异常"
   const failing = t.filter((x) => statusOf(x)[0] === "err").length;
   const daily = t.reduce((n, x) => n + (x.perDay || 0), 0);
   const drift = t.filter((x) => !x.installed || x.legacyPresent).length;
@@ -171,7 +186,7 @@ function renderStats() {
     [running, "运行中", running ? "blue" : "green"],
     [failing, "有异常", failing ? "red" : "green"],
     [Math.round(daily), "每天触发次数", "amber"],
-    [drift, "清单与系统不一致", drift ? "amber" : "green"],
+    [drift, "待迁移到新 label", drift ? "amber" : "green"],
   ];
   document.getElementById("stats").innerHTML = stats.map(([k, l, c]) =>
     `<div class="stat ${c}"><div class="k">${k}</div><div class="l">${l}</div></div>`).join("");
@@ -204,7 +219,7 @@ function renderBoard() {
         <span class="dot ${cls}"></span>
         <span class="nm">${esc(t.name)}</span>
         <span class="tag ${tag}">${label}</span>
-        ${t.legacyPresent ? '<span class="tag t-warn">旧 label</span>' : ""}
+        ${t.legacyPresent && !t.installed ? '<span class="tag t-warn">待迁移</span>' : ""}
       </div>
       <p class="desc">${esc(t.description || "（没有说明）")}</p>
       <div class="meta">
