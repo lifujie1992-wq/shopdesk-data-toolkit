@@ -181,3 +181,41 @@ $ node sources/jst/bin/jst.js auth status
 - 任务号 `206799972`、`206799975`
 - 无数据落库、无云端发布
 - 如需清理：聚水潭 → 订单 → 退款单 → 导出记录 里删除这两条失败任务
+
+---
+
+## 5. 「一直在报警」的真因：自动修复从 10-28 起全部 401
+
+### 现象
+
+用户反馈"经常有报警发到 webhook"。任务本身并没有天天坏。
+
+### 排查
+
+`~/xdr-sync-agent/var/failure-repair/runs` 里：
+
+- 387 次修复运行，**554 个 `401 Unauthorized`**
+- 最早 2026-10-28 17:07，最晚 2026-11-06 02:37
+- `codex login status` → `Not logged in`
+- `~/.codex/auth.json` 不存在
+
+也就是说：失败 → 进修复队列 → Codex 起不来 → 等 30 分钟 → 原样推到飞书。
+每一条告警都是这个流程走完的结果。
+
+### 处理
+
+不是"再修一遍 Codex 就好"——换任何编排框架都绕不开 Agent 未登录。
+改为：
+
+1. 装 [agent-autoloop](https://github.com/KKKKhazix/agent-autoloop) 作为调度内核；
+2. 用本机**已登录**的 `pi --print` 作为执行 Agent；
+3. 失败事件按项目派单（`task.failed.<项目>`），各项目在自己目录里排查；
+4. 派单成功才压住飞书 30 分钟，派单失败立刻照常报警；
+5. 同任务同原因**一小时只派一次**，避免修不了的失败反复烧 Token。
+
+细节见 [失败自动修复](AUTO-REPAIR.md)。
+
+### 未做
+
+`codex login` 仍然没登录。如果以后想换回 Codex，先登录，再把
+`~/.agent-autoloop/rules.json` 里固定 `use: "command"` 改回 `use: "codex"`。

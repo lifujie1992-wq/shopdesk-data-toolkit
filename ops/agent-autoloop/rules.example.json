@@ -1,0 +1,191 @@
+{
+  "sources": {
+    "shopdesk": {
+      "name": "店铺取数任务"
+    }
+  },
+  "agents": {
+    "fixer": {
+      "name": "自修 Agent",
+      "worker": "this-machine",
+      "use": "command",
+      "command": [
+        "pi",
+        "--print",
+        "{prompt}"
+      ],
+      "access": "edit",
+      "timeout": 20
+    },
+    "advisor": {
+      "name": "只读排查 Agent",
+      "worker": "this-machine",
+      "use": "command",
+      "command": [
+        "pi",
+        "--print",
+        "{prompt}"
+      ],
+      "access": "read",
+      "timeout": 20
+    }
+  },
+  "rules": [
+    {
+      "name": "自修：xdr",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.xdr"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/projects/xdr-sync-agent",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：monthly",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.monthly"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/projects/douyin-settle-recon",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：invoice",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.invoice"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/projects/invoice-mac-agent",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：feige",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.feige"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/projects/feige-customer-daily",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：commission",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.commission"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/projects/douyin-commission-rates",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：aftersale_counts",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.aftersale_counts"
+        ]
+      },
+      "to": "advisor",
+      "cwd": "/Users/zhaoxiaozhong/projects/shopdesk-aftersale",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：inventory",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.inventory"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/jushuitan-inventory-warning",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：orders",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.orders"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/jushuitan-order-details",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：order_page",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.order_page"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/jushuitan-order-page",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：sales",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.sales"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/jushuitan-sales-performance",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：aftersales",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.aftersales"
+        ]
+      },
+      "to": "fixer",
+      "cwd": "/Users/zhaoxiaozhong/jushuitan-aftersales",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    },
+    {
+      "name": "自修：doudian",
+      "when": {
+        "source": "shopdesk",
+        "types": [
+          "task.failed.doudian"
+        ]
+      },
+      "to": "advisor",
+      "cwd": "/Users/zhaoxiaozhong/doudian-daily",
+      "skill": "shopdesk-ops",
+      "parallel": 2
+    }
+  ]
+}

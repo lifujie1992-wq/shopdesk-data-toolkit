@@ -29,6 +29,7 @@
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) —— 目标结构与约定
 - [`docs/MIGRATION.md`](docs/MIGRATION.md) —— 分阶段迁移、对拍标准、回滚方案
 - [`docs/INCIDENTS.md`](docs/INCIDENTS.md) —— 2026-11-06 三个定时任务故障的根因与修复
+- [`docs/AUTO-REPAIR.md`](docs/AUTO-REPAIR.md) —— 失败自动修复链路（agent-autoloop），以及「一直报警」的真因
 
 ## 状态
 
