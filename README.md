@@ -31,6 +31,7 @@
 - [`docs/INCIDENTS.md`](docs/INCIDENTS.md) —— 2026-11-06 三个定时任务故障的根因与修复
 - [`docs/AUTO-REPAIR.md`](docs/AUTO-REPAIR.md) —— 失败自动修复链路（agent-autoloop），以及「一直报警」的真因
 - [`docs/SCHEDULES.md`](docs/SCHEDULES.md) —— 定时任务管理器（声明式清单 → plist）
+- [`docs/APPEAL-RULES.md`](docs/APPEAL-RULES.md) —— 品退举报四类分流规则与 AI 样例库
 
 ## 状态
 
