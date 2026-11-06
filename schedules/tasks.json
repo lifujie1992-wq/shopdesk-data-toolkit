@@ -57,7 +57,7 @@
       "name": "appeal",
       "label": "com.shopdesk.appeal",
       "legacyLabel": "local.shopdesk.appeal",
-      "description": "申诉扫描",
+      "description": "申诉扫描（品退 + 中差评），06:35 / 22:10",
       "command": [
         "/bin/bash",
         "~/Library/Application Support/shopdesk/daily-appeal.sh"
@@ -66,6 +66,10 @@
         {
           "hour": 6,
           "minute": 35
+        },
+        {
+          "hour": 22,
+          "minute": 10
         }
       ],
       "log": "/tmp/shopdesk-appeal.out.log",
