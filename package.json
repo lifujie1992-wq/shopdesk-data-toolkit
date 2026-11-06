@@ -16,7 +16,8 @@
     "doctor": "node sources/jst/bin/jst.js doctor",
     "schedule": "node tools/schedule.js",
     "board": "node tools/board.js",
-    "workbench": "node tools/workbench.js"
+    "workbench": "node tools/workbench.js",
+    "learn": "node tools/learn-appeal.mjs"
   },
   "engines": {
     "node": ">=22"
